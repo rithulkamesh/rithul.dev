@@ -1,12 +1,12 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/discord",
       "destination": "https://discord.gg/FqRtZEwtdF"
     },
     {
-      "source": "/gh/:match*",
-      "destination": "https://github.com/rithulkamesh/:match*"
+      "source": "/gh/:repo*",
+      "destination": "https://github.com/rithulkamesh/:repo*"
     }
   ]
 }
