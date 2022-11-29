@@ -5,7 +5,6 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import Project from "../components/Project.astro";
 import Newsletter from "../components/Newsletter.astro";
-import axios from "axios"
 
 const getAge = () => {
   const age = (Date.now() - new Date("2006-05-10").getTime()) / 1000 / 60 / 60 / 24 / 365;
