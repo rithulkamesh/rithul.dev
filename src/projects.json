@@ -39,5 +39,17 @@
         "languageColor": "#f1e05a",
         "stars": "3",
         "forks": 0
+    },
+        {
+        "owner": "rithulkamesh",
+        "repo": "task",
+        "link": "https://github.com/rithulkamesh/task",
+        "description": "A simple CLI task tracker made with Rust",
+        "image": "https://opengraph.githubassets.com/1/rithulkamesh/task",
+        "language": "Rust",
+        "languageColor": "#dea584",
+        "stars": "3",
+        "forks": 0
     }
+
 ]
