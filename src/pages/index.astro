@@ -4,7 +4,6 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import Project from "../components/Project.astro";
-import Newsletter from "../components/Newsletter.astro";
 
 const getAge = () => {
   const age = (Date.now() - new Date("2006-05-10").getTime()) / 1000 / 60 / 60 / 24 / 365;
@@ -23,13 +22,13 @@ import projects from "../projects.json";
     <main class="text-lg text-neutral-200">
       <h1 class="text-4xl pb-2">Hi, I'm Rithul!</h1>
       <p>
-        I&apos;m a {getAge()} year old student in Bangalore, India and I love making web apps and games. I recently started discovering my interest in hardware and decided to make a podcast and a blog revolved around it. I&apos;m currently working on a software to store your great ideas called <a href="https://sumbox.app">Sumbox</a>!
+        I&apos;m a {getAge()} year old student in Bangalore, India and I love making web apps and games. I recently started discovering my interest in hardware and I love tinkering with it. I&apos;m currently working on a software to store your great notes called <a href="https://sumbox.app">Sumbox</a>!
 
       </p>
       <br />
       <p>
         I&apos;m in 12th grade @ BGS National Public School, Expecting to graduate in 2023, and my hobbies include <b>Coding</b>, <b>Listening to music</b>.
-        I am interested in <b>Web Development</b>, <b>Game Development</b>, <b>UI/UX Design</b>, <b>Hardware</b>, <b>Podcasting</b> and <b>Writing</b>.
+        I am interested in <b>Web Development</b>, <b>Game Development</b>, <b>UI/UX Design</b>, <b>Hardware</b>, <b>Podcasting</b> and <b>Writing</b>. I am a regular player of Hypixel Skyblock, and I love the game!
       </p>
       <br />
       <h2 class="text-3xl pb-4">Where to find me?</h2>
@@ -56,7 +55,6 @@ import projects from "../projects.json";
           })
         }
       </section>
-      <Newsletter />
     </main>
     <Footer />
   </body>
