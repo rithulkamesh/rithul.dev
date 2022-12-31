@@ -5,7 +5,7 @@
         "link": "https://github.com/rithulkamesh/macro-board",
         "description": "A Macro Keyboard made with Raspberry Pi Pico",
         "image": "https://opengraph.githubassets.com/1/rithulkamesh/macro-board",
-        "language": "KiCAD",
+        "language": "KiCAD"
     },
     {
         "owner": "iWaroz",
@@ -13,7 +13,7 @@
         "link": "https://github.com/iWaroz/whisper",
         "description": "An anonymous chatting app made with socket.io",
         "image": "https://opengraph.githubassets.com/1/iwaroz/whisper",
-        "language": "JavaScript",
+        "language": "JavaScript"
     },
     {
         "owner": "rithulkamesh",
@@ -21,7 +21,7 @@
         "link": "https://github.com/rithulkamesh/ideabank",
         "description": "A simple idea bank made in rust",
         "image": "https://opengraph.githubassets.com/1/rithulkamesh/ideabank",
-        "language": "Rust",
+        "language": "Rust"
     },
     {
         "owner": "rithulkamesh",
@@ -29,7 +29,7 @@
         "link": "https://github.com/rithulkamesh/current-task-widget",
         "description": "A current task widget for Ubersicht",
         "image": "https://opengraph.githubassets.com/1/rithulkamesh/current-task-widget",
-        "language": "JavaScript",
+        "language": "JavaScript"
     },
         {
         "owner": "rithulkamesh",
@@ -37,7 +37,6 @@
         "link": "https://github.com/rithulkamesh/task",
         "description": "A simple CLI task tracker made with Rust",
         "image": "https://opengraph.githubassets.com/1/rithulkamesh/task",
-        "language": "Rust",
+        "language": "Rust"
     }
-
 ]
