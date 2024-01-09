@@ -1,0 +1,5 @@
+[
+    {"name": "ideabank", "href": "https://github.com/rithulkamesh/ideabank", "description": "CLI-based Idea Bank application in Rust, offering a streamlined platform for brainstorming and organizing creative concepts.", "technologies": ["rs"]},
+        {"name": "pomotimer", "href": "https://github.com/rithulkamesh/pomotimer", "description": "A focus device/app that enables you and your friends to work in collaboration.", "technologies": ["cpp","rs", "go","ts"]},
+        {"name": "nvim", "href": "https://github.com/rithulkamesh/nvim", "description": "Lua-Based gruvbox themed fast and minimal neovim configuration.", "technologies": ["lua"]}
+]
