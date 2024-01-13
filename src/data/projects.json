@@ -9,6 +9,6 @@
     "name": "pomotimer",
     "href": "https://github.com/rithulkamesh/pomotimer",
     "description": "A focus device/app that enables you and your friends to work in collaboration.",
-    "technologies": ["cpp", "rs", "go", "ts"]
+    "technologies": ["cpp", "go", "ts"]
   }
 ]
