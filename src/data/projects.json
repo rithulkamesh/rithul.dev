@@ -6,8 +6,8 @@
     "technologies": ["rs"]
   },
   {
-    "name": "pomotimer",
-    "href": "https://github.com/rithulkamesh/pomotimer",
+    "name": "pomoflow",
+    "href": "https://github.com/rithulkamesh/pomoflow",
     "description": "A focus device/app that enables you and your friends to work in collaboration.",
     "technologies": ["cpp", "ts"]
   }
