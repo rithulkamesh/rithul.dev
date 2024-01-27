@@ -1,4 +1,11 @@
 [
+      {
+    "name": "chippy",
+    "href": "https://github.com/rithulkamesh/chippy",
+    "description": "A small blazingly-fast CHIP-8 emulator written with the help of SDL.",
+    "technologies": ["rs"]
+  },
+
   {
     "name": "ideabank",
     "href": "https://github.com/rithulkamesh/ideabank",
