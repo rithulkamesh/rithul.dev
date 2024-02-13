@@ -48,10 +48,9 @@
     --ring: 240 4.9% 83.9%;
   }
   .max-w-container {
-      max-width: 43rem;
+    max-width: 43rem;
   }
 }
-
 
 @layer base {
   * {
@@ -66,19 +65,19 @@
   @apply max-w-container [&>:not(:last-child)]:mb-6;
 
   & p {
-    @apply leading-7 [&:not(:first-child)]:mt-6
+    @apply leading-7 [&:not(:first-child)]:mt-6;
   }
 
   & h1 {
-      @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
   }
 
   & h2 {
-      @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
   }
 
   & h3 {
-      @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
   }
 
   & hr {
@@ -87,7 +86,7 @@
   }
 
   & ul {
-      @apply my-6 ml-6 list-disc [&>li]:mt-2;
+    @apply my-6 ml-6 list-disc [&>li]:mt-2;
   }
 
   & ul > li {

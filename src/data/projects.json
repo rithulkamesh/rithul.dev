@@ -1,5 +1,11 @@
 [
-      {
+  {
+    "name": "pomoflow",
+    "href": "https://github.com/rithulkamesh/pomoflow",
+    "description": "A focus device/app that enables you and your friends to work in collaboration.",
+    "technologies": ["ts"]
+  },
+  {
     "name": "chippy",
     "href": "https://github.com/rithulkamesh/chippy",
     "description": "A small blazingly-fast CHIP-8 emulator written with the help of SDL.",
@@ -11,11 +17,5 @@
     "href": "https://github.com/rithulkamesh/ideabank",
     "description": "CLI-based Idea Bank application in Rust, offering a streamlined platform for brainstorming and organizing creative concepts.",
     "technologies": ["rs"]
-  },
-  {
-    "name": "pomoflow",
-    "href": "https://github.com/rithulkamesh/pomoflow",
-    "description": "A focus device/app that enables you and your friends to work in collaboration.",
-    "technologies": ["cpp", "ts"]
   }
 ]
