@@ -3,8 +3,15 @@
     "name": "pomoflow",
     "href": "https://github.com/rithulkamesh/pomoflow",
     "description": "A focus webapp that enables to work in collaboration without the chaos.",
-    "technologies": ["ts"]
+    "technologies": ["ts", "cpp"]
   },
+    {
+    "name": "thermosync",
+    "href": "https://github.com/rithulkamesh/thermosync",
+    "description": "A simple, yet powerful, temperature monitoring and control system for your home.",
+    "technologies": ["cpp", "py"]
+  },
+
   {
     "name": "chippy",
     "href": "https://github.com/rithulkamesh/chippy",
