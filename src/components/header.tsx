@@ -25,7 +25,6 @@ const ThemeSwitcher: React.FC = () => {
 const Header: React.FC = () => {
   return (
     <div className="flex justify-between items-center">
-      {" "}
       <span className="flex items-center space-x-2">
         <div className="flex flex-col space-y-1 text-sm leading-none">
           <Avatar>
@@ -36,7 +35,7 @@ const Header: React.FC = () => {
           <span className="text-lg font-bold">Rithul Kamesh</span>
           <div className="flex gap-1">
             <Link
-              href="https://rithul.substack.com"
+              href="/blog"
               className="dark:text-zinc-300 text-zinc-800"
               target="_blank"
             >

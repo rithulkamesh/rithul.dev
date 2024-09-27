@@ -1,9 +1,8 @@
+"use client";
 import React from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Projects from "@/components/projects";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
 
 const Home: React.FC = () => {
   const age = Math.floor(
@@ -11,9 +10,7 @@ const Home: React.FC = () => {
       (1000 * 60 * 60 * 24 * 365.25),
   );
   return (
-    <div
-      className={`mx-auto max-w-container px-4 flex flex-col gap-3 py-8 ${inter.className}`}
-    >
+    <div className={`mx-auto max-w-container px-4 flex flex-col gap-3 py-8`}>
       <Header />
       <div className="flex flex-col gap-1 mt-4">
         <p>
@@ -27,7 +24,6 @@ const Home: React.FC = () => {
           learning new spoken and programming languages.
         </p>
       </div>
-      <Projects />
       <Footer />
     </div>
   );
