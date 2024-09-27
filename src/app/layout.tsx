@@ -41,8 +41,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" />
-
       <body className={raleway.className}>
         <LogLib
           config={{
