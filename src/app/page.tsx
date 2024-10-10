@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         </p>
         <p>
           I&apos;m an avid lifter with frequent workout videos on my{" "}
-          <Link href="://instagram.com/rithulkamesh" target="_blank">
+          <Link href="https://instagram.com/rithulkamesh" target="_blank">
             instagram
           </Link>
           . I also play the piano, and I&apos;m learning to play the guitar.
