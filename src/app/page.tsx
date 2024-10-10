@@ -25,7 +25,7 @@ const Home: React.FC = () => {
           I&apos;m a big fan of gaming and I&apos;m currently playing
           &quot;Ghost of Tsushima&quot; and &quot;Elden Ring&quot;. I also write
           fiction in my free time and I run a developer community called{" "}
-          <Link href="://pragmahq.com">pragma</Link> where I&apos;m most active.
+          <Link href="https://pragmahq.com">pragma</Link> where I&apos;m most active.
         </p>
         <p>
           I&apos;m an avid lifter with frequent workout videos on my{" "}
