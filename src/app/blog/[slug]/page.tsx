@@ -82,6 +82,7 @@ const Post: React.FC<Props> = ({ params }) => {
               <span>{props.frontMatter.date}</span>
             </div>
           </div>
+          {/*@ts-ignore*/}
           <MDXRemote source={props.content} options={options} />
         </article>
         <Footer />
