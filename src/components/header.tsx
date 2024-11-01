@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "./link";
@@ -6,7 +7,7 @@ import { IoSunny } from "react-icons/io5";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
-const ThemeSwitcher: React.FC = () => {
+export const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme();
 
   return (
