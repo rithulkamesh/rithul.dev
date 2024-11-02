@@ -38,5 +38,14 @@ export async function getBlogList(): Promise<Blog[]> {
     } as Blog;
   });
 
-  return blogs;
+  const parseDate = (dateStr: string) => {
+    const cleanDate = dateStr.replace(/(st|nd|rd|th)/, "");
+    return new Date(cleanDate);
+  };
+
+  return blogs.sort((a, b) => {
+    const dateA = parseDate(a.meta.date);
+    const dateB = parseDate(b.meta.date);
+    return dateB.getTime() - dateA.getTime();
+  });
 }

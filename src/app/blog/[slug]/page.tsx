@@ -11,13 +11,6 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import Header from "@/components/header";
 
-const calculateReadTime = (content: string) => {
-  const wordsPerMinute = 200;
-  const wordCount = content.trim().split(/\s+/).length;
-  const readTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
-  return readTimeMinutes;
-};
-
 interface Props {
   params: {
     slug: string;
@@ -47,7 +40,7 @@ const options = {
   mdxOptions: {
     remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
-      rehypeKatex,
+      [rehypeKatex, { strict: false }],
       rehypeSlug,
       [
         rehypeAutolinkHeadings,
@@ -64,7 +57,6 @@ const options = {
 
 const Post: React.FC<Props> = ({ params }) => {
   const props = getPost(params);
-  const readTime = calculateReadTime(props.content);
 
   return (
     <>
