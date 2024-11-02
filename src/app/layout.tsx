@@ -3,9 +3,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import LogLib from "@loglib/tracker/react";
 import type { Metadata } from "next";
 
-import { Raleway } from "next/font/google";
+import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const raleway = Raleway({ subsets: ["latin-ext"] });
+const font = Inter({ subsets: ["latin-ext"] });
 
 export const metadata: Metadata = {
   title: "Rithul Kamesh",
@@ -41,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={raleway.className}>
+      <body className={font.className}>
         <LogLib
           config={{
             id: "rithul",
@@ -49,6 +50,7 @@ export default function RootLayout({
         />
         <ThemeProvider attribute="class" defaultTheme="dark">
           {children}
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
