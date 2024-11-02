@@ -156,3 +156,23 @@
 .prose a:hover {
   @apply decoration-primary;
 }
+
+.prose blockquote {
+  @apply pl-6 my-6 border-l-2 border-primary italic relative;
+}
+
+.prose blockquote p {
+  @apply text-muted-foreground font-medium;
+}
+
+.prose blockquote p:first-child {
+  @apply mt-0;
+}
+
+.prose blockquote p:last-child {
+  @apply mb-0;
+}
+
+.prose blockquote cite {
+  @apply block text-sm mt-2 text-muted-foreground/80 not-italic;
+}

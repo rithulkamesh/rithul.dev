@@ -1,0 +1,94 @@
+---
+title: "Backpropagation - Fixing blunders."
+date: "2nd November 2024"
+author: "Rithul Kamesh"
+tags: ["ai-ml"]
+---
+
+In the last part we saw what a neural network is and how it learns. Now, we need to fix its mistakes since it's common to mess up while learning. If we recall what alters the activation, It's mainly the change in 3 things:
+1. Bias
+2. Weights
+3. Activation of the previous layer
+
+> Backpropagation is an algorithm to calculate the negative gradient to nudge your weights or biases.
+
+That's a long sentence, but to understand that, we need to understand the calculus behind it. But first let us see what affects the output of our neural network.
+
+$$
+w^{(L)}, a^{(c-1)}, b^{(L)} \\
+                ↓ \\
+            Z^{(L)} \\
+                ↓ \\
+            a^{(L)} \\
+                ↓ \\
+            C_0
+$$
+
+As we can see from the above flow, The weights of the layer, the activation of the previous layer and our bias affects our pre-squished function which we represent as some $Z^{(L)}$. This value affects our activation for the previous layer which inturn affects our cost function. To write all this mathematically:
+
+$$
+C_0 = (a^{(L)} - y)^2 \\
+Z^{(L)} = w^{(L)} a^{(L-1)} + b^{(L)} \\
+a^{(L)} = \sigma (Z^{(L)})
+$$
+
+where $y$ is 1 only at expected activation. To propagate backwards, we need to find out what change in the affecting factors lead to how much change in the cost function. This function is then optimized to achieve ideal results.
+
+Alright let's talk math, we'll be needing $\frac{\delta C_0}{\delta w^{(L)}}$. From the flowchart above, we can say that the resultant is influenced by:
+
+$$
+\frac{\delta C_0}{\delta w^{(L)}} = \frac{\delta z^{(L)}}{\delta w^{(L)}}
+                                    \frac{\delta a^{(L)}}{\delta z^{(L)}}
+                                    \frac{\delta C_0^{(L)}}{\delta a^{(L)}}
+$$
+
+Now this is just for one case, and we have $k$ neurons. Let us assume the below structure for the network
+<img src="/blogs/backprop/network.svg" />
+
+Let the first layer have _k_ neurons and the last one have _j_. For readability and convention, we shall subscript the neuron number and superscript the layer.
+
+Our new cost function is now defined as:
+$$
+C_0 = \sum_{j=0}^{n_L-1} (a_j^{(L)} - y_j)^2
+$$
+
+When we measure it with respect to the change in activation, our function now becomes
+
+$$
+\frac{\delta C_0}{\delta a_k^{(l-1)}} =  \sum_{j=0}^{n_L-1} \frac{\delta z_j^{(L)}}{\delta a_k^{(L)}}
+                                    \frac{\delta a_j^{(L)}}{\delta z_j^{(L)}}
+                                    \frac{\delta C_0^{(L)}}{\delta a_j^{(L)}}
+
+$$
+
+The above math might require pen and paper to work out and understand properly so take your time for it. But that's what backpropagation is, just a bunch of calculus to write an algorithm to determine how to minimize your cost function.
+
+In the next part of the series we shall look at what are machine learning models and it's classification.
+
+<div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '2rem',
+    paddingTop: '1rem',
+}}>
+        <a
+        href="/blog/neural-nets"
+        style={{
+        textDecoration: 'none'
+        }}
+    >
+        ← Previous<br/>
+        <span style={{fontWeight: 500, textDecoration: 'underline'
+}}>Neural Networks</span>
+    </a>
+    <a
+        style={{
+            textAlign: 'right',
+            textDecoration: 'none',
+            color: "#999",
+        }}
+    >
+        Next →<br/>
+        <span style={{fontWeight: 500, textDecoration: "underline"}}>Machine Learning (WIP)</span>
+    </a>
+</div>
