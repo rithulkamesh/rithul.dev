@@ -33,7 +33,9 @@ const Header: React.FC = () => {
             <AvatarFallback>RK</AvatarFallback>
           </Avatar>
 
-          <span className="text-lg font-bold">Rithul Kamesh</span>
+          <Link href="/" className="text-lg font-bold">
+            Rithul Kamesh
+          </Link>
           <div className="flex gap-1">
             <Link
               href="/blog"
