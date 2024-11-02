@@ -5,7 +5,7 @@ author: "Rithul Kamesh"
 tags: ["ai-ml"]
 ---
 
-Alright, it's 2024, AI and ML has been the biggest thing for the last few years. But what does it do? How do computers actually learn?
+Alright, it's 2024, AI and ML have been the biggest thing for the last few years. But what does it do? How do computers actually learn?
 
 This is a multi-part series which will cover the basics of Neural Networks, AI and ML, along with code samples. Heavy credit to [3b1b](https://www.3blue1brown.com/) and [this book](https://www.amazon.com/Hands-Machine-Learning-Scikit-Learn-TensorFlow/dp/1098125975) from which a lot of this information is gathered here.
 
@@ -16,8 +16,8 @@ Think of it like teaching a computer to see the world the way we do, one connect
 
 1. **Neuron**: A unit which holds a number. This number is called it's **Activation.** Denoted by $a_n$.
 2. **Weight**: An Indication of how two neurons are connected
-    - **Positive** indicates that the next neuron should be **on**.
-    - **Negative** indicates that the next neuron should be **off**.
+    - **Positive** indicates that the next Neuron should be **on**.
+    - **Negative** indicates that the next Neuron should be **off**.
 
 Now the weight of this neuron might be any number, but since we need a value between 0 and 1, we shall use some special functions. An example of which:
 
@@ -27,7 +27,7 @@ $$
 $$
 
 This function has some drawbacks:
-1. As Input Increases, the output tends to zero, which might potentially stop network learning.
+1. As input increases, the output tends to zero, which might potentially stop network learning.
 2. Due to its asymmetric output range (0 to 1) and computational complexity, the sigmoid function can cause unidirectional gradient flow and requires more expensive calculations.
 
 To fix this, we usually use ReLU.
@@ -55,10 +55,10 @@ Where:
 
 Now, the model learns from basically two steps:
 
-1. Your data is first split into a Training and Testing set.
+1. Your data is first split into a training and testing set.
 2. Then a specialized algorithm decides how to adjust your weights and biases according to your data's labels.
 
-Measuring how accurate a model is done using a <u>Cost Function</u>.
+A model's accuracy is measured using <u>Cost Function</u>.
 #### Cost Function
 This function returns a mathematical value to quantify the error or difference in the model's output. The lower this is, the better the model is.
 
@@ -77,5 +77,4 @@ $$
 
 Now, our target should be to **minimize this value.** This is done so by finding the local minima. In a realistic space, a **gradient descent** is applied. Each step of our descent is going to look like $-\eta \Delta c$, where $\eta$ is our learning rate. The bigger it is, the faster we'll approach our cost function.
 
-Alright, this is a lot of information for one blog, In the next part of this series, we'll cover **Backpropogation** along with the math it covers. This is used to calculate the negative gradient to nudge your weights and biases to increase network efficiency.
-
+Alright, this is a lot of information for one blog, In the next part of this series, we'll cover **Backpropagation** along with the math it covers. This is used to calculate the negative gradient to nudge your weights and biases to increase network efficiency.
