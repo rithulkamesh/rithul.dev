@@ -15,7 +15,7 @@ Neural networks are essentially the brain's digital twin. Just like neurons in o
 Think of it like teaching a computer to see the world the way we do, one connection at a time. Let's break this down and understand some components related to forming a neural network.
 
 1. **Neuron**: A unit which holds a number. This number is called it's **Activation.** Denoted by $a_n$.
-2. **Weight**: An Indication of how two neurons are connected
+2. **Weight**: An Indication of how two neurons are connected. Denoted by $w_n$.
     - **Positive** indicates that the next Neuron should be **on**.
     - **Negative** indicates that the next Neuron should be **off**.
 
@@ -74,6 +74,8 @@ Our cost function $C$ is defined as
 $$
 C = \sum_{x=k}^{n}(a_k - f(k))^2
 $$
+
+Where $a_k$ is the activation of any k$^{th}$ neuron.
 
 Now, our target should be to **minimize this value.** This is done so by finding the local minima. In a realistic space, a **gradient descent** is applied. Each step of our descent is going to look like $-\eta \Delta c$, where $\eta$ is our learning rate. The bigger it is, the faster we'll approach our cost function.
 

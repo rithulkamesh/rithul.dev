@@ -14,8 +14,11 @@ In the last part we saw what a neural network is and how it learns. Now, we need
 
 That's a long sentence, but to understand that, we need to understand the calculus behind it. But first let us see what affects the output of our neural network.
 
+For the sake of convention we shall we shall superscript the layer. For example, the activation of the L$^{th}$ layer will be represented as $a^{(L)}$.
+
+Take a look at this flowchart:
 $$
-w^{(L)}, a^{(c-1)}, b^{(L)} \\
+w^{(L)}, a^{(L-1)}, b^{(L)} \\
                 ↓ \\
             Z^{(L)} \\
                 ↓ \\
@@ -24,7 +27,7 @@ w^{(L)}, a^{(c-1)}, b^{(L)} \\
             C_0
 $$
 
-As we can see from the above flow, The weights of the layer, the activation of the previous layer and our bias affects our pre-squished function which we represent as some $Z^{(L)}$. This value affects our activation for the previous layer which inturn affects our cost function. To write all this mathematically:
+As we can see from the above flow, The weights of the layer, the activation of the previous layer and our bias affects our pre-squished function which we represent as some $Z^{(L)}$. This value affects our activation for the layer which inturn affects our cost function. To write all this mathematically:
 
 $$
 C_0 = (a^{(L)} - y)^2 \\
@@ -32,9 +35,9 @@ Z^{(L)} = w^{(L)} a^{(L-1)} + b^{(L)} \\
 a^{(L)} = \sigma (Z^{(L)})
 $$
 
-where $y$ is 1 only at expected activation. To propagate backwards, we need to find out what change in the affecting factors lead to how much change in the cost function. This function is then optimized to achieve ideal results.
+where $y$ is 1 only at expected activation. To propagate backwards, we need to find out what change in the affecting factors lead to how much change in the cost function $C_0$. This function is then optimized to achieve ideal results.
 
-Alright let's talk math, we'll be needing $\frac{\delta C_0}{\delta w^{(L)}}$. From the flowchart above, we can say that the resultant is influenced by:
+Alright let's talk math, we'll be needing $\frac{\delta C_0}{\delta w^{(L)}}$ or the change in cost function with respect to the weights. From the flowchart above, we can say that the resultant is influenced by:
 
 $$
 \frac{\delta C_0}{\delta w^{(L)}} = \frac{\delta z^{(L)}}{\delta w^{(L)}}
