@@ -1,0 +1,178 @@
+---
+title: "Machine Learning - how the computer learns."
+date: "3th November 2024"
+author: "Rithul Kamesh"
+tags: ["ai-ml"]
+---
+
+
+#### Index
+1. [Neural Networks](/blog/neural-nets)
+2. [Backpropagation](/blog/backpropagation)
+3. Machine Learning (You are here)
+
+
+> The art of programming computers to learn from data is called **machine learning**
+
+Let's finally get to the exciting stuff, start on ML. This blog is theory again but by the end of it, you'll be able to differentiate between the types of ML systems as well as identify the challenges in machine learning.
+
+ML systems are classified using the following criteria:
+- Training Supervision
+- Whether they can learn on the go.
+- Type of pattern detection
+
+### Classification based on Training Supervision
+#### Supervised Learning
+In supervised learning, the algorithm learns from labeled data - like having a teacher who provides both the questions and correct answers. The system learns to recognize patterns between input features and their corresponding outputs, allowing it to make predictions on new, unseen data.
+
+Example: Teaching a model to identify spam emails by showing it thousands of emails already marked as "spam" or "not spam".
+
+#### Unsupervised Learning
+In unsupervised learning, the algorithm works with unlabeled data, trying to discover hidden patterns and structures on its own. There are no correct answers to learn from - the system must find meaningful groupings or relationships within the data.
+
+Example: A shopping platform analyzing customer purchase histories to automatically group similar customers together.
+
+#### Semi-Supervised Learning
+Semi-supervised learning combines both labeled and unlabeled data during training. It uses a small amount of labeled data along with a large amount of unlabeled data, making it particularly useful when labeling data is expensive or time-consuming.
+
+Example: A medical imaging system trained on a small set of diagnosed X-rays and a large set of undiagnosed ones to detect abnormalities.
+
+#### Self-Supervised Learning
+In self-supervised learning, the system creates its own training labels from the input data. It learns by solving "proxy tasks" - clever ways to extract supervisory signals from the data itself without human annotation.
+
+Example: A language model predicting the next word in a sentence, using the natural structure of text to learn without explicit labels.
+
+#### Reinforcement Learning
+Reinforcement learning involves an agent learning to make decisions by interacting with an environment. The agent performs actions and receives rewards or penalties, gradually learning the best strategy to maximize its cumulative reward.
+
+Example: Training an AI to play chess by having it play thousands of games, learning from wins (rewards) and losses (penalties) to improve its strategy.
+
+### Classifcation based on learning on the go.
+#### Batch Learning (Offline Learning)
+In batch learning, the model is trained on the entire dataset at once and then deployed. It doesn't learn incrementally - to incorporate new data, you need to retrain the entire model from scratch with both old and new data.
+
+Example: Training a recommendation system for a streaming service using the past year's viewing history. Once deployed, it makes predictions without updating until the next full retraining.
+
+Pros:
+- Simple to implement and manage
+- Can make optimal use of parallel processing
+- More stable performance
+
+Cons:
+- Requires storing all training data
+- Resource intensive for large datasets
+- Can't adapt to new patterns without retraining
+
+#### Online Learning (Incremental Learning)
+In online learning, the model is trained incrementally by feeding data instances sequentially, either one at a time or in small "mini-batches". The model continuously updates as new data arrives.
+
+Example: A fraud detection system that updates its model in real-time as new transactions occur, quickly adapting to new fraud patterns.
+
+Pros:
+- Can handle large or infinite data streams
+- Adapts to changing patterns in real-time
+- Memory efficient as old data can be discarded
+
+Cons:
+- More complex to implement
+- Risk of degrading performance if bad data is received
+- May forget old patterns (catastrophic forgetting)
+
+### Type of Pattern detection
+#### Instance-Based Learning (Memory-Based Learning)
+Instance-based learners store training examples and delay generalization until query time ("lazy learning"). They make predictions by comparing new instances with stored training instances.
+
+Example: k-Nearest Neighbors (k-NN) algorithm, which classifies a new data point based on the majority class of its k nearest neighbors in the training set.
+
+Pros:
+- Simple to implement
+- Can adapt to new patterns instantly by adding examples
+- No training phase needed
+
+Cons:
+- Requires large memory to store instances
+- Slow prediction time
+- Sensitive to irrelevant features
+
+#### Model-Based Learning
+Model-based learners create a mathematical model from training data that can make predictions without storing the original data ("eager learning"). The model extracts patterns and discards the training data.
+
+Example: Linear Regression, which finds the best-fitting line through data points to make predictions.
+
+Pros:
+- Fast predictions once trained
+- Memory efficient
+- Can reveal underlying patterns
+
+Cons:
+- May oversimplify complex relationships
+- Fixed model structure once trained
+- Training can be computationally intensive
+
+### Key ML Challenges
+
+#### Insufficient Training Data
+- Models may not learn reliable patterns from limited data
+- High risk of overfitting
+- Poor generalization to new cases
+
+Solutions:
+- Data augmentation (creating synthetic examples)
+- Transfer learning (using pre-trained models)
+- Using simpler models that need less data
+- Active learning to prioritize most informative examples
+- Collecting more data
+
+#### Non-Representative Training Data
+- Training data doesn't reflect real-world scenarios
+- Model learns biased or skewed patterns
+- Poor performance on underrepresented cases
+
+Solutions:
+- Careful data sampling and collection
+- Stratified sampling to ensure representation
+- Synthetic data generation for rare cases
+- Regular monitoring of data distribution
+- Bias detection and mitigation techniques
+- Collecting data from diverse sources
+
+Additional Common Challenges:
+- Poor data quality (noise, errors, missing values)
+- Feature selection and engineering
+- Overfitting and underfitting
+- Model interpretability
+- Computational resources and scaling
+- Handling imbalanced datasets
+
+Alright that's a lot to take in, but it's crucial to understand how these work to build a working ML system.
+
+In the next part, we'll be writing a simple model to classify numbers using the MNIST dataset, a.k.a the "hello, world!" to machine learning.
+
+
+<div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '2rem',
+    paddingTop: '1rem',
+}}>
+        <a
+        href="/blog/backpropagation"
+        style={{
+        textDecoration: 'none'
+        }}
+    >
+        ← Previous<br/>
+        <span style={{fontWeight: 500, textDecoration: 'underline'
+}}>Backpropagation</span>
+    </a>
+    <a
+        style={{
+            textAlign: 'right',
+            textDecoration: 'none',
+            color: "#999",
+        }}
+    >
+        Next →<br/>
+        <span style={{fontWeight: 500, textDecoration: "underline"}}>(WIP)</span>
+    </a>
+</div>
