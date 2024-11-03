@@ -161,7 +161,7 @@ export default function BlogList({ initialBlogs }: BlogListProps) {
             <Link href={`/blog/${blog.slug}`} key={blog.slug} className="block">
               <Card
                 className="border-none pl-0 hover:bg-accent/50 transition-colors duration-200
-                         dark:hover:bg-accent/30 cursor-pointer"
+                         dark:hover:bg-accent/30 cursor-pointer shadow-none rounded-none"
               >
                 <CardContent className="my-auto flex justify-between py-2 my-2 pl-0 rounded-none">
                   <div className="flex flex-col justify-center text-left">
