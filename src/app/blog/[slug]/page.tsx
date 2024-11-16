@@ -1,7 +1,6 @@
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
-
 import Footer from "@/components/footer";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
@@ -9,13 +8,31 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
 import Header from "@/components/header";
+import React from "react";
+import "@/styles/pre.css";
 
 interface Props {
   params: {
     slug: string;
   };
 }
+
+const Pre = ({
+  children,
+  ...props
+}: { children: React.ReactNode } & React.HTMLAttributes<HTMLPreElement>) => {
+  const textInput = React.useRef<HTMLPreElement>(null);
+
+  return (
+    <div className={`group relative font-normal`}>
+      <pre ref={textInput} {...props}>
+        {children}
+      </pre>
+    </div>
+  );
+};
 
 export function generateMetadata({ params }: Props) {
   const blog = getPost(params);
@@ -36,12 +53,17 @@ export function generateStaticParams() {
   return paths;
 }
 
+const prettyCodeOptions = {
+  theme: "catppuccin-mocha",
+};
+
 const options = {
   mdxOptions: {
     remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
       [rehypeKatex, { strict: false }],
       rehypeSlug,
+      [rehypePrettyCode, prettyCodeOptions],
       [
         rehypeAutolinkHeadings,
         {
@@ -52,6 +74,9 @@ const options = {
         },
       ],
     ],
+  },
+  components: {
+    pre: Pre,
   },
 };
 

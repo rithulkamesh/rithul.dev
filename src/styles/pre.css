@@ -1,0 +1,202 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+/* Code block styles */
+pre {
+  background-color: #1e1e2e; /* Catppuccin Mocha base */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+code {
+  font-family: "JetBrains Mono";
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Language indicator */
+pre > div:first-child {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cdd6f4; /* Catppuccin Mocha text */
+  background-color: #313244; /* Catppuccin Mocha surface0 */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0 0 0.25rem 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Copy button */
+pre > button {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+pre:hover > button {
+  opacity: 1;
+}
+
+/* Syntax highlighting */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6c7086; /* Catppuccin Mocha overlay0 */
+}
+
+.token.punctuation {
+  color: #cdd6f4; /* Catppuccin Mocha text */
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #f38ba8; /* Catppuccin Mocha red */
+}
+
+.token.boolean,
+.token.number {
+  color: #fab387; /* Catppuccin Mocha peach */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #a6e3a1; /* Catppuccin Mocha green */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #f9e2af; /* Catppuccin Mocha yellow */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #cba6f7; /* Catppuccin Mocha mauve */
+}
+
+.token.function,
+.token.class-name {
+  color: #89b4fa; /* Catppuccin Mocha blue */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #f5c2e7; /* Catppuccin Mocha pink */
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* Line highlighting */
+.highlighted {
+  background-color: rgba(
+    203,
+    166,
+    247,
+    0.1
+  ); /* Catppuccin Mocha mauve with low opacity */
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+/* Word highlighting */
+.word {
+  background-color: rgba(
+    249,
+    226,
+    175,
+    0.1
+  ); /* Catppuccin Mocha yellow with low opacity */
+  padding: 0.2rem 0;
+  border-radius: 0.2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid #313244; /* Catppuccin Mocha surface0 */
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th {
+  font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
