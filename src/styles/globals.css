@@ -3,176 +3,62 @@
 @tailwind utilities;
 
 @layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 240 10% 3.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 240 10% 3.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 240 10% 3.9%;
-		--primary: 240 5.9% 10%;
-		--primary-foreground: 0 0% 98%;
-		--secondary: 240 4.8% 95.9%;
-		--secondary-foreground: 240 5.9% 10%;
-		--muted: 240 4.8% 95.9%;
-		--muted-foreground: 240 3.8% 46.1%;
-		--accent: 240 4.8% 95.9%;
-		--accent-foreground: 240 5.9% 10%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 240 5.9% 90%;
-		--input: 240 5.9% 90%;
-		--ring: 240 5.9% 10%;
-		--radius: 0.5rem;
-	}
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+  }
 
-	.dark {
-		--background: 240 10% 3.9%;
-		--foreground: 0 0% 98%;
-		--card: 240 10% 3.9%;
-		--card-foreground: 0 0% 98%;
-		--popover: 240 10% 3.9%;
-		--popover-foreground: 0 0% 98%;
-		--primary: 0 0% 98%;
-		--primary-foreground: 240 5.9% 10%;
-		--secondary: 240 3.7% 15.9%;
-		--secondary-foreground: 0 0% 98%;
-		--muted: 240 3.7% 15.9%;
-		--muted-foreground: 240 5% 64.9%;
-		--accent: 240 3.7% 15.9%;
-		--accent-foreground: 0 0% 98%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 240 3.7% 15.9%;
-		--input: 240 3.7% 15.9%;
-		--ring: 240 4.9% 83.9%;
-	}
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
 
-	.max-w-container {
-		max-width: 43rem;
-	}
+  .max-w-container {
+    max-width: 43rem;
+  }
 }
 
 @layer base {
-	* {
-		@apply border-border;
-	}
+  * {
+    @apply border-border;
+  }
 
-	body {
-		@apply bg-background text-foreground;
-	}
-}
-
-.prose {
-	max-width: var(--max-container-width);
-}
-
-.prose> :not(:last-child) {
-	margin-bottom: 1.5rem;
-}
-
-.prose p {
-	line-height: 1.75;
-}
-
-.prose p:not(:first-child) {
-	margin-top: 1.5rem;
-}
-
-.prose h1 {
-	scroll-margin-top: 5rem;
-	font-size: 2.25rem;
-	font-weight: 800;
-	letter-spacing: -0.025em;
-}
-
-.prose h2 {
-	scroll-margin-top: 5rem;
-	border-bottom-width: 1px;
-	padding-bottom: 0.5rem;
-	font-size: 1.875rem;
-	font-weight: 600;
-	letter-tracking: -0.025em;
-}
-
-.prose h3 {
-	scroll-margin-top: 5rem;
-	font-size: 1.5rem;
-	font-weight: 600;
-	letter-tracking: -0.025em;
-}
-
-.prose h4 {
-	scroll-margin-top: 5rem;
-	font-size: 1.3rem;
-	font-weight: 600;
-	letter-tracking: -0.025em;
-}
-
-.prose hr {
-	border-color: rgb(var(--neutral-300) / <alpha-value>);
-	border-bottom-width: 0.5px;
-}
-
-.prose ul {
-	margin-top: 1.5rem;
-	margin-bottom: 1.5rem;
-	margin-left: 1.5rem;
-	list-style-type: disc;
-}
-
-.prose ul>li {
-    @apply mb-2 mt-0.5
-}
-
-.prose img {
-	margin-left: auto;
-	margin-right: auto;
-	border-radius: 0.375rem;
-	margin-top: 1.5rem;
-	margin-bottom: 1.5rem;
-}
-
-.prose ol {
-  @apply my-2 ml-6 list-decimal;
-}
-
-.prose ol > li {
-  @apply mb-2 pl-2;
-}
-
-.prose ul ol,
-.prose ol ul,
-.prose ol ol,
-.prose ul ul {
-  @apply my-2 ml-6;
-}
-
-.prose a {
-  @apply text-primary hover:text-primary/80 underline-offset-4 decoration-2 transition-colors duration-200;
-  text-decoration-line: underline;
-}
-
-.prose a:hover {
-  @apply decoration-primary;
-}
-
-.prose blockquote {
-  @apply pl-6 my-6 border-l-2 border-primary italic relative;
-}
-
-.prose blockquote p {
-  @apply text-muted-foreground font-medium;
-}
-
-.prose blockquote p:first-child {
-  @apply mt-0;
-}
-
-.prose blockquote p:last-child {
-  @apply mb-0;
-}
-
-.prose blockquote cite {
-  @apply block text-sm mt-2 text-muted-foreground/80 not-italic;
+  body {
+    @apply bg-background text-foreground;
+  }
 }

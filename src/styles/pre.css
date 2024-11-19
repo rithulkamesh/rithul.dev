@@ -1,4 +1,122 @@
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+.prose {
+  max-width: var(--max-container-width);
+}
+
+.prose > :not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.prose p {
+  line-height: 1.75;
+}
+
+.prose p:not(:first-child) {
+  margin-top: 1.5rem;
+}
+
+.prose h1 {
+  scroll-margin-top: 5rem;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.prose h2 {
+  scroll-margin-top: 5rem;
+  border-bottom-width: 1px;
+  padding-bottom: 0.5rem;
+  font-size: 1.875rem;
+  font-weight: 600;
+  letter-tracking: -0.025em;
+}
+
+.prose h3 {
+  scroll-margin-top: 5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-tracking: -0.025em;
+}
+
+.prose h4 {
+  scroll-margin-top: 5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-tracking: -0.025em;
+}
+
+.prose hr {
+  border-color: rgb(var(--neutral-300) / <alpha-value>);
+  border-bottom-width: 0.5px;
+}
+
+.prose ul {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.prose ul > li {
+  @apply mb-2 mt-0.5;
+}
+
+.prose img {
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.375rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose ol {
+  @apply my-2 ml-6 list-decimal;
+}
+
+.prose ol > li {
+  @apply mb-2 pl-2;
+}
+
+.prose ul ol,
+.prose ol ul,
+.prose ol ol,
+.prose ul ul {
+  @apply my-2 ml-6;
+}
+
+.prose a {
+  @apply text-primary hover:text-primary/80 underline-offset-4 decoration-2 transition-colors duration-200;
+  text-decoration-line: underline;
+}
+
+.prose a:hover {
+  @apply decoration-primary;
+}
+
+.prose blockquote {
+  @apply pl-6 my-6 border-l-2 border-primary italic relative;
+}
+
+.prose blockquote p {
+  @apply text-muted-foreground font-medium;
+}
+
+.prose blockquote p:first-child {
+  @apply mt-0;
+}
+
+.prose blockquote p:last-child {
+  @apply mb-0;
+}
+
+.prose blockquote cite {
+  @apply block text-sm mt-2 text-muted-foreground/80 not-italic;
+}
 
 /* Code block styles */
 pre {
@@ -156,47 +274,4 @@ td {
 
 th {
   font-weight: 600;
-}
-
-@media screen and (max-width: 600px) {
-  table {
-    border: 0;
-  }
-
-  table caption {
-    font-size: 1.3em;
-  }
-
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-
-  table tr {
-    display: block;
-    margin-bottom: 0.625em;
-  }
-
-  table td {
-    display: block;
-    font-size: 0.8em;
-    text-align: right;
-  }
-
-  table td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  table td:last-child {
-    border-bottom: 0;
-  }
 }
