@@ -55,7 +55,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     "group-hover:underline decoration-neutral-300 underline-offset-4 transition-colors dark:decoration-neutral-600 focus:(decoration-neutral-400 outline-offset-6 dark:decoration-neutral-500) group-hover:(decoration-neutral-400 dark:decoration-neutral-500) duration-300";
 
   return (
-    <a href={href} target="_blank" className="group">
+    <a
+      href={href}
+      target="_blank"
+      className="group"
+      title={`Project - ${name}`}
+    >
       <Card>
         <CardHeader>
           <CardTitle className={group_hover}>{name}</CardTitle>

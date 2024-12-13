@@ -16,20 +16,21 @@ const Footer: React.FC = () => {
           <Link
             href="https://github.com/rithulkamesh/rithul.dev"
             className="dark:text-zinc-300 text-zinc-800"
+            title="source"
           >
             source
           </Link>
         </span>
         <div className="flex gap-4">
-          <Link href="mailto:hi@rithul.dev">
+          <Link href="mailto:hi@rithul.dev" title="email">
             <IoMdMailOpen />
           </Link>
 
-          <Link href="https://github.com/rithulkamesh">
+          <Link href="https://github.com/rithulkamesh" title="github">
             <FaGithubAlt />
           </Link>
 
-          <Link href="https://twitter.com/rithulkamesh">
+          <Link href="https://twitter.com/rithulkamesh" title="twitter">
             <FaXTwitter />
           </Link>
         </div>

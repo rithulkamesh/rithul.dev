@@ -14,22 +14,36 @@ const Home: React.FC = () => {
     <div className={`mx-auto max-w-container px-4 flex flex-col gap-3 py-8`}>
       <Header />
       <div className="flex flex-col gap-2 mt-4 mb-6">
-        <p>
-          Hey There! I&apos;m Rithul, {age} and going to university. I am a
-          tech-enthusiast who has a research interest in AI/ML and Digital
-          Signal Processing.
+        <p className="mb-2">
+          {age} y/o Electronics student specializing in Digital Signal
+          Processing, Embedded Systems, AI and Machine Learning. Founder &amp;
+          CEO of{" "}
+          <Link href="https://pragmahq.com" title="Pragma">
+            pragmahq.com
+          </Link>
+          , and currently developing a startup in signal processing and hardware
+          innovation.
         </p>
         <p>
-          I&apos;m a big fan of gaming and I&apos;m currently playing
-          &quot;Black Myth: Wukong&quot;. I play the piano and the guitar and I
-          produce music in my free time.
-        </p>
-        <p>
-          I&apos;m an avid lifter with frequent workout videos on my{" "}
-          <Link href="https://instagram.com/rithulkamesh" target="_blank">
-            instagram
+          Passionate about technology and music, I blend technical expertise
+          with creative pursuits. Experienced in music production, playing piano
+          and guitar, with a track record of translating technical skills into
+          practical solutions. Find my music at{" "}
+          <Link
+            href="https://instagram.com/rithul.flac"
+            title="instagram-music"
+          >
+            @rithul.flac
           </Link>
           .
+        </p>
+
+        <p>
+          An avid gamer and digital art enthusiast, I explore the intersection
+          of interactive technologies and creative expression. My passion for
+          gaming extends beyond entertainment, viewing it as a complex system of
+          design, narrative, and interactive experience that parallels my
+          technical and creative interests.
         </p>
       </div>
       <Projects />

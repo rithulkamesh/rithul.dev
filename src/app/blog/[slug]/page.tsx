@@ -69,6 +69,7 @@ const options = {
         {
           properties: {
             className: ["anchor"],
+            title: "in-page link",
           },
           behavior: "wrap",
         },
@@ -94,7 +95,9 @@ const Post: React.FC<Props> = ({ params }) => {
         <Header />
         <article className="py-10 prose w-full prose-sm md:prose-base lg:prose-lg prose-slate dark:!prose-invert mx-auto">
           <div>
-            <p className="text-3xl font-bold mb-0">{props.frontMatter.title}</p>
+            <h1 className="text-3xl font-bold mb-0">
+              {props.frontMatter.title}
+            </h1>
             <div className="flex items-center space-x-2 text-muted-foreground mb-4 mt-0">
               <span>{props.frontMatter.date}</span>
             </div>

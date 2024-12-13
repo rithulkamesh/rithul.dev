@@ -158,7 +158,12 @@ export default function BlogList({ initialBlogs }: BlogListProps) {
       <div className="space-y-4">
         {filteredBlogs.length > 0 ? (
           filteredBlogs.map((blog) => (
-            <Link href={`/blog/${blog.slug}`} key={blog.slug} className="block">
+            <Link
+              href={`/blog/${blog.slug}`}
+              key={blog.slug}
+              className="block"
+              title={`Blog - ${blog.meta.title}`}
+            >
               <Card
                 className="border-none pl-0 hover:bg-accent/50 transition-colors duration-200
                          dark:hover:bg-accent/30 cursor-pointer shadow-none rounded-none"

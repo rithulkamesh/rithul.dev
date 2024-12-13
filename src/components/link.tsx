@@ -5,9 +5,16 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   target?: "_self" | "_blank";
+  title: string;
 }
 
-const Link: React.FC<Props> = ({ href, children, className, target }) => {
+const Link: React.FC<Props> = ({
+  href,
+  children,
+  className,
+  target,
+  title,
+}) => {
   const isExternal = href.startsWith("http") || href.startsWith("://");
 
   return (
@@ -15,6 +22,7 @@ const Link: React.FC<Props> = ({ href, children, className, target }) => {
       href={href}
       target={target || isExternal ? "_blank" : "_self"}
       className={`underline decoration-neutral-300 underline-offset-4 transition-colors dark:decoration-neutral-600 focus:(decoration-neutral-400 outline-offset-6 dark:decoration-neutral-500) hover:(decoration-neutral-400 dark:decoration-neutral-500) ${className}`}
+      title={title}
     >
       {children}
     </a>

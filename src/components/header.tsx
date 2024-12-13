@@ -33,14 +33,14 @@ const Header: React.FC = () => {
             <AvatarFallback>RK</AvatarFallback>
           </Avatar>
 
-          <Link href="/" className="text-lg font-bold">
+          <Link href="/" className="text-lg font-bold" title="home">
             Rithul Kamesh
           </Link>
           <div className="flex gap-1">
             <Link
               href="/blog"
               className="dark:text-zinc-300 text-zinc-800"
-              target="_blank"
+              title="blog"
             >
               blog
             </Link>
@@ -49,6 +49,7 @@ const Header: React.FC = () => {
               href="/resume.pdf"
               className="dark:text-zinc-300 text-zinc-800"
               target="_blank"
+              title="resume"
             >
               resume
             </Link>
