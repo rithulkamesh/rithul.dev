@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
     <div className="prose">
       <hr />
 
-      <footer className="flex justify-between">
+      <footer className="flex justify-between mt-3">
         <span>
           &copy; rithul kamesh {year} |{" "}
           <Link

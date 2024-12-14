@@ -1,95 +1,82 @@
+"use client";
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "./ui/card";
+import { motion } from "framer-motion";
 import projectData from "@/data/projects.json";
 
-enum Tech {
-  rs = "#d6a487",
-  ts = "#3178c6",
-  go = "#00ADD8",
-  py = "#3572A5",
-  lua = "#000080",
-  cpp = "#f34b7d",
-}
-
-enum Language {
-  rs = "Rust",
-  ts = "TypeScript",
-  go = "Go",
-  py = "Python",
-  lua = "Lua",
-  cpp = "C++",
-}
-
-interface ProjectCardProps {
-  href: string;
-  description: string;
+interface Project {
   name: string;
-  technologies: Array<keyof typeof Tech>;
+  description: string;
+  href: string;
+  technologies: string[];
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({
-  href,
-  description,
+const techColors: { [key: string]: string } = {
+  rs: "#d6a487",
+  ts: "#3178c6",
+  go: "#00ADD8",
+  py: "#3572A5",
+  lua: "#000080",
+  cpp: "#f34b7d",
+};
+
+const techNames: { [key: string]: string } = {
+  rs: "Rust",
+  ts: "TypeScript",
+  go: "Go",
+  py: "Python",
+  lua: "Lua",
+  cpp: "C++",
+};
+
+const ProjectItem: React.FC<Project> = ({
   name,
+  description,
+  href,
   technologies,
-}) => {
-  const technologyComponents = technologies.map((tech) => (
-    <div key={tech} className="flex gap-1">
-      <span
-        className={`flex h-2 w-2 translate-y-1 rounded-full`}
-        style={{
-          backgroundColor: Tech[tech],
-        }}
-      />
-      <p className="text-sm font-medium leading-none">{Language[tech]}</p>
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="mb-4"
+  >
+    <div>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm font-semibold font-mono"
+      >
+        {name}
+      </a>
+      <span className="ml-2">
+        {technologies.map((tech) => (
+          <motion.span
+            key={tech}
+            className="inline-block w-3 h-3 rounded-full ml-1 relative group"
+            style={{ backgroundColor: techColors[tech] }}
+            whileHover={{ scale: 1.2 }}
+          >
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded px-1 py-0.5 whitespace-nowrap">
+              {techNames[tech]}
+            </span>
+          </motion.span>
+        ))}
+      </span>
     </div>
-  ));
+    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+      {description}
+    </p>
+  </motion.div>
+);
 
-  const group_hover =
-    "group-hover:underline decoration-neutral-300 underline-offset-4 transition-colors dark:decoration-neutral-600 focus:(decoration-neutral-400 outline-offset-6 dark:decoration-neutral-500) group-hover:(decoration-neutral-400 dark:decoration-neutral-500) duration-300";
-
-  return (
-    <a
-      href={href}
-      target="_blank"
-      className="group"
-      title={`Project - ${name}`}
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle className={group_hover}>{name}</CardTitle>
-          <CardDescription>{href.split("://")[1]}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className={group_hover}>{description}</p>
-          <div className="flex gap-2 text-center text-sm mt-3">
-            {technologyComponents}
-          </div>
-        </CardContent>
-      </Card>
-    </a>
-  );
-};
-
-const Projects: React.FC = () => {
-  return (
-    <div className="flex flex-col gap-5">
-      <h1 className="text-xl font-bold">Projects</h1>
-      {projectData.map((project, index) => (
-        <ProjectCard
-          key={index}
-          {...project}
-          technologies={project.technologies as Array<keyof typeof Tech>}
-        />
-      ))}
-    </div>
-  );
-};
+const Projects: React.FC = () => (
+  <div>
+    <h2 className="text-lg mb-4">Projects</h2>
+    {projectData.map((project: Project) => (
+      <ProjectItem key={project.name} {...project} />
+    ))}
+  </div>
+);
 
 export default Projects;
