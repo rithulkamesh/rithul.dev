@@ -37,13 +37,8 @@ const Home: React.FC = () => {
       >
         <motion.p custom={0} className="mb-2">
           {age} y/o Electronics student specializing in Digital Signal
-          Processing, Embedded Systems, AI and Machine Learning. Founder &amp;
-          CEO of{" "}
-          <Link href="https://pragmahq.com" title="Pragma">
-            pragmahq.com
-          </Link>
-          , and currently developing a startup in signal processing and hardware
-          innovation.
+          Processing, Embedded Systems, AI and Machine Learning. Currently
+          developing a startup in signal processing and hardware innovation.
         </motion.p>
         <motion.p custom={1}>
           Passionate about technology and music, I blend technical expertise
