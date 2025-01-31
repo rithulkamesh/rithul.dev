@@ -1,30 +1,15 @@
 [
   {
+    "name": "docproc",
+    "href": "https://github.com/rithulkamesh/docproc",
+    "description": "Docproc is an opinionated document region analyzer that helps extract text, equations, images and handwriting from documents.",
+    "technologies": ["py"]
+  },
+
+  {
     "name": "pomoflow",
     "href": "https://github.com/rithulkamesh/pomoflow",
     "description": "A focus webapp that enables to work in collaboration without the chaos.",
     "technologies": ["ts", "cpp"]
-  },
-
-  {
-    "name": "chippy",
-    "href": "https://github.com/rithulkamesh/chippy",
-    "description": "A small blazingly-fast CHIP-8 emulator written with the help of SDL.",
-    "technologies": ["rs"]
-  },
-
-      {
-    "name": "thermosync",
-    "href": "https://github.com/rithulkamesh/thermosync",
-    "description": "A simple, yet powerful, temperature monitoring and control system for your home.",
-    "technologies": ["cpp", "py"]
-  },
-
-
-  {
-    "name": "ideabank",
-    "href": "https://github.com/rithulkamesh/ideabank",
-    "description": "CLI-based Idea Bank application in Rust, offering a streamlined platform for brainstorming and organizing creative concepts.",
-    "technologies": ["rs"]
   }
 ]
