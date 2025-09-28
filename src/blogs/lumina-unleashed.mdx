@@ -1,0 +1,686 @@
+---
+title: "Lumina Unleashed – From Black Screen to Engine Glory"
+date: "1st November 2024"
+author: "Rithul Kamesh"
+tags: ["gamedev", "vulkan", "cpp", "engine"]
+---
+
+# Lumina Unleashed – From Black Screen to Engine Glory
+
+#### Index
+1. [From Zero to Window](/blog/from-zero-to-window)
+2. [Vulkan Basics](/blog/vulkan-basics)
+3. Lumina Unleashed (You are here)
+
+Greetings, fellow pixel pushers! We've come a long way since that first "Hello, World!" window. Last time, we got Vulkan initialized with devices, queues, and surfaces. Today, we're polishing Lumina into something that actually feels like a game engine. We'll add proper debugging, enhance our logging system, organize the code better, and set up the build system for maximum developer happiness.
+
+If you're just joining us, Lumina is our Vulkan-based game engine that's gone from "what's a makefile?" to "let's render some triangles!" (coming soon). We're building this so even a 15-year-old modder can understand and extend it.
+
+## Step 1: Debug Messenger – Because "Unknown Error" is Not Helpful
+
+Vulkan errors can be cryptic. The debug messenger is like having a Vulkan expert yelling helpful hints in your console.
+
+First, add debug utils extension to extensions.cpp:
+
+```cpp
+std::vector<const char*> Lumina::getRequiredExtensions() {
+    uint32_t glfwExtensionCount = 0;
+    const char** glfwExtensions;
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    std::vector<const char*> extensions(glfwExtensions,
+                                       glfwExtensions + glfwExtensionCount);
+
+    if (enableValidationLayers) {
+        extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+    }
+
+    return extensions;
+}
+```
+
+Add to lumina.hpp:
+
+```cpp
+// ... in private ...
+VkDebugUtilsMessengerEXT debugMessenger;
+
+void setupDebugMessenger();
+void DestroyDebugUtilsMessengerEXT(VkInstance instance,
+                                   VkDebugUtilsMessengerEXT debugMessenger,
+                                   const VkAllocationCallbacks *pAllocator);
+void populateDebugMessengerCreateInfo(
+    VkDebugUtilsMessengerCreateInfoEXT &createInfo);
+```
+
+Create/update diagnostics.cpp with debug messenger code:
+
+```cpp
+#include "../lumina.hpp"
+
+VkResult CreateDebugUtilsMessengerEXT(
+    VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
+    const VkAllocationCallbacks *pAllocator,
+    VkDebugUtilsMessengerEXT *pDebugMessenger) {
+  auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+      instance, "vkCreateDebugUtilsMessengerEXT");
+  if (func != nullptr) {
+    return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+  } else {
+    return VK_ERROR_EXTENSION_NOT_PRESENT;
+  }
+}
+
+void Lumina::DestroyDebugUtilsMessengerEXT(
+    VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger,
+    const VkAllocationCallbacks *pAllocator) {
+  auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+      instance, "vkDestroyDebugUtilsMessengerEXT");
+  if (func != nullptr) {
+    func(instance, debugMessenger, pAllocator);
+  }
+}
+
+static VKAPI_ATTR VkBool32 VKAPI_CALL
+debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+              VkDebugUtilsMessageTypeFlagsEXT messageType,
+              const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+              void *pUserData) {
+
+  (void)pUserData;
+  (void)messageType;
+
+  if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+    Logger::Log(LogLevel_ValidationLayer, std::string(pCallbackData->pMessage));
+  }
+
+  return VK_FALSE;
+}
+
+void Lumina::populateDebugMessengerCreateInfo(
+    VkDebugUtilsMessengerCreateInfoEXT &createInfo) {
+  createInfo = {};
+  createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+  createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+                               VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+                               VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+  createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+                           VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                           VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+  createInfo.pfnUserCallback = debugCallback;
+}
+
+void Lumina::setupDebugMessenger() {
+  if (!enableValidationLayers)
+    return;
+
+  VkDebugUtilsMessengerCreateInfoEXT createInfo;
+  populateDebugMessengerCreateInfo(createInfo);
+
+  if (CreateDebugUtilsMessengerEXT(vulkan_instance, &createInfo, nullptr,
+                                   &debugMessenger) != VK_SUCCESS) {
+    Logger::Log(LogLevel_Error, "Failed to set up debug messenger!");
+    exit(-1);
+  }
+}
+```
+
+Update create_vulkan_instance to include debug messenger in instance creation:
+
+```cpp
+void Lumina::create_vulkan_instance() {
+  // ... existing code ...
+
+  VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+  if (enableValidationLayers) {
+    createInfo.enabledLayerCount =
+        static_cast<uint32_t>(validationLayers.size());
+    createInfo.ppEnabledLayerNames = validationLayers.data();
+
+    populateDebugMessengerCreateInfo(debugCreateInfo);
+    createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debugCreateInfo;
+  } else {
+    createInfo.enabledLayerCount = 0;
+    createInfo.pNext = nullptr;
+  }
+
+  // ... vkCreateInstance ...
+
+  setupDebugMessenger();
+}
+```
+
+Update Cleanup() to destroy debug messenger:
+
+```cpp
+void Lumina::Cleanup() {
+  Logger::Log(LogLevel_Info, "Cleaning up...");
+
+  if (enableValidationLayers)
+    DestroyDebugUtilsMessengerEXT(vulkan_instance, debugMessenger, nullptr);
+
+  vkDestroyDevice(device, nullptr);
+  vkDestroySurfaceKHR(vulkan_instance, window_surface, nullptr);
+  vkDestroyInstance(vulkan_instance, nullptr);
+
+  glfwDestroyWindow(window);
+  glfwTerminate();
+}
+```
+
+## Step 2: Supercharge the Logging System
+
+Our logging was basic. Let's make it timestamped, colored, and file-logging capable.
+
+Update log.hpp:
+
+```cpp
+#pragma once
+
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <optional>
+#include <sstream>
+#include <string>
+
+enum LogLevel {
+  LogLevel_Debug,
+  LogLevel_Info,
+  LogLevel_Warning,
+  LogLevel_Error,
+  LogLevel_ValidationLayer
+};
+
+class Logger {
+public:
+  static void InitLogger(const std::string &logFilePath);
+  static void Log(LogLevel level, const std::string &message, const char *file = "",
+                  int line = -1);
+
+private:
+  static std::optional<std::ofstream> logFile;
+  static const char *GetLevelString(LogLevel level);
+  static const char *GetColorTag(LogLevel level);
+};
+```
+
+Update log.cpp:
+
+```cpp
+#include "log.hpp"
+#include <chrono>
+
+std::optional<std::ofstream> Logger::logFile;
+
+void Logger::InitLogger(const std::string &logFilePath) {
+  if (!logFilePath.empty()) {
+    logFile.emplace(logFilePath, std::ios::out | std::ios::app);
+  }
+}
+
+void Logger::Log(LogLevel level, const std::string &message, const char *file,
+                 int line) {
+  auto now = std::chrono::system_clock::now();
+  auto time = std::chrono::system_clock::to_time_t(now);
+  std::stringstream ss;
+  ss << std::put_time(std::localtime(&time), "%Y.%m.%d-%H:%M:%S.")
+     << std::setfill('0') << std::setw(3)
+     << std::chrono::duration_cast<std::chrono::milliseconds>(
+            now.time_since_epoch())
+                .count() %
+            1000
+     << " - " << GetColorTag(level) << GetLevelString(level) << "\033[0m";
+
+  if (file && line >= 0) {
+    ss << " [" << file << ":" << line << "]";
+  }
+
+  ss << " " << message << "\n";
+
+  std::cout << ss.str();
+
+  if (logFile.has_value() && logFile->is_open()) {
+    *logFile << ss.str();
+    logFile->flush();
+  }
+}
+
+const char *Logger::GetLevelString(LogLevel level) {
+  switch (level) {
+  case LogLevel_Debug:
+    return "<trace>";
+  case LogLevel_Info:
+    return "<info>";
+  case LogLevel_Warning:
+    return "<warning>";
+  case LogLevel_Error:
+    return "<error>";
+  case LogLevel_ValidationLayer:
+    return "<validation_layer>";
+  default:
+    return "<unknown>";
+  }
+}
+
+const char *Logger::GetColorTag(LogLevel level) {
+  switch (level) {
+  case LogLevel_Debug:
+    return "\033[36m"; // Cyan
+  case LogLevel_Info:
+    return "\033[32m"; // Green
+  case LogLevel_Warning:
+    return "\033[33m"; // Yellow
+  case LogLevel_Error:
+    return "\033[31m"; // Red
+  case LogLevel_ValidationLayer:
+    return "\033[35m"; // Magenta
+  default:
+    return "\033[0m"; // Reset
+  }
+}
+```
+
+Now all our Log calls get file and line info! Update existing calls to include **FILE** and **LINE**.
+
+## Step 3: Better Device Selection and Queue Handling
+
+Let's improve device selection to prefer discrete GPUs and handle present queues properly.
+
+Update isDeviceSupported in devices.cpp:
+
+```cpp
+bool Lumina::isDeviceSupported(VkPhysicalDevice device) {
+  Logger::Log(LogLevel_Info, "Checking device support", __FILE__, __LINE__);
+
+  VkPhysicalDeviceProperties deviceProperties;
+  vkGetPhysicalDeviceProperties(device, &deviceProperties);
+  Logger::Log(LogLevel_Info, "Device name: " + std::string(deviceProperties.deviceName), __FILE__, __LINE__);
+
+  const char *deviceTypeStr;
+  switch (deviceProperties.deviceType) {
+  case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:
+    deviceTypeStr = "integrated GPU";
+    break;
+  case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:
+    deviceTypeStr = "discrete GPU";
+    break;
+  case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:
+    deviceTypeStr = "virtual GPU";
+    break;
+  case VK_PHYSICAL_DEVICE_TYPE_CPU:
+    deviceTypeStr = "CPU";
+    break;
+  default:
+    deviceTypeStr = "unknown";
+    break;
+  }
+  Logger::Log(LogLevel_Info, "Device type: " + std::string(deviceTypeStr), __FILE__, __LINE__);
+
+  QueueFamilyIndices indices = findQueueFamilies(device);
+  bool supportsRequiredQueues = indices.isComplete();
+  Logger::Log(LogLevel_Info, "Supports required queues: " + std::string(supportsRequiredQueues ? "yes" : "no"), __FILE__, __LINE__);
+
+  return supportsRequiredQueues;
+}
+```
+
+Update pickPhysicalDevice to prefer discrete GPUs:
+
+```cpp
+void Lumina::pickPhysicalDevice() {
+  Logger::Log(LogLevel_Info, "Picking physical device", __FILE__, __LINE__);
+
+  uint32_t deviceCount = 0;
+  vkEnumeratePhysicalDevices(vulkan_instance, &deviceCount, nullptr);
+  Logger::Log(LogLevel_Info, "Found " + std::to_string(deviceCount) + " device(s)", __FILE__, __LINE__);
+
+  if (deviceCount == 0) {
+    Logger::Log(LogLevel_Error, "No Vulkan supported devices found.", __FILE__, __LINE__);
+    exit(-1);
+  }
+
+  std::vector<VkPhysicalDevice> devices(deviceCount);
+  vkEnumeratePhysicalDevices(vulkan_instance, &deviceCount, devices.data());
+
+  // First pass: look for discrete GPU
+  for (const auto &device : devices) {
+    VkPhysicalDeviceProperties deviceProperties;
+    vkGetPhysicalDeviceProperties(device, &deviceProperties);
+
+    if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU &&
+        isDeviceSupported(device)) {
+      physicalDevice = device;
+      Logger::Log(LogLevel_Info, "Selected discrete GPU: " + std::string(deviceProperties.deviceName), __FILE__, __LINE__);
+      return;
+    }
+  }
+
+  // Second pass: any supported device
+  for (const auto &device : devices) {
+    if (isDeviceSupported(device)) {
+      physicalDevice = device;
+      VkPhysicalDeviceProperties deviceProperties;
+      vkGetPhysicalDeviceProperties(device, &deviceProperties);
+      Logger::Log(LogLevel_Info, "Selected fallback device: " + std::string(deviceProperties.deviceName), __FILE__, __LINE__);
+      return;
+    }
+  }
+
+  Logger::Log(LogLevel_Error, "No supported GPUs found.", __FILE__, __LINE__);
+  exit(-1);
+}
+```
+
+Update findQueueFamilies with detailed logging:
+
+```cpp
+QueueFamilyIndices Lumina::findQueueFamilies(VkPhysicalDevice device) {
+  Logger::Log(LogLevel_Info, "Finding queue families", __FILE__, __LINE__);
+  QueueFamilyIndices indices;
+
+  uint32_t queueFamilyCount = 0;
+  vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+  Logger::Log(LogLevel_Info, "Found " + std::to_string(queueFamilyCount) + " queue families", __FILE__, __LINE__);
+
+  std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+  vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount,
+                                           queueFamilies.data());
+
+  int i = 0;
+  for (const auto &queueFamily : queueFamilies) {
+    Logger::Log(LogLevel_Info, "Checking queue family " + std::to_string(i), __FILE__, __LINE__);
+
+    if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+      Logger::Log(LogLevel_Info, "Found graphics queue family at index " + std::to_string(i), __FILE__, __LINE__);
+      indices.graphicsFamily = i;
+    }
+
+    VkBool32 presentSupport = false;
+    VkResult surfaceResult = vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window_surface, &presentSupport);
+    if (surfaceResult != VK_SUCCESS) {
+      Logger::Log(LogLevel_Error, "Failed to check surface support for queue family " + std::to_string(i) + ", error: " + std::to_string(surfaceResult), __FILE__, __LINE__);
+    }
+    Logger::Log(LogLevel_Info, "Surface support check complete for queue family " + std::to_string(i) + ", result: " + (presentSupport ? "supported" : "not supported"), __FILE__, __LINE__);
+
+    if (presentSupport) {
+      Logger::Log(LogLevel_Info, "Found present queue family at index " + std::to_string(i), __FILE__, __LINE__);
+      indices.presentFamily = i;
+    }
+
+    if (indices.isComplete()) {
+      Logger::Log(LogLevel_Info, "Queue families complete", __FILE__, __LINE__);
+      break;
+    }
+
+    i++;
+  }
+
+  return indices;
+}
+```
+
+Update pickLogicalDevice with better logging:
+
+```cpp
+void Lumina::pickLogicalDevice() {
+  Logger::Log(LogLevel_Info, "Creating logical device", __FILE__, __LINE__);
+  QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+  VkPhysicalDeviceFeatures deviceFeatures{};
+  VkDeviceCreateInfo createInfo{};
+  std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+  std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(),
+                                            indices.presentFamily.value()};
+
+  float queuePriority = 1.0f;
+
+  for (uint32_t queueFamily : uniqueQueueFamilies) {
+    Logger::Log(LogLevel_Info, "Creating queue info for family " + std::to_string(queueFamily), __FILE__, __LINE__);
+    VkDeviceQueueCreateInfo queueCreateInfo{};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = queueFamily;
+    queueCreateInfo.queueCount = 1;
+    queueCreateInfo.pQueuePriorities = &queuePriority;
+    queueCreateInfos.push_back(queueCreateInfo);
+  }
+
+  createInfo.pEnabledFeatures = &deviceFeatures;
+  createInfo.enabledExtensionCount = 0;
+  createInfo.queueCreateInfoCount =
+      static_cast<uint32_t>(queueCreateInfos.size());
+  createInfo.pQueueCreateInfos = queueCreateInfos.data();
+  createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+
+  if (enableValidationLayers) {
+    Logger::Log(LogLevel_Info, "Enabling validation layers for device", __FILE__, __LINE__);
+    createInfo.enabledLayerCount =
+        static_cast<uint32_t>(validationLayers.size());
+    createInfo.ppEnabledLayerNames = validationLayers.data();
+  } else {
+    createInfo.enabledLayerCount = 0;
+  }
+
+  VkResult deviceResult = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);
+  if (deviceResult != VK_SUCCESS) {
+    Logger::Log(LogLevel_Error, "Failed to create logical device. Error code: " + std::to_string(deviceResult), __FILE__, __LINE__);
+    exit(-1);
+  }
+
+  vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+  vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
+  Logger::Log(LogLevel_Info, "Logical device created successfully", __FILE__, __LINE__);
+}
+```
+
+## Step 4: Build System Overhaul – Shared Library Magic
+
+Let's turn Lumina into a proper shared library so we can reuse it easily.
+
+Update the Makefile:
+
+```makefile
+# Compiler and compiler flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -g -std=c++17 -I/usr/local/include -I/opt/homebrew/include -fpic -I. -Ilumina -L/usr/local/lib
+# Determine the operating system
+UNAME_S := $(shell uname -s)
+
+# Set platform-specific linker flags
+ifeq ($(UNAME_S),Linux)
+	LDFLAGS = -lglfw -lvulkan -lGL -lm -lpthread -lXrandr -lXinerama -lXi -lXxf86vm -lX11 -ldl
+else ifeq ($(UNAME_S),Darwin)
+	LDFLAGS = -L/usr/local/lib -lglfw3 -lvulkan -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
+else
+	$(error Unsupported operating system: $(UNAME_S))
+endif
+
+SRCDIR = src
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS = $(patsubst $(SRCDIR)/%.cpp, build/%.o, $(SOURCES))
+
+ENGINE_SRCDIR = lumina
+ENGINE_SOURCES = $(wildcard $(ENGINE_SRCDIR)/*.cpp) $(wildcard $(ENGINE_SRCDIR)/util/*.cpp) $(wildcard $(ENGINE_SRCDIR)/engine/*.cpp)
+ENGINE_OBJECTS = $(patsubst $(ENGINE_SRCDIR)/%.cpp, build/%.o, $(ENGINE_SOURCES))
+
+TARGET = build/game
+LIB_TARGET = build/liblumina.so
+
+all: $(TARGET)
+
+run: $(TARGET)
+	./build/game
+
+$(TARGET): $(OBJECTS) $(LIB_TARGET)
+	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) -Lbuild -llumina -Wl,-rpath,./build
+
+$(LIB_TARGET): $(ENGINE_OBJECTS)
+	$(CXX) -shared $(ENGINE_OBJECTS) -o $@ $(LDFLAGS)
+
+build/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/%.o: $(ENGINE_SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -rf build
+
+.PHONY: all clean run
+```
+
+## Step 5: Game Metadata and Versioning
+
+Add some structure for game metadata.
+
+Update lumina.hpp:
+
+```cpp
+typedef struct {
+  int version[3];
+  std::string identifier;
+} GameMeta;
+
+// ... in class ...
+GameMeta game_metadata;
+```
+
+Update main.cpp:
+
+```cpp
+int main() {
+    Lumina engine;
+    engine.window_options = {{1280, 720}, "Lumina Engine"};
+    engine.game_metadata = {{1, 0, 0}, "Lumina Demo"};
+    engine.Run();
+
+    return 0;
+}
+```
+
+Update create_vulkan_instance to use metadata:
+
+```cpp
+auto version =
+    VK_MAKE_VERSION(game_metadata.version[0], game_metadata.version[1],
+                    game_metadata.version[2]);
+appInfo.pApplicationName = game_metadata.identifier.c_str();
+appInfo.applicationVersion = version;
+appInfo.pEngineName = "Lumina";
+appInfo.engineVersion = version;
+```
+
+## Step 6: README and Documentation
+
+Create a proper README.md:
+
+````markdown
+# lumina
+
+A toy game engine with Vulkan and GLFW written for educational purposes.
+
+## Directory Structure
+
+- `src/`: A demo game written with the engine
+- `lumina/`: Engine source code
+- `lumina/engine/`: Vulkan, window, device management
+- `lumina/util/`: Utilities like logging
+- `build/`: Compiled binaries
+
+## Building
+
+```bash
+make
+```
+````
+
+## Running
+
+```bash
+make run
+```
+
+## Features
+
+- Vulkan rendering backend
+- GLFW window management
+- Cross-platform support (Linux/macOS)
+- Validation layers for debugging
+- Colored logging with timestamps
+
+```
+
+## Wrapping Up: Lumina is Born!
+
+We've transformed Lumina from a basic window app into a proper game engine foundation! Here's what we accomplished:
+
+1. **Debug Messenger**: Vulkan now yells at us helpfully when we screw up
+2. **Enhanced Logging**: Colored, timestamped logs with file/line info
+3. **Better Device Selection**: Prefers discrete GPUs, handles queue families properly
+4. **Shared Library**: Engine is now a reusable .so file
+5. **Game Metadata**: Versioning and identification support
+6. **Robust Build System**: Cross-platform Makefile with proper dependencies
+
+The engine still doesn't render anything (that's next!), but the foundation is solid. You can now:
+
+- Run `make` to build
+- Run `make run` to see a window with Vulkan initialized
+- Check logs for detailed initialization info
+- Extend the engine without rebuilding everything
+
+This has been an incredible journey from "what's C++?" to "we have a Vulkan engine!" Remember, every game engine started somewhere – yours is no different.
+
+What's next? Triangles! Shaders! Actual rendering! Stay tuned for the rendering pipeline blogs.
+
+If you built along, share your screenshots/logs. If you got stuck, check out the full code on [GitHub](https://github.com/rithulkamesh/lumina).
+
+You did this. You're a game engine developer now. Go build something awesome! 🎮✨
+
+<div style={{display: 'flex', justifyContent: 'space-between', marginTop: '2rem'}}>
+
+    <a
+
+        href="/blog/vulkan-basics"
+
+        style={{
+
+            textAlign: 'left',
+
+            textDecoration: 'none',
+
+        }}
+
+    >
+
+        ← Previous<br/>
+
+        <span style={{fontWeight: 500, textDecoration: 'underline'}}>Vulkan Basics</span>
+
+    </a>
+
+    <a
+
+        style={{
+
+            textAlign: 'right',
+
+            textDecoration: 'none',
+
+            color: "#999",
+
+        }}
+
+    >
+
+        Next →<br/>
+
+        <span style={{fontWeight: 500, textDecoration: "underline"}}>(WIP)</span>
+
+    </a>
+
+</div>
+
+#lumina #gamedev #vulkan #cpp
+```

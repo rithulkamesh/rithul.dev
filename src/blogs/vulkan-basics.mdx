@@ -1,0 +1,574 @@
+---
+title: "Vulkan Awakens – Turning Your GPU Into a Rendering Beast"
+date: "15th October 2024"
+author: "Rithul Kamesh"
+tags: ["gamedev", "vulkan", "cpp", "engine"]
+---
+
+# Vulkan Awakens – Turning Your GPU Into a Rendering Beast
+
+#### Index
+1. [From Zero to Window](/blog/from-zero-to-window)
+2. Vulkan Basics (You are here)
+3. [Lumina Unleashed](/blog/lumina-unleashed)
+
+Welcome back, code warriors! Last time, we built the foundation of Lumina: a window, some logging, and a class structure that makes us feel like real engineers. Today, we're diving into the abyss known as Vulkan. If you thought GLFW was complicated, buckle up – Vulkan is like GLFW's evil twin who majored in quantum physics.
+
+Remember, I'm explaining this like you're 15 and just discovered programming through Minecraft mods. Vulkan is basically a way to talk to your graphics card (GPU) directly. Instead of OpenGL's "here's some triangles, draw them nicely," Vulkan says "Here's exactly how to draw these triangles, and if you mess up, it's your fault."
+
+By the end of this, we'll have Vulkan initialized, a device selected, and be ready to actually render stuff. Let's get to it!
+
+## Step 1: Including Vulkan – The Ceremony Begins
+
+First, we need to tell our code about Vulkan. Update lumina.hpp:
+
+```cpp
+#pragma once
+
+#include "util/log.hpp"
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.hpp>
+#include <iostream>
+#include <string>
+
+// ... existing structs ...
+
+class Lumina {
+public:
+    // ... existing public members ...
+    VkInstance vulkan_instance;
+
+    // ... existing methods ...
+    void create_vulkan_instance();
+};
+```
+
+We're using `#define GLFW_INCLUDE_VULKAN` so GLFW includes Vulkan headers for us. Smart, right?
+
+## Step 2: Creating the Vulkan Instance – "Hello, GPU?"
+
+A Vulkan instance is like introducing yourself to the Vulkan gods. "Hi, I'm Lumina, and I want to use your graphics card."
+
+Add this to lumina.cpp:
+
+```cpp
+void Lumina::create_vulkan_instance() {
+    VkApplicationInfo appInfo{};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Lumina Engine";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "Lumina";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
+
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+
+    // For now, no extensions or layers
+    createInfo.enabledExtensionCount = 0;
+    createInfo.ppEnabledExtensionNames = nullptr;
+    createInfo.enabledLayerCount = 0;
+
+    VkResult result = vkCreateInstance(&createInfo, nullptr, &vulkan_instance);
+    if (result != VK_SUCCESS) {
+        Logger::Log(LogLevel_Error, "Failed to create Vulkan instance!");
+        exit(-1);
+    }
+
+    Logger::Log(LogLevel_Info, "Vulkan instance created successfully!");
+}
+```
+
+Call this in Init(), after GLFW init:
+
+```cpp
+void Lumina::Init() {
+    Logger::Log(LogLevel_Info, "Initializing Lumina engine...");
+
+    if (!glfwInit()) {
+        Logger::Log(LogLevel_Error, "GLFW init failed!");
+        return;
+    }
+
+    Logger::Log(LogLevel_Info, "GLFW initialized successfully");
+
+    // Tell GLFW we won't use OpenGL
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+    window = glfwCreateWindow(window_options.size.x, window_options.size.y,
+                              window_options.title.c_str(), NULL, NULL);
+    if (!window) {
+        Logger::Log(LogLevel_Error, "Window creation failed!");
+        glfwTerminate();
+        return;
+    }
+
+    Logger::Log(LogLevel_Info, "Window created successfully");
+
+    create_vulkan_instance();
+}
+```
+
+We added `GLFW_NO_API` because we're not using OpenGL – we're going full Vulkan!
+
+## Step 3: Extensions – Because Vulkan Needs Permissions
+
+Vulkan needs extensions to talk to the window system. GLFW knows which ones we need.
+
+Create lumina/engine/extensions.cpp:
+
+```cpp
+#include "../lumina.hpp"
+
+std::vector<const char*> Lumina::getRequiredExtensions() {
+    uint32_t glfwExtensionCount = 0;
+    const char** glfwExtensions;
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    std::vector<const char*> extensions(glfwExtensions,
+                                       glfwExtensions + glfwExtensionCount);
+
+    return extensions;
+}
+```
+
+Update lumina.hpp to include this:
+
+```cpp
+// ... in private section ...
+std::vector<const char*> getRequiredExtensions();
+```
+
+And modify create_vulkan_instance:
+
+```cpp
+void Lumina::create_vulkan_instance() {
+    // ... appInfo setup ...
+
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+
+    // Get required extensions
+    auto extensions = getRequiredExtensions();
+    createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+    createInfo.ppEnabledExtensionNames = extensions.data();
+
+    // ... rest the same ...
+}
+```
+
+Update the Makefile to include engine files:
+
+```makefile
+ENGINE_SOURCES = $(wildcard $(ENGINE_SRCDIR)/*.cpp) $(wildcard $(ENGINE_SRCDIR)/util/*.cpp) $(wildcard $(ENGINE_SRCDIR)/engine/*.cpp)
+```
+
+## Step 4: Validation Layers – The Debugging Superheroes
+
+Validation layers are like having a code reviewer who yells at you when you do something stupid. They're optional but super helpful for debugging.
+
+Add to lumina.hpp:
+
+```cpp
+const std::vector<const char*> validationLayers = {
+    "VK_LAYER_KHRONOS_validation"
+};
+
+#ifdef NDEBUG
+const bool enableValidationLayers = false;
+#else
+const bool enableValidationLayers = true;
+#endif
+```
+
+Create lumina/engine/diagnostics.cpp:
+
+```cpp
+#include "../lumina.hpp"
+
+bool Lumina::checkValidationLayerSupport() {
+    uint32_t layerCount;
+    vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+    std::vector<VkLayerProperties> availableLayers(layerCount);
+    vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+    for (const char* layerName : validationLayers) {
+        bool layerFound = false;
+
+        for (const auto& layerProperties : availableLayers) {
+            if (strcmp(layerName, layerProperties.layerName) == 0) {
+                layerFound = true;
+                break;
+            }
+        }
+
+        if (!layerFound) {
+            return false;
+        }
+    }
+
+    return true;
+}
+```
+
+Update create_vulkan_instance to use validation layers:
+
+```cpp
+void Lumina::create_vulkan_instance() {
+    if (enableValidationLayers && !checkValidationLayerSupport()) {
+        Logger::Log(LogLevel_Error, "Validation layers requested but not available!");
+        exit(-1);
+    }
+
+    // ... appInfo ...
+
+    VkInstanceCreateInfo createInfo{};
+    // ... sType and pApplicationInfo ...
+
+    auto extensions = getRequiredExtensions();
+    createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+    createInfo.ppEnabledExtensionNames = extensions.data();
+
+    if (enableValidationLayers) {
+        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        createInfo.ppEnabledLayerNames = validationLayers.data();
+    } else {
+        createInfo.enabledLayerCount = 0;
+    }
+
+    // ... vkCreateInstance ...
+}
+```
+
+## Step 5: Physical Device Selection – "Which GPU Should We Bother?"
+
+Your computer might have multiple GPUs (integrated and discrete). We need to pick the best one.
+
+Add to lumina.hpp:
+
+```cpp
+// ... in private ...
+VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+VkPhysicalDeviceProperties deviceProperties;
+
+void pickPhysicalDevice();
+bool isDeviceSupported(VkPhysicalDevice device);
+```
+
+Create lumina/engine/devices.cpp:
+
+```cpp
+#include "../lumina.hpp"
+
+bool Lumina::isDeviceSupported(VkPhysicalDevice device) {
+    // For now, any device with Vulkan support is fine
+    VkPhysicalDeviceProperties deviceProperties;
+    vkGetPhysicalDeviceProperties(device, &deviceProperties);
+
+    Logger::Log(LogLevel_Info, "Checking device: " + std::string(deviceProperties.deviceName));
+
+    // We'll add more checks later
+    return true;
+}
+
+void Lumina::pickPhysicalDevice() {
+    uint32_t deviceCount = 0;
+    vkEnumeratePhysicalDevices(vulkan_instance, &deviceCount, nullptr);
+
+    if (deviceCount == 0) {
+        Logger::Log(LogLevel_Error, "No Vulkan-supported devices found!");
+        exit(-1);
+    }
+
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    vkEnumeratePhysicalDevices(vulkan_instance, &deviceCount, devices.data());
+
+    for (const auto& device : devices) {
+        if (isDeviceSupported(device)) {
+            physicalDevice = device;
+            vkGetPhysicalDeviceProperties(device, &deviceProperties);
+            Logger::Log(LogLevel_Info, "Selected device: " + std::string(deviceProperties.deviceName));
+            break;
+        }
+    }
+
+    if (physicalDevice == VK_NULL_HANDLE) {
+        Logger::Log(LogLevel_Error, "No suitable GPU found!");
+        exit(-1);
+    }
+}
+```
+
+Call pickPhysicalDevice() after create_vulkan_instance() in Init().
+
+## Step 6: Queue Families – "Who Handles What?"
+
+GPUs have different "queues" for different tasks. Graphics queue draws stuff, present queue shows it on screen.
+
+Add to lumina.hpp:
+
+```cpp
+struct QueueFamilyIndices {
+    std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> presentFamily;
+
+    bool isComplete() {
+        return graphicsFamily.has_value() && presentFamily.has_value();
+    }
+};
+
+// ... in private ...
+QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+```
+
+Add to devices.cpp:
+
+```cpp
+QueueFamilyIndices Lumina::findQueueFamilies(VkPhysicalDevice device) {
+    QueueFamilyIndices indices;
+
+    uint32_t queueFamilyCount = 0;
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount,
+                                           queueFamilies.data());
+
+    int i = 0;
+    for (const auto& queueFamily : queueFamilies) {
+        if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+            indices.graphicsFamily = i;
+        }
+
+        // For now, assume graphics family can present
+        indices.presentFamily = i;
+
+        if (indices.isComplete()) {
+            break;
+        }
+
+        i++;
+    }
+
+    return indices;
+}
+```
+
+Update isDeviceSupported to check for queue families:
+
+```cpp
+bool Lumina::isDeviceSupported(VkPhysicalDevice device) {
+    // ... logging ...
+
+    QueueFamilyIndices indices = findQueueFamilies(device);
+    return indices.isComplete();
+}
+```
+
+## Step 7: Logical Device – "Give Me Access to That GPU!"
+
+Now we create a "logical device" – basically a handle to use the physical device.
+
+Add to lumina.hpp:
+
+```cpp
+// ... in private ...
+VkDevice device;
+VkQueue graphicsQueue;
+
+void pickLogicalDevice();
+```
+
+Add to devices.cpp:
+
+```cpp
+void Lumina::pickLogicalDevice() {
+    QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+    VkDeviceQueueCreateInfo queueCreateInfo{};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+    queueCreateInfo.queueCount = 1;
+
+    float queuePriority = 1.0f;
+    queueCreateInfo.pQueuePriorities = &queuePriority;
+
+    VkPhysicalDeviceFeatures deviceFeatures{};
+
+    VkDeviceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+    createInfo.pQueueCreateInfos = &queueCreateInfo;
+    createInfo.queueCreateInfoCount = 1;
+    createInfo.pEnabledFeatures = &deviceFeatures;
+    createInfo.enabledExtensionCount = 0;
+
+    if (enableValidationLayers) {
+        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        createInfo.ppEnabledLayerNames = validationLayers.data();
+    } else {
+        createInfo.enabledLayerCount = 0;
+    }
+
+    VkResult result = vkCreateDevice(physicalDevice, &createInfo, nullptr, &device);
+    if (result != VK_SUCCESS) {
+        Logger::Log(LogLevel_Error, "Failed to create logical device!");
+        exit(-1);
+    }
+
+    vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+    Logger::Log(LogLevel_Info, "Logical device created successfully!");
+}
+```
+
+Call pickLogicalDevice() after pickPhysicalDevice() in Init().
+
+## Step 8: Window Surface – "Connect the Window to Vulkan"
+
+We need to create a surface that Vulkan can render to, connected to our GLFW window.
+
+Add to lumina.hpp:
+
+```cpp
+// ... in private ...
+VkSurfaceKHR window_surface;
+VkQueue presentQueue;
+
+void createSurface();
+```
+
+Create lumina/engine/window.cpp:
+
+```cpp
+#include "../lumina.hpp"
+
+void Lumina::createSurface() {
+    VkResult result = glfwCreateWindowSurface(vulkan_instance, window, nullptr, &window_surface);
+    if (result != VK_SUCCESS) {
+        Logger::Log(LogLevel_Error, "Failed to create window surface!");
+        exit(1);
+    }
+    Logger::Log(LogLevel_Info, "Window surface created successfully!");
+}
+```
+
+Call createSurface() after pickLogicalDevice().
+
+Update findQueueFamilies to properly check for present support:
+
+```cpp
+QueueFamilyIndices Lumina::findQueueFamilies(VkPhysicalDevice device) {
+    // ... get queue families ...
+
+    int i = 0;
+    for (const auto& queueFamily : queueFamilies) {
+        if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+            indices.graphicsFamily = i;
+        }
+
+        VkBool32 presentSupport = false;
+        vkGetPhysicalDeviceSurfaceSupportKHR(device, i, window_surface, &presentSupport);
+
+        if (presentSupport) {
+            indices.presentFamily = i;
+        }
+
+        if (indices.isComplete()) {
+            break;
+        }
+
+        i++;
+    }
+
+    return indices;
+}
+```
+
+We need to call createSurface() before findQueueFamilies(), so move the call order.
+
+In Init():
+
+```cpp
+create_vulkan_instance();
+pickPhysicalDevice();
+// createSurface() here? Wait, we need surface for queue families
+// Actually, let's move surface creation before device picking
+```
+
+Better order: instance -> surface -> physical device (which needs surface for present check) -> logical device.
+
+So:
+
+```cpp
+create_vulkan_instance();
+createSurface();
+pickPhysicalDevice();
+pickLogicalDevice();
+```
+
+And update pickLogicalDevice to get presentQueue too:
+
+```cpp
+vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
+```
+
+## Wrapping Up: Vulkan is Initialized!
+
+Holy moly, we did it! Our engine now:
+
+1. Creates a Vulkan instance
+2. Sets up validation layers for debugging
+3. Picks the best GPU available
+4. Creates a logical device with graphics and present queues
+5. Creates a window surface for rendering
+
+The window still shows nothing but black, but under the hood, Vulkan is ready to rock. In the next blog, we'll add debug messaging, improve logging, and maybe even draw a triangle!
+
+Remember, Vulkan is hard, but you're harder. If you got stuck, the code is on GitHub. Keep pushing!
+
+<div style={{display: 'flex', justifyContent: 'space-between', marginTop: '2rem'}}>
+
+    <a
+
+        href="/blog/from-zero-to-window"
+
+        style={{
+
+            textAlign: 'left',
+
+            textDecoration: 'none',
+
+        }}
+
+    >
+
+        ← Previous<br/>
+
+        <span style={{fontWeight: 500, textDecoration: 'underline'}}>From Zero to Window</span>
+
+    </a>
+
+    <a
+
+        href="/blog/lumina-unleashed"
+
+        style={{
+
+            textAlign: 'right',
+
+            textDecoration: 'none',
+
+        }}
+
+    >
+
+        Next →<br/>
+
+        <span style={{fontWeight: 500, textDecoration: "underline"}}>Lumina Unleashed</span>
+
+    </a>
+
+</div>

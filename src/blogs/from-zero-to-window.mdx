@@ -1,0 +1,436 @@
+---
+title: "From Absolute Zero to 'Hello, World!' - Building a Game Engine Like a Total Noob"
+date: "1st October 2024"
+author: "Rithul Kamesh"
+tags: ["gamedev", "vulkan", "cpp", "engine"]
+---
+
+# From Absolute Zero to "Hello, World!" - Building a Game Engine Like a Total Noob
+
+#### Index
+1. From Zero to Window (You are here)
+2. [Vulkan Basics](/blog/vulkan-basics)
+3. [Lumina Unleashed](/blog/lumina-unleashed)
+
+Hey there, fellow code monkeys and aspiring game devs! Welcome to my epic saga of building a game engine from scratch. I'm Rithul, and apparently, I thought it would be a great idea to dive headfirst into Vulkan, GLFW, and C++ without knowing what the heck I was doing. Spoiler alert: It's been a wild ride filled with crashes, cryptic error messages, and that sweet, sweet dopamine hit when something finally compiles.
+
+Today, we're starting from absolute zero. Like, "I have a computer and a dream" zero. If you're 15 and thinking, "Game engines? That's for pros!" – nope, we're doing this together. I'll explain everything like you're my little sibling who keeps asking "why" every five seconds. Buckle up, because by the end of this, you'll have a basic project structure that doesn't do much, but hey, it's a start!
+
+## Step 1: The "Oh God, What Am I Doing?" Phase
+
+First things first: What even is a game engine? Imagine you're building a house. The engine is like the foundation, walls, and plumbing – all the boring stuff that lets you put in the fun furniture (like your game characters and levels). Without it, your game is just a pile of code that crashes immediately.
+
+We're building "Lumina" – because why not name it after something shiny and impossible to achieve? It's going to be a Vulkan-based engine. Vulkan is like the super-efficient, super-complicated cousin of OpenGL. GLFW is our window buddy – it handles creating windows and input without us having to deal with OS-specific nonsense.
+
+### Setting Up Your Dev Environment
+
+Alright, kiddo, open your terminal. We're assuming you're on Linux (because Mac and Windows have their own dramas). First, install the goodies:
+
+```bash
+# Update your system (always a good start)
+sudo apt update && sudo apt upgrade
+
+# Install build tools
+sudo apt install build-essential cmake
+
+# Vulkan SDK - this is the big one
+# Go to https://vulkan.lunarg.com/sdk/home and download the latest
+# Or if you're lazy like me:
+wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
+sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-1.3.204-focal.list https://packages.lunarg.com/vulkan/1.3.204/lunarg-vulkan-1.3.204-focal.list
+sudo apt update
+sudo apt install vulkan-sdk
+
+# GLFW for windows
+sudo apt install libglfw3-dev
+
+# And some other libs we'll need
+sudo apt install libglm-dev libxxf86vm-dev libxi-dev
+```
+
+If you're on NixOS like me (because I'm that guy), just add this to your flake.nix:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:Nixpkgs/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            gcc
+            cmake
+            vulkan-headers
+            vulkan-loader
+            vulkan-tools
+            glfw
+            glm
+            xorg.libXxf86vm
+            xorg.libXi
+          ];
+        };
+      });
+}
+```
+
+Run `nix develop` and boom – you're in a dev shell with all the Vulkan goodness.
+
+## Step 2: Project Structure – Because Organization is Key (Or So They Say)
+
+Let's create a folder structure that won't make future-you cry. Open your terminal and:
+
+```bash
+mkdir lumina
+cd lumina
+mkdir src lumina lumina/engine lumina/util build
+```
+
+- `src/`: This is where our demo game will live
+- `lumina/`: The engine code
+- `lumina/engine/`: Vulkan, window, device stuff
+- `lumina/util/`: Helper utilities like logging
+- `build/`: Compiled stuff goes here
+
+Now, let's create some basic files. First, the main entry point:
+
+**src/main.cpp**
+
+```cpp
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, Lumina!" << std::endl;
+    return 0;
+}
+```
+
+Compile and run it:
+
+```bash
+g++ src/main.cpp -o build/hello
+./build/hello
+```
+
+If it prints "Hello, Lumina!", congrats! You're officially a programmer. If not, check your compiler installation.
+
+## Step 3: Adding GLFW – Because Windows Don't Grow on Trees
+
+GLFW is our window manager. It's like the bouncer at a club – it handles all the platform-specific window creation so we don't have to.
+
+First, let's modify main.cpp to create a window:
+
+**src/main.cpp**
+
+```cpp
+#include <GLFW/glfw3.h>
+#include <iostream>
+
+int main() {
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cout << "GLFW failed to initialize!" << std::endl;
+        return -1;
+    }
+
+    // Create a window
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Lumina Engine", NULL, NULL);
+    if (!window) {
+        std::cout << "Window creation failed!" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    // Main loop
+    while (!glfwWindowShouldClose(window)) {
+        // Poll for events
+        glfwPollEvents();
+    }
+
+    // Cleanup
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    return 0;
+}
+```
+
+Compile with:
+
+```bash
+g++ src/main.cpp -o build/window_test -lglfw -lvulkan -lGL -lm -lpthread -lXrandr -lXinerama -lXi -lXxf86vm -lX11 -ldl
+```
+
+Run it. You should get a window! Click the X to close it. Exciting, right? It's basically a black rectangle that does nothing. But hey, it's a window!
+
+## Step 4: The Engine Class – Let's Get Classy
+
+Hardcoding everything in main.cpp is so last year. Let's create an engine class. This is where the magic (and frustration) begins.
+
+**lumina/lumina.hpp**
+
+```cpp
+#pragma once
+
+#include <GLFW/glfw3.h>
+#include <string>
+
+typedef struct {
+    float x;
+    float y;
+} Vector2;
+
+typedef struct {
+    Vector2 size;
+    std::string title;
+} WindowOptions;
+
+class Lumina {
+public:
+    WindowOptions window_options;
+    GLFWwindow* window;
+
+    int Run();
+    void Init();
+    void Cleanup();
+};
+```
+
+**lumina/lumina.cpp**
+
+```cpp
+#include "lumina.hpp"
+#include <iostream>
+
+int Lumina::Run() {
+    Init();
+
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+    }
+
+    Cleanup();
+    return 0;
+}
+
+void Lumina::Init() {
+    if (!glfwInit()) {
+        std::cout << "GLFW init failed!" << std::endl;
+        return;
+    }
+
+    window = glfwCreateWindow(window_options.size.x, window_options.size.y,
+                              window_options.title.c_str(), NULL, NULL);
+    if (!window) {
+        glfwTerminate();
+        return;
+    }
+}
+
+void Lumina::Cleanup() {
+    glfwDestroyWindow(window);
+    glfwTerminate();
+}
+```
+
+Now update main.cpp:
+
+**src/main.cpp**
+
+```cpp
+#include "lumina.hpp"
+#include <iostream>
+
+int main() {
+    Lumina engine;
+    engine.window_options = {{800, 600}, "Lumina Engine"};
+
+    return engine.Run();
+}
+```
+
+We need to tell the compiler where to find lumina.hpp. Create a simple Makefile:
+
+**Makefile**
+
+```makefile
+CXX = g++
+CXXFLAGS = -Wall -Wextra -g -std=c++17 -Ilumina
+LDFLAGS = -lglfw -lvulkan -lGL -lm -lpthread -lXrandr -lXinerama -lXi -lXxf86vm -lX11 -ldl
+
+SRCDIR = src
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS = $(patsubst $(SRCDIR)/%.cpp, build/%.o, $(SOURCES))
+
+ENGINE_SRCDIR = lumina
+ENGINE_SOURCES = $(wildcard $(ENGINE_SRCDIR)/*.cpp)
+ENGINE_OBJECTS = $(patsubst $(ENGINE_SRCDIR)/%.cpp, build/%.o, $(ENGINE_SOURCES))
+
+TARGET = build/game
+
+all: $(TARGET)
+
+run: $(TARGET)
+	./build/game
+
+$(TARGET): $(OBJECTS) $(ENGINE_OBJECTS)
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+build/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+build/%.o: $(ENGINE_SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -rf build
+
+.PHONY: all clean run
+```
+
+Run `make run` and you should get the same window as before. But now it's "engine-ified"!
+
+## Step 5: Logging – Because Printf is for Peasants
+
+Let's add a logging system. Because when things go wrong (and they will), you'll want to know why.
+
+**lumina/util/log.hpp**
+
+```cpp
+#pragma once
+
+#include <iostream>
+#include <string>
+
+enum LogLevel {
+    LogLevel_Debug,
+    LogLevel_Info,
+    LogLevel_Warning,
+    LogLevel_Error
+};
+
+class Logger {
+public:
+    static void Log(LogLevel level, const std::string& message);
+private:
+    static const char* GetLevelString(LogLevel level);
+};
+```
+
+**lumina/util/log.cpp**
+
+```cpp
+#include "log.hpp"
+
+void Logger::Log(LogLevel level, const std::string& message) {
+    std::cout << "[" << GetLevelString(level) << "] " << message << std::endl;
+}
+
+const char* Logger::GetLevelString(LogLevel level) {
+    switch (level) {
+        case LogLevel_Debug: return "DEBUG";
+        case LogLevel_Info: return "INFO";
+        case LogLevel_Warning: return "WARNING";
+        case LogLevel_Error: return "ERROR";
+        default: return "UNKNOWN";
+    }
+}
+```
+
+Update lumina.hpp to include logging:
+
+```cpp
+#pragma once
+
+#include "util/log.hpp"
+#include <GLFW/glfw3.h>
+#include <string>
+
+// ... rest of the file ...
+
+void Lumina::Init() {
+    Logger::Log(LogLevel_Info, "Initializing Lumina engine...");
+
+    if (!glfwInit()) {
+        Logger::Log(LogLevel_Error, "GLFW init failed!");
+        return;
+    }
+
+    Logger::Log(LogLevel_Info, "GLFW initialized successfully");
+
+    window = glfwCreateWindow(window_options.size.x, window_options.size.y,
+                              window_options.title.c_str(), NULL, NULL);
+    if (!window) {
+        Logger::Log(LogLevel_Error, "Window creation failed!");
+        glfwTerminate();
+        return;
+    }
+
+    Logger::Log(LogLevel_Info, "Window created successfully");
+}
+```
+
+Update the Makefile to include util files:
+
+```makefile
+ENGINE_SOURCES = $(wildcard $(ENGINE_SRCDIR)/*.cpp) $(wildcard $(ENGINE_SRCDIR)/util/*.cpp) $(wildcard $(ENGINE_SRCDIR)/engine/*.cpp)
+```
+
+Now when you run, you'll see nice log messages!
+
+## Wrapping Up: We've Got a Window!
+
+Whew! We've gone from nothing to a basic window with logging. It's not much, but it's a foundation. In the next blog, we'll dive into Vulkan – the part where I cried myself to sleep multiple nights.
+
+Remember, every expert was once a beginner who didn't give up. If you're stuck, Google is your friend, Stack Overflow is your therapist, and rubber ducks are great listeners.
+
+<div style={{display: 'flex', justifyContent: 'space-between', marginTop: '2rem'}}>
+
+    <a
+
+        style={{
+
+            textAlign: 'left',
+
+            textDecoration: 'none',
+
+            color: "#999",
+
+        }}
+
+    >
+
+        ← Previous<br/>
+
+        <span style={{fontWeight: 500, textDecoration: 'underline'}}>(Start)</span>
+
+    </a>
+
+    <a
+
+        href="/blog/vulkan-basics"
+
+        style={{
+
+            textAlign: 'right',
+
+            textDecoration: 'none',
+
+        }}
+
+    >
+
+        Next →<br/>
+
+        <span style={{fontWeight: 500, textDecoration: "underline"}}>Vulkan Basics</span>
+
+    </a>
+
+</div>
