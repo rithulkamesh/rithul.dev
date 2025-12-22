@@ -49,7 +49,7 @@
 }
 
 .prose hr {
-  border-color: rgb(var(--neutral-300) / <alpha-value>);
+  border-color: hsl(var(--border));
   border-bottom-width: 0.5px;
 }
 
@@ -265,7 +265,7 @@ table {
 
 th,
 td {
-  border: 1px solid #313244; /* Catppuccin Mocha surface0 */
+  border: 1px solid hsl(var(--border));
   padding: 0.75rem;
   text-align: left;
 }

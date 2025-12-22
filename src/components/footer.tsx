@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
           &copy; rithul kamesh {year} |{" "}
           <Link
             href="https://github.com/rithulkamesh/rithul.dev"
-            className="dark:text-zinc-300 text-zinc-800"
+            className="text-muted-foreground hover:text-foreground"
             title="source"
           >
             source

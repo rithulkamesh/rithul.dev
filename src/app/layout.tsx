@@ -11,7 +11,7 @@ export const metadata = new Metadata(
   "https://rithul.dev",
   meta,
   images,
-  "/logo.svg",
+  "/logo.svg"
 );
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${font.className}`}>
         <LogLib
           config={{

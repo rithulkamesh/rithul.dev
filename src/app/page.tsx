@@ -1,73 +1,40 @@
-"use client";
-import React, { useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Projects from "@/components/projects";
-import Link from "@/components/link";
+import React from "react";
+import Header from "@/components/header"; // Keeping Header for navigation if consistent
+import Footer from "@/components/footer"; // Keeping Footer
+import { Hero } from "@/components/home/hero";
+import { ActiveContext } from "@/components/home/active-context";
+import { GuidedExperiments } from "@/components/home/guided-experiments";
+import { CurrentFocus } from "@/components/home/current-focus";
+import { SelectedWork } from "@/components/home/selected-work";
+import { Thinking } from "@/components/home/thinking";
+import { HumanSignal } from "@/components/home/human-signal";
+import { Contact } from "@/components/home/contact";
+import { getBlogList } from "@/lib/blogs";
 
-const Home: React.FC = () => {
-  const age = Math.floor(
-    (new Date().getTime() - new Date("2006/05/10").getTime()) /
-      (1000 * 60 * 60 * 24 * 365.25),
-  );
-
-  const controls = useAnimation();
-
-  useEffect(() => {
-    controls.start((i) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1 },
-    }));
-  }, [controls]);
+export default async function Home() {
+  const allBlogs = await getBlogList();
+  const recentBlogs = allBlogs.slice(0, 3);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className={`mx-auto max-w-container px-4 flex flex-col gap-3 py-8`}
-    >
+    <main className="mx-auto max-w-3xl px-6 md:px-12 flex flex-col gap-12 py-6">
+      {/* 
+        Header is likely a client component, might handle it differently if needed, 
+        but usually it's fine in server components if it handles its own "use client"
+      */}
       <Header />
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={controls}
-        className="flex flex-col gap-2 mt-4 mb-6"
-      >
-        <motion.p custom={0} className="mb-2">
-          {age} y/o Electronics student specializing in Digital Signal
-          Processing, Embedded Systems, AI and Machine Learning. Currently
-          developing a guitar pedal with a digital signal processor for
-          extensibility.
-        </motion.p>
-        <motion.p custom={1}>
-          Passionate about technology and music, I blend technical expertise
-          with creative pursuits. Experienced in music production, playing piano
-          and guitar, with a track record of translating technical skills into
-          practical solutions. Find my music at{" "}
-          <Link
-            href="https://instagram.com/rithul.flac"
-            title="instagram-music"
-          >
-            @rithul.flac
-          </Link>
-          .
-        </motion.p>
-        <motion.p custom={2}>
-          An avid gamer and digital art enthusiast, I explore the intersection
-          of interactive technologies and creative expression. My passion for
-          gaming extends beyond entertainment, viewing it as a complex system of
-          design, narrative, and interactive experience that parallels my
-          technical and creative interests.
-        </motion.p>
-      </motion.div>
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={controls} custom={3}>
-        <Projects />
-      </motion.div>
-      <Footer />
-    </motion.div>
-  );
-};
 
-export default Home;
+      <div className="flex flex-col gap-16 md:gap-20">
+        <Hero />
+        <ActiveContext />
+        {/* <GuidedExperiments /> */}
+        {/* <CurrentFocus /> */}
+        <SelectedWork />
+        <Thinking posts={recentBlogs} />
+        {/* <HumanSignal /> */}
+        <Contact />
+      </div>
+
+      <Footer />
+    </main>
+  );
+}

@@ -14,9 +14,9 @@ import React from "react";
 import "@/styles/pre.css";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const Pre = ({
@@ -34,8 +34,9 @@ const Pre = ({
   );
 };
 
-export function generateMetadata({ params }: Props) {
-  const blog = getPost(params);
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const blog = getPost({ slug });
 
   return {
     title: blog.frontMatter.title,
@@ -81,8 +82,9 @@ const options = {
   },
 };
 
-const Post: React.FC<Props> = ({ params }) => {
-  const props = getPost(params);
+const Post = async ({ params }: Props) => {
+  const { slug } = await params;
+  const props = getPost({ slug });
 
   return (
     <>
@@ -114,7 +116,7 @@ const Post: React.FC<Props> = ({ params }) => {
 const getPost = ({ slug }: { slug: string }) => {
   const markdownFile = fs.readFileSync(
     path.join("src/blogs", slug + ".mdx"),
-    "utf-8",
+    "utf-8"
   );
 
   const { data: frontMatter, content } = matter(markdownFile);
