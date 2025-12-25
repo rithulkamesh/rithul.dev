@@ -56,7 +56,7 @@ export default function BlogList({ initialBlogs }: BlogListProps) {
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
@@ -95,7 +95,11 @@ export default function BlogList({ initialBlogs }: BlogListProps) {
 
         <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="relative">
+            <Button
+              variant="outline"
+              className="relative"
+              suppressHydrationWarning
+            >
               <Filter size={20} />
               {selectedTags.length > 0 && (
                 <Badge

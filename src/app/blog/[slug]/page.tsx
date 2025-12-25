@@ -11,28 +11,14 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import Header from "@/components/header";
 import React from "react";
-import "@/styles/pre.css";
+import { PostLayout } from "@/components/blog/post-layout";
+import { components as mdxComponents } from "@/components/blog/mdx-components";
 
 interface Props {
   params: Promise<{
     slug: string;
   }>;
 }
-
-const Pre = ({
-  children,
-  ...props
-}: { children: React.ReactNode } & React.HTMLAttributes<HTMLPreElement>) => {
-  const textInput = React.useRef<HTMLPreElement>(null);
-
-  return (
-    <div className={`group relative font-normal`}>
-      <pre ref={textInput} {...props}>
-        {children}
-      </pre>
-    </div>
-  );
-};
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -56,9 +42,10 @@ export function generateStaticParams() {
 
 const prettyCodeOptions = {
   theme: "catppuccin-mocha",
+  keepBackground: false, // We handle background in our custom pre component
 };
 
-const options = {
+const options: any = {
   mdxOptions: {
     remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
@@ -77,14 +64,15 @@ const options = {
       ],
     ],
   },
-  components: {
-    pre: Pre,
-  },
+  parseFrontmatter: true,
 };
 
 const Post = async ({ params }: Props) => {
   const { slug } = await params;
   const props = getPost({ slug });
+
+  const wordCount = props.content.split(/\s+/g).length;
+  const readingTime = Math.ceil(wordCount / 200) + " min read";
 
   return (
     <>
@@ -93,22 +81,28 @@ const Post = async ({ params }: Props) => {
         href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
         crossOrigin="anonymous"
       />
-      <main className="flex flex-col mx-auto max-w-container px-4 gap-3 py-8">
-        <Header />
-        <article className="py-10 prose w-full prose-sm md:prose-base lg:prose-lg prose-slate dark:!prose-invert mx-auto">
-          <div>
-            <h1 className="text-3xl font-bold mb-0">
-              {props.frontMatter.title}
-            </h1>
-            <div className="flex items-center space-x-2 text-muted-foreground mb-4 mt-0">
-              <span>{props.frontMatter.date}</span>
-            </div>
-          </div>
-          {/*@ts-ignore*/}
-          <MDXRemote source={props.content} options={options} />
-        </article>
-        <Footer />
-      </main>
+      <div className="flex flex-col min-h-screen bg-background">
+        <div className="mx-auto max-w-container px-6 w-full pt-8 pb-4">
+          <Header />
+        </div>
+
+        <PostLayout
+          title={props.frontMatter.title}
+          date={props.frontMatter.date}
+          readTime={readingTime}
+          wordCount={wordCount}
+        >
+          <MDXRemote
+            source={props.content}
+            options={options}
+            components={mdxComponents}
+          />
+        </PostLayout>
+
+        <div className="mx-auto max-w-container px-6 w-full pb-12">
+          <Footer />
+        </div>
+      </div>
     </>
   );
 };
