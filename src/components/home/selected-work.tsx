@@ -8,18 +8,6 @@ import {
 
 const works = [
   {
-    name: "Photonical",
-    href: "#",
-    context:
-      "Working on a proprietary photonics platform that bridges simulation and design workflows.",
-    tension:
-      "Most photonics tools are either opaque GUIs or low-level solvers that are hard to integrate into modern research and product stacks.",
-    decision:
-      "Designing Photonical as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
-    outcome:
-      "In active development—aimed at making advanced photonics exploration feel closer to modern software engineering.",
-  },
-  {
     name: "docproc",
     href: "https://github.com/rithulkamesh/docproc",
     context:
@@ -31,6 +19,19 @@ const works = [
     outcome:
       "Static PDFs become queryable, refinable knowledge—ready for RAG, notes, flashcards, and assessment pipelines.",
   },
+  {
+    name: "Photonical",
+    href: "#",
+    context:
+      "Working on a proprietary photonics platform that bridges simulation and design workflows.",
+    tension:
+      "Most photonics tools are either opaque GUIs or low-level solvers that are hard to integrate into modern research and product stacks.",
+    decision:
+      "Designing Photonical as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
+    outcome:
+      "In active development—aimed at making advanced photonics exploration feel closer to modern software engineering.",
+  },
+ 
 ];
 
 export const SelectedWork = () => {

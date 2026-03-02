@@ -16,6 +16,14 @@ const contexts = [
   },
   {
     entity: "PES University",
+    role: "Teaching Assistant",
+    description:
+      "Teaching Assistant for Non-Linear Optics and Quantum Technology, co-delivering lectures and building study guides and question banks for 100+ students.",
+    href: "https://pes.edu",
+    status: "Teaching",
+  },
+  {
+    entity: "PES University",
     role: "Student",
     description:
       "Deepening roots in electronics & communication via a Bachelor's degree.",
@@ -48,7 +56,7 @@ export const ActiveContext = () => {
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            key={item.entity}
+            key={`${item.entity}-${item.role}`}
             variants={SAFE_VARIANTS}
             className="group block"
           >
