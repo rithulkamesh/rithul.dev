@@ -2,7 +2,7 @@
   {
     "name": "docproc",
     "href": "https://github.com/rithulkamesh/docproc",
-    "description": "Docproc is an opinionated document region analyzer that helps extract text, equations, images and handwriting from documents.",
+    "description": "Document intelligence CLI that turns static PDFs, slides, and textbooks into full-context markdown using vision LLMs and config-driven RAG.",
     "technologies": ["py"]
   },
 

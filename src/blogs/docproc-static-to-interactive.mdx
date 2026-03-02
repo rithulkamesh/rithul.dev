@@ -1,0 +1,175 @@
+---
+title: "From Static PDFs to Interactive Understanding – Why I Built Docproc"
+date: "3rd March 2026"
+author: "Rithul Kamesh"
+tags: ["ai", "llm", "education", "python", "tools"]
+---
+
+We built the internet, AI, and massive LLMs—but we’re still learning from PDFs.
+
+Students reread slides.
+Professors upload decks.
+Everyone calls it “studying.”
+
+For a long time, I did too. Then I realized something uncomfortable: the moments where I actually learned never came from passively re-reading. They always started with a question:
+
+- *Why does this actually work?*
+- *Where does this assumption break?*
+- *How does this connect to last week?*
+
+Static documents don’t answer back. They just sit there.
+
+And when your slides are mostly diagrams, screenshots, or images of text, most AI tools quietly fail. They give you a nice chat box on top of a hollow representation of the content—no equations, no labels, no dense figures, no real structure.
+
+That’s the gap **[docproc](https://github.com/rithulkamesh/docproc)** is trying to close.
+
+---
+
+## The Problem: PDFs Are a Terrible Interface for Thinking
+
+PDFs are optimized for *printing*, not *questioning*.
+
+When you try to study from them, you hit a bunch of invisible walls:
+
+- **Vision-heavy slides vanish.** Notebook-style tools often treat diagrams, plots, and equation screenshots as dead zones.
+- **Layout gets destroyed.** Headings, sections, side-notes, and figure captions all collapse into one undifferentiated text blob.
+- **RAG pipelines guess.** If your retrieval step can’t “see” equations and structure, your LLM answers are built on an incomplete view of the material.
+
+If you’re a visual learner, or your course/material is visually dense, this is basically sabotage.
+
+I didn’t want “chat over PDF.” I wanted:
+
+- Complete capture of what’s *actually* on the page (including images and math),
+- In a **machine-usable format** (markdown),
+- That I could then wire into **my own** study flows: RAG chat, notes, flashcards, and assessments.
+
+---
+
+## Enter Docproc: Document Intelligence as a CLI
+
+Instead of building yet another SaaS with a locked-in UI, I built **docproc** as a **CLI-first document intelligence engine**:
+
+- **Document in.**
+- **Full-context markdown out.**
+- Ready for whatever *you* want to build on top.
+
+At a high level, docproc does three things:
+
+1. **Extract**
+   - Uses the native text layer when it exists.
+   - Uses vision models for embedded images: equations, charts, diagrams, labels, screenshot-text.
+   - Preserves structure so your output isn’t just a wall of text.
+
+2. **Refine**
+   - Optionally runs an LLM clean-up pass, targeting:
+     - Markdown structure,
+     - LaTeX math,
+     - Boilerplate removal.
+   - This is where your “PDF” becomes something closer to a well-written, queryable notebook.
+
+3. **Configure**
+   - Everything runs off a simple `docproc.yaml` (or `docproc.yml`) config.
+   - You control:
+     - Providers (OpenAI, Azure, Anthropic, Ollama, LiteLLM),
+     - Vision usage,
+     - Refinement, cost/speed trade-offs,
+     - Downstream integration hooks for RAG and storage.
+
+The core idea is simple: **docproc shouldn’t own your workflow**. It should just be the *reliable, boring* layer that turns arbitrary documents into rich, LLM-ready context.
+
+---
+
+## The Study Workspace: What Sits on Top of Docproc
+
+In the repo, docproc itself is “just” the CLI. The **study workspace**—the part most people think of when they picture a NotebookLM-style tool—lives separately under the `demo/` folder.
+
+That demo stack (Go + React) sits on top of docproc and gives you:
+
+- **RAG chat over your corpus** – ask “why,” not just “what.”
+- **Structured notes** – generate markdown notes from cleaned context.
+- **Flashcards** – build spaced-repetition-ready prompts from the same source.
+- **Assessments with grading** – generate and grade questions against the processed material.
+
+Docproc is the substrate. The demo is proof that, once your documents are properly understood, building higher-level learning experiences becomes much easier.
+
+---
+
+## Why a CLI, Not Just Another App?
+
+Because I wanted this to be useful to:
+
+- Students hacking on their own study workflows,
+- Researchers building internal tools,
+- Engineers wiring up domain-specific RAG systems.
+
+A CLI gives you:
+
+- **Automation:** run it in a worker, CI job, or background pipeline.
+- **Composability:** plug the outputs into whatever stack you already have.
+- **Ownership:** keep your processed content in your own storage, under your own control.
+
+And if you just want a “click and try” experience, the full-stack demo is there to show what’s possible with a bit of glue code on top.
+
+---
+
+## How Docproc Thinks About Documents
+
+Docproc isn’t trying to be a magic black box. Under the hood, the philosophy is:
+
+- First, **understand layout** – sections, blocks, figures, captions, sidebars.
+- Then, **respect modality** – text where it’s text; vision where it’s image.
+- Finally, **export to a format humans and LLMs both like** – markdown with math, headings, and structure preserved.
+
+That’s why the project leans heavily on:
+
+- Region and layout analysis,
+- Vision LLMs for anything that isn’t clean text,
+- A refinement step that treats “good markdown” as a first-class goal, not an afterthought.
+
+The output isn’t just for chat—it’s meant to be:
+
+- Indexed,
+- Queried,
+- Annotated,
+- Versioned,
+- And reused across many different tools.
+
+---
+
+## Where This Is Going
+
+Short term, I’m focused on:
+
+- Hardening the extraction pipeline across more document types and edge cases.
+- Tightening the full-stack demo into a robust “study OS” for real courses.
+- Making config-driven RAG easier to stand up with minimal infra.
+
+Long term, the vision is simple:
+
+> **Static documents should never be the bottleneck between you and a deep question.**
+
+If that resonates—if you’ve ever felt blocked by the format of your learning material instead of the content itself—I’d love for you to try docproc, break it, and tell me where it hurts.
+
+---
+
+## Try Docproc, or Build on Top of It
+
+You can find the project here:  
+[https://github.com/rithulkamesh/docproc](https://github.com/rithulkamesh/docproc)
+
+If you:
+
+- Care about serious study workflows,
+- Have visually heavy course material,
+- Or want a robust document-intelligence layer for your own app,
+
+then docproc is very much for you.
+
+If you’d like to support the work, the repo is open for GitHub Sponsors—and I’m actively building a more polished NotebookLM-style demo and video walkthrough to show the full pipeline in context.
+
+Static → interactive.  
+PDF → full-context markdown.  
+“Re-reading” → **interrogating**.
+
+That’s the shift I’m building for myself—and hopefully, for a lot of other learners too.
+

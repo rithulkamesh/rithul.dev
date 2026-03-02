@@ -8,27 +8,28 @@ import {
 
 const works = [
   {
-    name: "prismo",
-    href: "https://github.com/rithulkamesh/prismo",
+    name: "Photonical",
+    href: "#",
     context:
-      "Simulating and analyzing electromagnetic wave propagation in photonic structures efficiently.",
+      "Working on a proprietary photonics platform that bridges simulation and design workflows.",
     tension:
-      "Traditional photonics solvers are either slow or hard to scale across platforms and materials.",
+      "Most photonics tools are either opaque GUIs or low-level solvers that are hard to integrate into modern research and product stacks.",
     decision:
-      "Built a high-performance Python Finite-Difference Time-Domain (FDTD) solver with GPU acceleration and flexible material models.",
+      "Designing Photonical as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
     outcome:
-      "Accurate, extensible waveguide photonics simulations that run fast on both CPU and GPU, making advanced optical modeling accessible.",
+      "In active development—aimed at making advanced photonics exploration feel closer to modern software engineering.",
   },
   {
     name: "docproc",
     href: "https://github.com/rithulkamesh/docproc",
     context:
-      "Document extraction is often brittle or prohibitively expensive at scale.",
-    tension: "Generic OCR lacks structure; specialized models lack speed.",
+      "Document extraction is often brittle, lossy with images, or prohibitively expensive at scale.",
+    tension:
+      "Generic OCR ignores structure; most \"AI study tools\" quietly fail on diagrams, equations, and screenshot-heavy slides.",
     decision:
-      "Built an opinionated region analyzer in Python focusing on layout topology first.",
+      "Built an opinionated document intelligence CLI that uses vision LLMs and config-driven RAG to turn arbitrary slides, papers, and textbooks into clean, full-context markdown.",
     outcome:
-      "High-fidelity extraction for complex docs without the ML overhead.",
+      "Static PDFs become queryable, refinable knowledge—ready for RAG, notes, flashcards, and assessment pipelines.",
   },
 ];
 

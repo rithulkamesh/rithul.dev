@@ -8,21 +8,6 @@ import {
 
 const contexts = [
   {
-    entity: "Studojo",
-    role: "CTO",
-    description: "Designing Infrastructure and Technical Strategy.",
-    href: "https://studojo.com",
-    status: "Building",
-  },
-  {
-    entity: "Devsper",
-    role: "Founder",
-    description:
-      "AI can be a group of colleagues— not a replacement. We're making that happen.",
-    href: "https://devsper.com",
-    status: "Founding",
-  },
-  {
     entity: "Photonics & Quantum Lab",
     role: "Research Assistant",
     description: "Investigating neural networks for quantum experimentation.",
