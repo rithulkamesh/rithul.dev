@@ -177,7 +177,14 @@
   @apply block text-sm mt-2 text-muted-foreground/80 not-italic;
 }
 
-/* Code block styles */
+/* Code block styles — Fira Code with ligatures */
+code,
+pre,
+.code-block {
+  font-family: var(--font-code), "Fira Code", monospace;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
 pre {
   background-color: #1e1e2e; /* Catppuccin Mocha base */
   border-radius: 0.5rem;
@@ -187,7 +194,6 @@ pre {
 }
 
 code {
-  font-family: "JetBrains Mono";
   font-size: 0.9rem;
   line-height: 1.5;
 }

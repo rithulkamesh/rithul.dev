@@ -10,7 +10,6 @@ import { Thinking } from "@/components/home/thinking";
 import { HumanSignal } from "@/components/home/human-signal";
 import { Contact } from "@/components/home/contact";
 import { getBlogList } from "@/lib/blogs";
-import { QuantumPhotonicsBackground } from "@/components/home/quantum-photonics-background";
 
 export default async function Home() {
   const allBlogs = await getBlogList();
@@ -18,7 +17,6 @@ export default async function Home() {
 
   return (
     <>
-      <QuantumPhotonicsBackground />
       <main className="relative mx-auto max-w-3xl px-6 md:px-12 flex flex-col gap-12 py-6">
         {/* 
         Header is likely a client component, might handle it differently if needed, 

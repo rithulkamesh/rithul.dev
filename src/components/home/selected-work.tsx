@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   SECTION_VARIANTS,
   SAFE_VARIANTS,
@@ -9,7 +10,8 @@ import {
 const works = [
   {
     name: "docproc",
-    href: "https://github.com/rithulkamesh/docproc",
+    href: "/projects/docproc",
+    internal: true,
     context:
       "Document extraction is often brittle, lossy with images, or prohibitively expensive at scale.",
     tension:
@@ -20,8 +22,22 @@ const works = [
       "Static PDFs become queryable, refinable knowledge—ready for RAG, notes, flashcards, and assessment pipelines.",
   },
   {
+    name: "hivemind",
+    href: "/projects/hivemind",
+    internal: true,
+    context:
+      "Running multi-agent AI systems locally is chaotic without clear orchestration and shared state.",
+    tension:
+      "Agents need task scheduling, shared memory, and a single control plane—otherwise you're gluing scripts and hoping they don't collide.",
+    decision:
+      "Built a distributed AI worker system with an orchestrator, shared memory, and CLI-driven workflows so multi-agent runs stay local and predictable.",
+    outcome:
+      "Autonomous workflows from the terminal: research summaries, parallel analysis, and agent collaboration without hosted platforms.",
+  },
+  {
     name: "Photonical",
     href: "#",
+    internal: false,
     context:
       "Working on a proprietary photonics platform that bridges simulation and design workflows.",
     tension:
@@ -37,6 +53,7 @@ const works = [
 export const SelectedWork = () => {
   return (
     <motion.section
+      id="selected-work"
       variants={SECTION_VARIANTS}
       initial="hidden"
       whileInView="visible"
@@ -60,15 +77,27 @@ export const SelectedWork = () => {
             className="group"
           >
             <div className="flex items-baseline justify-between mb-3">
-              <a
-                href={work.href}
-                className="text-xl font-bold text-foreground hover:text-foreground/80 transition-colors"
-              >
-                {work.name}
-                <span className="text-muted-foreground font-normal ml-2 text-sm">
-                  ↗
-                </span>
-              </a>
+              {work.internal ? (
+                <Link
+                  href={work.href}
+                  className="text-xl font-bold text-foreground hover:text-foreground/80 transition-colors"
+                >
+                  {work.name}
+                  <span className="text-muted-foreground font-normal ml-2 text-sm">
+                    →
+                  </span>
+                </Link>
+              ) : (
+                <a
+                  href={work.href}
+                  className="text-xl font-bold text-foreground hover:text-foreground/80 transition-colors"
+                >
+                  {work.name}
+                  <span className="text-muted-foreground font-normal ml-2 text-sm">
+                    ↗
+                  </span>
+                </a>
+              )}
             </div>
 
             <div className="grid md:grid-cols-2 gap-5 text-sm leading-relaxed">

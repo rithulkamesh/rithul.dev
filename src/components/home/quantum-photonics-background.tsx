@@ -20,6 +20,15 @@ type PhotonConfig = {
   delay: number;
 };
 
+type CodeParticleConfig = {
+  id: string;
+  symbol: string;
+  top: string;
+  left?: string;
+  right?: string;
+  delay: number;
+};
+
 const ATOMS: AtomConfig[] = [
   { id: "atom-1", top: "12%", left: "6%", size: 64, electrons: 2, delay: 0 },
   { id: "atom-2", top: "58%", right: "4%", size: 80, electrons: 3, delay: 1.5 },
@@ -30,6 +39,12 @@ const PHOTONS: PhotonConfig[] = [
   { id: "photon-1", top: "20%", left: "-5%", length: 96, delay: 0.4 },
   { id: "photon-2", top: "46%", left: "10%", length: 80, delay: 1.2 },
   { id: "photon-3", top: "70%", left: "-10%", length: 112, delay: 2.1 },
+];
+
+const CODE_PARTICLES: CodeParticleConfig[] = [
+  { id: "code-1", symbol: "{ }", top: "35%", left: "88%", delay: 0.6 },
+  { id: "code-2", symbol: "λ", top: "85%", right: "18%", delay: 2.2 },
+  { id: "code-3", symbol: "->", top: "22%", right: "25%", delay: 1.1 },
 ];
 
 export const QuantumPhotonicsBackground = () => {
@@ -105,6 +120,35 @@ export const QuantumPhotonicsBackground = () => {
             delay: photon.delay,
           }}
         />
+      ))}
+
+      {/* Code-themed particles — subtle, same palette */}
+      {CODE_PARTICLES.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute font-mono text-emerald-300/20 dark:text-cyan-300/18 text-lg whitespace-nowrap select-none"
+          style={{
+            top: particle.top,
+            left: particle.left,
+            right: particle.right,
+            fontFamily: "var(--font-code), 'Fira Code', monospace",
+            fontFeatureSettings: '"liga" 1, "calt" 1',
+          }}
+          initial={{ opacity: 0, y: 4, rotate: -3 }}
+          animate={{
+            opacity: [0, 0.12, 0.08, 0.12, 0],
+            y: [4, -2, 2, -1, 4],
+            rotate: [-3, 2, -1, 1, -3],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 14 + (particle.delay % 3) * 2,
+            ease: "easeInOut",
+            delay: particle.delay,
+          }}
+        >
+          {particle.symbol}
+        </motion.div>
       ))}
     </div>
   );
