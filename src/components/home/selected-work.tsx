@@ -22,8 +22,8 @@ const works = [
       "Static PDFs become queryable, refinable knowledge—ready for RAG, notes, flashcards, and assessment pipelines.",
   },
   {
-    name: "hivemind",
-    href: "/projects/hivemind",
+    name: "devsper",
+    href: "/projects/devsper",
     internal: true,
     context:
       "Running multi-agent AI systems locally is chaotic without clear orchestration and shared state.",
