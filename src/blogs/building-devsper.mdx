@@ -1,0 +1,99 @@
+---
+title: "Building Devsper: what I've learned automating the work nobody wants to do"
+date: "20th April 2026"
+author: "Rithul Kamesh"
+tags: ["ai", "automation", "startups", "software-development"]
+description: "Why I built an AI automation platform, how it works, and what multi-agent systems actually look like in production."
+---
+
+There is a category of work that every team carries.
+
+It is not hard. It requires no creativity. It produces no pride. It simply exists — repeating itself, day after day, consuming exactly the kind of time that should go toward things that actually require a human.
+
+PR reviews. Report pulls. Contract scans. Data reconciliation.
+
+Each task, on its own, is maybe twenty minutes. Across a team, across a week, it is hundreds of hours — evaporated silently into the background of "getting things done."
+
+This is what Devsper was built to eliminate.
+
+---
+
+### Why I built it
+
+I want to be precise about the frustration, because it matters.
+
+The problem was never a lack of tools. Every team already has GitHub, Notion, Jira, Stripe, Postgres. The tools are excellent. The integrations exist. The workflows are documented.
+
+The problem is that every one of these tools still requires a human to trigger them.
+
+Someone has to open the PR. Someone has to read the diff. Someone has to write the comment. Someone has to transition the ticket. And then — tomorrow — it happens again.
+
+The human is not adding value in this loop. They are acting as a scheduler. A relay. A bridge between tools that could, in theory, talk to each other — but don't, because gluing them together still requires someone to sit in the middle and push.
+
+What I wanted was simple: describe the task once, in plain English, and have it run. Not as a cron job. Not as a webhook. As something that understands context, reads state, makes decisions, and acts — continuously.
+
+That is Devsper.
+
+---
+
+### How it works
+
+The execution model is deliberately minimal: **describe → provision → execute**.
+
+You write what needs to happen. Devsper reads it, provisions the agents required to run it, builds the interface to monitor it, and connects to your existing stack. Then it runs — until you stop it.
+
+There is no pipeline to configure. No YAML to write. No node graph to drag around.
+
+The agents themselves are not magic. Each one is scoped to a task: read the repository, summarize the diff, post the comment, close the ticket. They share state. They execute in sequence or parallel depending on what the task demands. They call your tools — the same tools your team already uses — via native integrations.
+
+The result feels like having a very reliable, very tireless colleague who handles everything you would otherwise do on autopilot.
+
+For engineering: PRs get reviewed, summarized, and routed. Diffs are read. Coverage is checked. Approvals are posted.
+
+For finance: data is pulled from Stripe, synced to your warehouse, anomalies flagged before they become problems.
+
+For legal: contracts are scanned for known risk patterns, clauses highlighted, decisions routed to the right person.
+
+The underlying pattern is the same across all three. The task is different. The loop is identical.
+
+---
+
+### What I've learned building it
+
+**Intent is harder than execution.**
+
+The hardest part of building Devsper was not the agent orchestration. It was getting the system to correctly interpret what someone *meant* when they described a task. "Review open PRs" seems unambiguous. It is not. Which PRs? In which state? From which authors? With what scope?
+
+A good automation requires explicit intent. The system has to ask when it is uncertain, and act when it is not. Getting that boundary right is mostly unsolved.
+
+**Continuous is not the same as scheduled.**
+
+Most automation people have experienced is scheduled. A cron job runs at 9am. A webhook fires on push. These are reactions to events.
+
+Devsper runs continuously. That is a different mental model. The workflow is always active. It does not wait to be triggered. It watches state, detects change, and acts. This is harder to reason about, harder to debug, and far more powerful than scheduled automation.
+
+**The interface is part of the product.**
+
+Early versions of Devsper had no UI. You described the task, it ran, you got output in a terminal. Engineers loved it. Everyone else hated it.
+
+The insight was that the interface is not a wrapper around the automation — it *is* the automation, for anyone who is not staring at logs. The event stream, the status indicators, the action history: these are what make the system legible. Legibility is what makes it trusted.
+
+---
+
+### Where this goes
+
+The trajectory of this work is clear, and it is not subtle.
+
+Every team has a version of this problem. The ratio of work-that-requires-thought to work-that-merely-requires-execution is not 50/50. It is closer to 20/80. Most of what knowledge workers do in a given day is the latter category — structured, repeating, and automatable.
+
+What changes when you remove that 80%?
+
+You get back the time. But more importantly — you change what the job *is*. When a PR review is always done, the engineer stops spending mental energy tracking it. When reports are always generated, the analyst stops spending mornings pulling CSVs. The work that remains is the work that was always worth doing.
+
+I think about Devsper less as a productivity tool and more as a shift in what "work" means for a team. The repetitive layer gets absorbed. What surfaces is the part that actually required the human.
+
+That is worth building.
+
+---
+
+We are in early access. If you want to try it: [devsper.com](https://devsper.com)

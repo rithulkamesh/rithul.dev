@@ -10,80 +10,83 @@ import {
   TerminalDemo,
   RealOutputSection,
   WhyIBuiltThis,
-  GitHubStatsPanel,
-  HivemindPulses,
 } from "@/components/project-page";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "devsper — Rithul Kamesh",
   description:
-    "Distributed AI runtime. Orchestrate concurrent agent workflows with shared memory from the terminal.",
+    "AI automation for repetitive work. Describe it once. Devsper provisions the agents, builds the interface, and runs the workflow endlessly.",
 };
 
 const DEVSPER_TERMINAL_LINES = [
-  { type: "prompt" as const, text: 'devsper run "analyze diffusion model papers"' },
-  { type: "output" as const, text: "spawn worker[1]" },
-  { type: "output" as const, text: "spawn worker[2]" },
-  { type: "output" as const, text: "spawn worker[3]" },
+  { type: "prompt" as const, text: 'devsper run "review all open PRs and comment"' },
+  { type: "output" as const, text: "provisioning agents..." },
   { type: "output" as const, text: "" },
-  { type: "output" as const, text: "worker[1] gathering sources" },
-  { type: "output" as const, text: "worker[2] summarizing architecture" },
-  { type: "output" as const, text: "worker[3] extracting math" },
+  { type: "output" as const, text: "reading repository" },
+  { type: "output" as const, text: "analyzing 14 files across 3 commits" },
+  { type: "output" as const, text: "generating summary" },
   { type: "output" as const, text: "" },
-  { type: "output" as const, text: "aggregating results..." },
+  { type: "output" as const, text: "$ gh pr comment 410 --body \"LGTM. Coverage improved.\"" },
+  { type: "output" as const, text: "$ jira transition DEV-92 --to Done" },
   { type: "output" as const, text: "" },
-  { type: "success" as const, text: "synthesis complete" },
+  { type: "success" as const, text: "workflow running continuously" },
 ];
 
 const DEVSPER_FEATURES = [
   {
-    title: "Distributed Workers",
-    description: "Multiple agents run in parallel.",
-    iconName: "Users",
+    title: "Engineering",
+    description: "PR reviews, diff summaries, approval routing — automated end-to-end.",
+    iconName: "FileCode",
   },
   {
-    title: "Shared Memory",
-    description: "Agents read and write shared state.",
-    iconName: "Brain",
+    title: "Finance",
+    description: "Report generation, anomaly detection, warehouse sync on schedule.",
+    iconName: "Calculator",
   },
   {
-    title: "Task Pipelines",
-    description: "Decompose and orchestrate workflows.",
-    iconName: "GitBranch",
+    title: "Legal",
+    description: "Contract scanning, risk flagging, clause routing — without the manual read.",
+    iconName: "FileCode",
   },
   {
-    title: "Tool Usage",
-    description: "Agents call tools and APIs.",
-    iconName: "Wrench",
+    title: "Integrations",
+    description: "GitHub, Slack, Postgres, Stripe, Notion, Vercel, Jira — natively.",
+    iconName: "LayoutGrid",
   },
   {
-    title: "CLI Control",
-    description: "Run from the terminal.",
+    title: "Continuous Execution",
+    description: "Workflows run 24/7. No cron jobs. No manual triggers.",
+    iconName: "Sparkles",
+  },
+  {
+    title: "Plain English",
+    description: "Describe the task in plain English. Devsper handles provisioning.",
     iconName: "Terminal",
   },
 ];
 
 const DEVSPER_ARCHITECTURE = [
-  { label: "User Task" },
-  { label: "Orchestrator" },
-  { label: "Worker Agents", subLabels: ["worker[1]", "worker[2]", "worker[3]"] },
-  { label: "Shared Memory" },
-  { label: "Final Output" },
+  { label: "Describe" },
+  { label: "Provision" },
+  { label: "Execute" },
+  { label: "Integrate" },
+  { label: "Run Forever" },
 ];
 
-const DEVSPER_EXAMPLE_OUTPUT = `## Diffusion model papers — synthesis
+const DEVSPER_EXAMPLE_OUTPUT = `## PR #410 — Automated Review
 
-**Architecture (worker[2])**  
-Common pattern: noise schedule → UNet backbone → conditioning embedding.  
-DDPM vs DDIM: discrete vs continuous steps.
+**Analysis**
+Analyzed 14 files across 3 commits in 2.4s.
 
-**Math (worker[3])**  
-Key equations: forward process q(x_t|x_0), reverse process p_θ(x_{t-1}|x_t).  
-Score matching objective.
+**Changes**
+• Refactored context injection layer.
+• Added fallback for LLM timeouts.
+• Coverage improved by 2.1%.
 
-**Sources (worker[1])**  
-Ho et al. (DDPM), Song et al. (DDIM), Rombach (LDM).`;
+**Actions**
+$ gh pr comment 410 --body "LGTM. Coverage improved."
+$ jira transition "DEV-92" --to "Done"`;
 
 export default function DevsperPage() {
   return (
@@ -93,12 +96,10 @@ export default function DevsperPage() {
       </div>
 
       <main className="relative mx-auto max-w-3xl w-full px-6 md:px-12 flex flex-col gap-10 md:gap-14 pb-16">
-        <HivemindPulses />
-
         <ProjectHero
           title="devsper"
-          description="Distributed AI runtime"
-          tagline="Run concurrent agent workflows from the terminal."
+          description="AI automation for repetitive work"
+          tagline="Describe it once. Devsper provisions the agents, builds the interface, and runs the workflow endlessly."
           githubUrl="https://github.com/devsper-com/runtime"
         />
 
@@ -108,8 +109,9 @@ export default function DevsperPage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            Single-agent systems hit limits quickly. Complex tasks need multiple
-            agents, shared memory, and orchestration.
+            Every team has work that repeats. PR reviews. Report pulls. Contract scans.
+            Each one is low-complexity but high-frequency — and together they consume
+            hours that should go toward things that actually require thought.
           </p>
         </ProjectSection>
 
@@ -117,23 +119,24 @@ export default function DevsperPage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            devsper is a distributed runtime where:
+            Devsper is an AI automation layer. You describe the task once in plain English.
+            Devsper:
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-2 text-sm">
-            <li>tasks are decomposed</li>
-            <li>agents collaborate</li>
-            <li>memory is shared</li>
-            <li>results converge</li>
+            <li>provisions the agents</li>
+            <li>builds the interface</li>
+            <li>connects your tools</li>
+            <li>runs the workflow continuously</li>
           </ul>
         </ProjectSection>
 
         <SectionDivider />
 
-        <FeatureGrid label="Features" features={DEVSPER_FEATURES} />
+        <FeatureGrid label="Use cases" features={DEVSPER_FEATURES} />
 
         <SectionDivider variant="glow" />
 
-        <ArchitectureDiagram label="Architecture" steps={DEVSPER_ARCHITECTURE} />
+        <ArchitectureDiagram label="Execution lifecycle" steps={DEVSPER_ARCHITECTURE} />
 
         <SectionDivider variant="grid" />
 
@@ -143,11 +146,11 @@ export default function DevsperPage() {
           inputContent={
             <p className="text-muted-foreground">
               <code className="text-foreground/90 bg-muted px-1 rounded">
-                analyze diffusion model papers
+                review all open PRs and comment
               </code>
             </p>
           }
-          outputTitle="Synthesis (agents)"
+          outputTitle="Automated execution"
           outputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
               {DEVSPER_EXAMPLE_OUTPUT}
@@ -159,23 +162,21 @@ export default function DevsperPage() {
 
         <WhyIBuiltThis>
           <p className="mb-4">
-            I wanted multi-agent systems that behave like distributed computation
-            instead of simple chat loops.
+            I kept watching engineers spend an hour a day on work a machine could do in seconds.
+            Not because they lacked tools — but because every tool required a human in the loop.
           </p>
           <p>
-            devsper lets agents collaborate, spawn work, and converge on results.
+            Devsper removes the loop. You describe what needs to happen. It runs, continuously,
+            across your entire stack.
           </p>
         </WhyIBuiltThis>
-
-        <SectionDivider variant="grid" />
-
-        <GitHubStatsPanel repo="devsper-com/runtime" />
 
         <SectionDivider />
 
         <LinksSection
           label="Links"
           links={[
+            { label: "devsper.com", href: "https://devsper.com" },
             { label: "GitHub", href: "https://github.com/devsper-com/runtime" },
           ]}
         />
@@ -187,4 +188,3 @@ export default function DevsperPage() {
     </div>
   );
 }
-

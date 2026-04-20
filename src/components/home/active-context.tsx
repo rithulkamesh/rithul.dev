@@ -8,6 +8,13 @@ import {
 
 const contexts = [
   {
+    entity: "Devsper",
+    role: "Co-Founder / Software Engineer",
+    description: "Building AI automation that turns repetitive work into autonomous workflows.",
+    href: "https://devsper.com",
+    status: "Building",
+  },
+  {
     entity: "Photonics & Quantum Lab",
     role: "Research Assistant",
     description: "Investigating neural networks for quantum experimentation.",
