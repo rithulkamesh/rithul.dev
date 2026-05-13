@@ -14,9 +14,9 @@ import {
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "devsper — Rithul Kamesh",
+  title: "devsper runtime — Rithul Kamesh",
   description:
-    "AI automation for repetitive work. Describe it once. Devsper provisions the agents, builds the interface, and runs the workflow endlessly.",
+    "Distributed multi-agent runtime. Describe it once. Devsper provisions the agents, builds the interface, and runs the workflow endlessly.",
 };
 
 const DEVSPER_TERMINAL_LINES = [
@@ -97,8 +97,8 @@ export default function DevsperPage() {
 
       <main className="relative mx-auto max-w-3xl w-full px-6 md:px-12 flex flex-col gap-10 md:gap-14 pb-16">
         <ProjectHero
-          title="devsper"
-          description="AI automation for repetitive work"
+          title="devsper runtime"
+          description="Distributed multi-agent runtime"
           tagline="Describe it once. Devsper provisions the agents, builds the interface, and runs the workflow endlessly."
           githubUrl="https://github.com/devsper-com/runtime"
         />
@@ -119,7 +119,7 @@ export default function DevsperPage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Devsper is an AI automation layer. You describe the task once in plain English.
+            Devsper is a distributed multi-agent runtime. You describe the task once in plain English.
             Devsper:
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-2 text-sm">
@@ -166,8 +166,8 @@ export default function DevsperPage() {
             Not because they lacked tools — but because every tool required a human in the loop.
           </p>
           <p>
-            Devsper removes the loop. You describe what needs to happen. It runs, continuously,
-            across your entire stack.
+            Devsper removes the loop. You describe what needs to happen. The runtime orchestrates
+            agents across your entire stack, continuously.
           </p>
         </WhyIBuiltThis>
 

@@ -26,24 +26,24 @@ const works = [
     href: "/projects/devsper",
     internal: true,
     context:
-      "Running multi-agent AI systems locally is chaotic without clear orchestration and shared state.",
+      "Running multi-agent AI systems is chaotic without clear orchestration and shared state.",
     tension:
       "Agents need task scheduling, shared memory, and a single control plane—otherwise you're gluing scripts and hoping they don't collide.",
     decision:
-      "Built a distributed AI worker system with an orchestrator, shared memory, and CLI-driven workflows so multi-agent runs stay local and predictable.",
+      "Built a distributed AI worker runtime with an orchestrator, shared memory, and DAG-based scheduling so multi-agent runs stay predictable at scale.",
     outcome:
-      "Autonomous workflows from the terminal: research summaries, parallel analysis, and agent collaboration without hosted platforms.",
+      "Autonomous workflows: research summaries, parallel analysis, and agent collaboration across engineering, finance, and legal operations.",
   },
   {
-    name: "Photonical",
-    href: "#",
+    name: "Eigenwave",
+    href: "#projects",
     internal: false,
     context:
       "Working on a proprietary photonics platform that bridges simulation and design workflows.",
     tension:
       "Most photonics tools are either opaque GUIs or low-level solvers that are hard to integrate into modern research and product stacks.",
     decision:
-      "Designing Photonical as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
+      "Designing Eigenwave as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
     outcome:
       "In active development—aimed at making advanced photonics exploration feel closer to modern software engineering.",
   },
