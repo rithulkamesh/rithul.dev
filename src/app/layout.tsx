@@ -5,6 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata, meta, images } from "@/lib/metadata";
 import { QuantumPhotonicsBackground } from "@/components/home/quantum-photonics-background";
 
+import { AudioProvider } from "@/components/audio-provider";
+
 const font = Inter({ subsets: ["latin-ext"] });
 const firaCode = Fira_Code({
   subsets: ["latin"],
@@ -27,9 +29,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={firaCode.variable}>
       <body className={font.className}>
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <QuantumPhotonicsBackground />
-          {children}
-          <SpeedInsights />
+          <AudioProvider>
+            <QuantumPhotonicsBackground />
+            {children}
+            <SpeedInsights />
+          </AudioProvider>
         </ThemeProvider>
       </body>
     </html>

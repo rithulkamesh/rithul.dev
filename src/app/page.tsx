@@ -9,6 +9,7 @@ import { SelectedWork } from "@/components/home/selected-work";
 import { Thinking } from "@/components/home/thinking";
 import { HumanSignal } from "@/components/home/human-signal";
 import { Contact } from "@/components/home/contact";
+import { HomeMusicSection } from "@/components/home/music-section";
 import { getBlogList } from "@/lib/blogs";
 
 export default async function Home() {
@@ -30,6 +31,7 @@ export default async function Home() {
           {/* <GuidedExperiments /> */}
           {/* <CurrentFocus /> */}
           <SelectedWork />
+          <HomeMusicSection />
           <Thinking posts={recentBlogs} />
           {/* <HumanSignal /> */}
           <Contact />

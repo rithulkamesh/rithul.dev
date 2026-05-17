@@ -60,6 +60,13 @@ const Header: React.FC = () => {
             >
               resume
             </Link>
+            <Link
+              href="/music"
+              className="dark:text-zinc-300 text-zinc-800"
+              title="music"
+            >
+              music
+            </Link>
           </div>
         </div>
       </span>
