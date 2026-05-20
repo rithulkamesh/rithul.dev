@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 import projects from "@/data/projects.json";
 
 interface Project {
@@ -25,12 +26,16 @@ export default function Projects() {
     <div className="space-y-8">
       <h2 className="text-xl font-medium text-zinc-200">Projects</h2>
       <div className="grid gap-4">
-        {projects.map((project: Project) => (
-          <motion.a
+        {projects.map((project: Project) => {
+          const isExternal = project.href.startsWith("http");
+          const Wrapper = isExternal ? motion.a : motion(Link);
+          const wrapperProps = isExternal
+            ? { href: project.href, target: "_blank", rel: "noopener noreferrer" }
+            : { href: project.href };
+          return (
+          <Wrapper
             key={project.name}
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...wrapperProps}
             className="block p-4 -mx-4 rounded-lg transition-colors hover:bg-zinc-800/50 group"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -63,8 +68,9 @@ export default function Projects() {
               <ExternalLink className="w-4 h-4 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <p className="mt-1 text-sm text-zinc-400">{project.description}</p>
-          </motion.a>
-        ))}
+          </Wrapper>
+          );
+        })}
       </div>
     </div>
   );

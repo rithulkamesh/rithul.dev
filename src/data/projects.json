@@ -11,5 +11,40 @@
     "href": "https://github.com/rithulkamesh/pomoflow",
     "description": "A focus webapp that enables to work in collaboration without the chaos.",
     "technologies": ["ts", "cpp"]
+  },
+
+  {
+    "name": "continuum",
+    "href": "/projects/continuum",
+    "description": "Unified execution runtime for LLM and ML programs.",
+    "technologies": ["cpp"]
+  },
+
+  {
+    "name": "veclite",
+    "href": "/projects/veclite",
+    "description": "SQLite for vectors — embedded AI memory engine in Rust.",
+    "technologies": ["rs"]
+  },
+
+  {
+    "name": "ferryx",
+    "href": "/projects/ferryx",
+    "description": "Compiles Rust systems into native Python ecosystems via FFI codegen.",
+    "technologies": ["rs", "py", "ts"]
+  },
+
+  {
+    "name": "llmwiki",
+    "href": "/projects/llmwiki",
+    "description": "A blazing fast CLI and TUI for maintaining an LLM-managed personal knowledge base.",
+    "technologies": ["rs"]
+  },
+
+  {
+    "name": "surgext-mcp",
+    "href": "/projects/surgext-mcp",
+    "description": "MCP server that indexes Surge XT synthesizer docs so AI models can search parameters and assist with sound design.",
+    "technologies": ["ts"]
   }
 ]

@@ -1,48 +1,33 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { works } from "@/data/works";
+import { Work } from "@/data/works";
 import {
   SECTION_VARIANTS,
   SAFE_VARIANTS,
   DECORATIVE_VARIANTS,
 } from "@/lib/animation";
 
-function pickTwo<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a.slice(0, 2);
-}
-
-export const SelectedWork = () => {
-  const [teaser, setTeaser] = useState<typeof works>([]);
-  useEffect(() => { setTeaser(pickTwo(works)); }, []);
-
+export function WorkList({ works }: { works: Work[] }) {
   return (
-    <motion.section
-      id="selected-work"
+    <motion.div
       variants={SECTION_VARIANTS}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      className="space-y-8"
+      animate="visible"
+      className="flex flex-col gap-12"
     >
       <motion.div variants={SAFE_VARIANTS} className="flex items-center gap-2">
         <motion.div
           variants={DECORATIVE_VARIANTS}
-          className="w-1 h-3 rounded-full bg-zinc-700/80 dark:bg-zinc-700/80 bg-zinc-400/80"
+          className="w-1 h-3 rounded-full bg-zinc-400/80 dark:bg-zinc-700/80"
         />
-        <h2 className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
-          Selected Work
-        </h2>
+        <h1 className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+          Work
+        </h1>
       </motion.div>
 
       <div className="grid gap-10 md:gap-12">
-        {teaser.map((work) => (
+        {works.map((work) => (
           <motion.div key={work.name} variants={SAFE_VARIANTS} className="group">
             <div className="flex items-baseline justify-between mb-3">
               {work.internal ? (
@@ -89,15 +74,6 @@ export const SelectedWork = () => {
           </motion.div>
         ))}
       </div>
-
-      <motion.div variants={SAFE_VARIANTS}>
-        <Link
-          href="/work"
-          className="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors"
-        >
-          see all work →
-        </Link>
-      </motion.div>
-    </motion.section>
+    </motion.div>
   );
-};
+}

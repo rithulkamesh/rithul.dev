@@ -38,11 +38,11 @@ const Header: React.FC = () => {
           </Link>
           <div className="flex gap-1">
             <Link
-              href="/#selected-work"
+              href="/work"
               className="dark:text-zinc-300 text-zinc-800"
-              title="projects"
+              title="work"
             >
-              projects
+              work
             </Link>
             <Link
               href="/blog"
