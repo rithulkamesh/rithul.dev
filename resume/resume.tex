@@ -1,0 +1,181 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[top=0.55in, bottom=0.55in, left=0.65in, right=0.65in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{needspace}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{
+  itemsep=1pt,
+  topsep=3pt,
+  parsep=0pt,
+  leftmargin=1.25em,
+  label=\textbullet
+}
+
+\titleformat{\section}
+  {\bfseries\normalsize}
+  {}
+  {0em}
+  {}
+  [\vspace{1pt}\titlerule]
+\titlespacing*{\section}{0pt}{9pt}{4pt}
+
+% #1 org  #2 location/tech  #3 role/subtitle  #4 dates
+\newcommand{\entry}[4]{%
+  \par\vspace{5pt}
+  \noindent\textbf{#1}\hfill\textit{#2}%
+  \ifx\relax#3\relax\else%
+    \\[-1pt]\textit{#3}\hfill\textit{#4}%
+  \fi%
+  \par\vspace{1pt}%
+}
+
+\begin{document}
+
+%------------------------------------------------------------------
+%  HEADER
+%------------------------------------------------------------------
+\begin{center}
+  {\LARGE\bfseries Rithul Kamesh}\\[5pt]
+  \small
+  \href{mailto:hi@rithul.dev}{hi@rithul.dev}\enspace\textbar\enspace
+  \href{https://rithul.dev}{rithul.dev}\enspace\textbar\enspace
+  \href{https://github.com/rithulkamesh}{github.com/rithulkamesh}\enspace\textbar\enspace
+  +91\,8904973890
+\end{center}
+
+\vspace{2pt}
+
+%------------------------------------------------------------------
+\section{SUMMARY}
+
+\noindent
+AI infrastructure and systems engineer building the runtime, storage, and tooling
+layer beneath LLM and ML workloads. Shipped a multi-tier LLM caching runtime
+achieving 92.5\% token reduction on agent workloads, and an embedded vector
+database distributed across five language ecosystems, both running in production
+AI pipelines. Systems background in Rust, Go, C++, and CUDA spanning execution
+engines, distributed storage, and developer tooling.
+
+%------------------------------------------------------------------
+\section{SELECTED PROJECTS}
+
+\entry{Continuum}{C++, Python}
+{Unified LLM and ML Execution Runtime}{}
+\begin{itemize}
+  \item Designed a unified IR dispatching LLM token generation and tensor computation
+        through a single C++ execution graph, with a five-tier reuse hierarchy --- exact
+        memoization, semantic caching, trie prefix KV caching, layer KV warm-start, and
+        memory graph recall --- achieving 92.5\% token reduction on mixed agent workloads
+        and up to 99\% on shared-prefix calls
+  \item Built provider-agnostic backend support (OpenAI, Azure OpenAI, Anthropic, vLLM,
+        libtorch, Apple MLX) with durable, checkpointable execution enabling
+        process-resumable and forkable agent workflows
+  \item Shipped as \texttt{continuum-ai} on PyPI with Python/C++ bindings, CI matrix
+        on Linux and macOS, fuzz workflow, and coverage gates; featured on Product Hunt
+        at launch
+\end{itemize}
+
+\entry{Veclite}{Rust, Python (PyO3), Go (CGO), C/C++, Zig}
+{Embedded Vector Database}{}
+\begin{itemize}
+  \item Engineered HNSW indexing with SIMD-accelerated distance kernels (cosine, L2,
+        dot product, Manhattan) in Rust with single-file storage and a vector-native SQL
+        dialect supporting hybrid metadata + similarity search
+  \item Maintained 14 stable releases (latest v1.1.1) with an ABI-stable C layer,
+        distributed across 5 language ecosystems --- Crates.io, PyPI (GIL-released
+        search via PyO3), Go modules, and C/C++ headers --- enabling zero-server,
+        in-process vector search for production AI memory pipelines
+\end{itemize}
+
+\entry{Docproc}{Python}
+{Document Intelligence Engine}{}
+\begin{itemize}
+  \item Built a document-to-Markdown conversion engine preserving layout, tables, and
+        semantic structure for LLM ingestion pipelines, with vision-model-based figure
+        and diagram description
+  \item Shipped an evaluation harness with a benchmarking suite measuring downstream
+        reasoning fidelity across document types
+\end{itemize}
+
+%------------------------------------------------------------------
+\section{EXPERIENCE}
+
+\entry{H2LooP}{On-Site}
+{AI Developer Advocate Intern}{July 2026 -- October 2026}
+\begin{itemize}
+  \item Built technical demos and reference implementations on Hydron's AI-powered
+        embedded development platform, covering firmware generation, debugging,
+        cross-target porting, and hardware-aware code generation workflows
+  \item Produced developer-facing technical content and sample repositories, and ran
+        hands-on workshops introducing AI-assisted embedded workflows to university and
+        professional engineering audiences
+\end{itemize}
+
+%------------------------------------------------------------------
+\Needspace{7\baselineskip}
+\section{TECHNICAL SKILLS}
+
+\noindent
+\textbf{Languages:} Rust, Go, Python, C/C++, CUDA \\
+\textbf{Systems:} Distributed Systems, SIMD, Lock-free Concurrency, WGPU, OpenMP, FDTD \\
+\textbf{Infrastructure:} Docker, Kubernetes, Prometheus, Grafana, OpenTelemetry, CI/CD \\
+\textbf{Backend:} REST, gRPC, FastAPI, Redis, Redis Streams, PostgreSQL, pgvector,
+  BM25, WebSockets \\
+\textbf{AI / ML:} PyTorch, Transformers, LangChain, LangGraph, Agent Systems,
+  RAG, LLM Evaluation, HNSW, Vector Databases
+
+%------------------------------------------------------------------
+\section{EDUCATION}
+
+\entry{PES University}{Bengaluru, India}
+{B.Tech, Electronics and Communication Engineering}{Aug 2023 -- May 2027}
+
+\entry{BGS National Public School}{Bengaluru, India}
+{HSSC, SSC}{Feb 2023}
+
+%------------------------------------------------------------------
+\section{RESEARCH EXPERIENCE}
+
+\entry{Photonics and Quantum Technology Lab, PES University}{Bengaluru, India}
+{Undergraduate Research Assistant}{Feb 2025 -- Present}
+\begin{itemize}
+  \item Modeling photonic integrated circuits via Lindblad/Hamiltonian open-quantum-system
+        formalisms and building FDTD-coupled quantum solvers (Crank--Nicholson stepping,
+        CPML boundaries, NTFF transforms) for photonic device characterization and state
+        fidelity analysis
+\end{itemize}
+
+\vspace{3pt}
+\noindent\textit{Teaching Assistant, Non-Linear Optics and Quantum Technology}
+\hfill \textit{Jan 2026 -- May 2026}\\
+Co-delivered lectures and built study guides and question banks for 100+ students.
+
+%------------------------------------------------------------------
+\section{PUBLICATIONS}
+
+\noindent
+B.\,S.\,Ullal, V.\,K.\,Narasimhaiah, and \textbf{R.\,Kamesh},
+``ResNet based deep learning approach for chronic obstructive pulmonary disease
+prediction using lung sound analysis,''
+\textit{IAES International Journal of Artificial Intelligence (IJ-AI)} (Scopus),
+vol.\,15, no.\,2, pp.\,1733--1745, Apr.\,2026.
+[ResNet: 97.90\% accuracy, 98.72\% precision, 0.9937\,AUC]
+\href{https://doi.org/10.11591/ijai.v15.i2.pp1733-1745}{doi:10.11591/ijai.v15.i2.pp1733-1745}
+
+%------------------------------------------------------------------
+\section{ACHIEVEMENTS}
+
+\noindent
+Hack Night 7.0, Third Place \hfill Oct 2025 \\
+Speaker, Snowflake User Meetup Chennai \hfill Jun 2025 \\
+Hack Night 6.0, Second Place \hfill Oct 2024
+
+\end{document}

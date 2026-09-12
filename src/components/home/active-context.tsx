@@ -8,10 +8,11 @@ import {
 
 const contexts = [
   {
-    entity: "Devsper",
-    role: "Co-Founder / Software Engineer",
-    description: "Building a distributed multi-agent runtime that turns repetitive work into autonomous workflows.",
-    href: "https://devsper.com",
+    entity: "H2LooP // Hydron",
+    role: "AI Developer Advocate Intern",
+    description:
+      "Building technical demos and developer content for Hydron's AI-powered embedded development platform.",
+    href: "https://hydron.sh",
     status: "Building",
   },
   {
@@ -23,19 +24,21 @@ const contexts = [
   },
   {
     entity: "PES University",
-    role: "Teaching Assistant",
-    description:
-      "Teaching Assistant for Non-Linear Optics and Quantum Technology, co-delivering lectures and building study guides and question banks for 100+ students.",
-    href: "https://pes.edu",
-    status: "Teaching",
-  },
-  {
-    entity: "PES University",
     role: "Student",
     description:
       "Deepening roots in electronics & communication via a Bachelor's degree.",
     href: "https://pes.edu",
     status: "Learning",
+  },
+];
+
+const pastContexts = [
+  {
+    entity: "PES University",
+    role: "Teaching Assistant",
+    description:
+      "Non-Linear Optics and Quantum Technology, co-delivering lectures and building study guides and question banks for 100+ students.",
+    period: "Jan 2026 – May 2026",
   },
 ];
 
@@ -97,6 +100,37 @@ export const ActiveContext = () => {
           </motion.a>
         ))}
       </div>
+
+      <motion.div variants={SAFE_VARIANTS} className="flex flex-col gap-3 mt-2">
+        <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground/50">
+          Past Context
+        </h3>
+        <div className="flex flex-col gap-2">
+          {pastContexts.map((item) => (
+            <div
+              key={`${item.entity}-${item.role}`}
+              className="grid grid-cols-1 md:grid-cols-[13rem_1.5rem_9rem_1.5rem_1fr] items-baseline md:gap-0 gap-1 opacity-50"
+            >
+              <h4 className="text-foreground font-medium text-sm">
+                {item.entity}
+              </h4>
+              <span className="hidden md:flex justify-center text-muted-foreground/30 font-light select-none">
+                /
+              </span>
+              <span className="text-muted-foreground text-xs md:text-sm">
+                {item.role}
+              </span>
+              <span className="hidden md:flex justify-center text-muted-foreground/30 font-light select-none">
+                /
+              </span>
+              <span className="text-muted-foreground/80 text-xs md:text-sm">
+                {item.description}{" "}
+                <span className="whitespace-nowrap">({item.period})</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
 
       <motion.div variants={SAFE_VARIANTS} className="flex flex-col gap-6 mt-6">
         <p className="text-muted-foreground text-sm italic border-l-2 border-border pl-3 py-1">
