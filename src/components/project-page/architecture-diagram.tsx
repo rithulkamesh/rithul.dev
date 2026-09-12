@@ -90,7 +90,10 @@ function ParallelNodes({
   );
 }
 
-export function ArchitectureDiagram({ label, steps }: ArchitectureDiagramProps) {
+export function ArchitectureDiagram({
+  label,
+  steps,
+}: ArchitectureDiagramProps) {
   return (
     <motion.section
       variants={SECTION_VARIANTS}

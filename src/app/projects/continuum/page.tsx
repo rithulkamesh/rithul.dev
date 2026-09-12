@@ -84,9 +84,10 @@ export default function ContinuumPage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            LLM pipelines stitch together Python scripts, inference servers, vector
-            stores, and orchestration layers — each with its own runtime and process
-            boundary. The glue code is fragile and the overhead is real.
+            LLM pipelines stitch together Python scripts, inference servers,
+            vector stores, and orchestration layers — each with its own runtime
+            and process boundary. The glue code is fragile and the overhead is
+            real.
           </p>
         </ProjectSection>
 
@@ -94,9 +95,9 @@ export default function ContinuumPage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Continuum is a C++ runtime that executes LLM and ML programs as compiled
-            execution graphs. You describe a pipeline once; the runtime schedules and
-            dispatches kernels with no interpreter in the loop.
+            Continuum is a C++ runtime that executes LLM and ML programs as
+            compiled execution graphs. You describe a pipeline once; the runtime
+            schedules and dispatches kernels with no interpreter in the loop.
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
             <li>embed, retrieve, generate — as first-class operations</li>
@@ -125,12 +126,12 @@ export default function ContinuumPage() {
 
         <WhyIBuiltThis>
           <p className="mb-4">
-            Every LLM pipeline I built ended up as a mess of subprocess calls and
-            HTTP clients. The model was fast; the glue was slow.
+            Every LLM pipeline I built ended up as a mess of subprocess calls
+            and HTTP clients. The model was fast; the glue was slow.
           </p>
           <p>
-            Continuum compiles the whole pipeline into a single execution graph — one
-            runtime, no boundaries.
+            Continuum compiles the whole pipeline into a single execution graph
+            — one runtime, no boundaries.
           </p>
         </WhyIBuiltThis>
 
@@ -143,7 +144,10 @@ export default function ContinuumPage() {
         <LinksSection
           label="Links"
           links={[
-            { label: "GitHub", href: "https://github.com/rithulkamesh/continuum" },
+            {
+              label: "GitHub",
+              href: "https://github.com/rithulkamesh/continuum",
+            },
           ]}
         />
       </main>

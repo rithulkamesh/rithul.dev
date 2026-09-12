@@ -43,7 +43,8 @@ const FEATURES = [
   },
   {
     title: "Native Speed",
-    description: "Rust performance, Python ergonomics — no marshalling overhead.",
+    description:
+      "Rust performance, Python ergonomics — no marshalling overhead.",
     iconName: "Terminal",
   },
   {
@@ -82,9 +83,9 @@ export default function FerryxPage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            Writing Rust extensions for Python means maintaining two separate codebases
-            of glue: the C FFI layer and the Python wrapper. Every type change requires
-            updates in three places.
+            Writing Rust extensions for Python means maintaining two separate
+            codebases of glue: the C FFI layer and the Python wrapper. Every
+            type change requires updates in three places.
           </p>
         </ProjectSection>
 
@@ -92,7 +93,8 @@ export default function FerryxPage() {
 
         <ProjectSection label="What it does">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Ferryx reads Rust source, reflects the public type surface, and emits:
+            Ferryx reads Rust source, reflects the public type surface, and
+            emits:
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm mb-4">
             <li>a C FFI layer</li>
@@ -101,7 +103,8 @@ export default function FerryxPage() {
             <li>optional TypeScript bindings via WASM</li>
           </ul>
           <p className="text-muted-foreground leading-relaxed">
-            Change the Rust signature; run ferryx; bindings update automatically.
+            Change the Rust signature; run ferryx; bindings update
+            automatically.
           </p>
         </ProjectSection>
 
@@ -111,7 +114,10 @@ export default function FerryxPage() {
 
         <SectionDivider variant="glow" />
 
-        <ArchitectureDiagram label="Compilation pipeline" steps={ARCHITECTURE} />
+        <ArchitectureDiagram
+          label="Compilation pipeline"
+          steps={ARCHITECTURE}
+        />
 
         <SectionDivider variant="grid" />
 
@@ -120,7 +126,7 @@ export default function FerryxPage() {
           inputTitle="Rust input"
           inputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
-{`pub fn add(a: i32, b: i32) -> i32 {
+              {`pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }`}
             </pre>
@@ -128,7 +134,7 @@ export default function FerryxPage() {
           outputTitle="Generated Python stub"
           outputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
-{`def add(a: int, b: int) -> int: ...`}
+              {`def add(a: int, b: int) -> int: ...`}
             </pre>
           }
         />

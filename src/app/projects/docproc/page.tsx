@@ -152,7 +152,7 @@ export default function DocprocPage() {
           outputTitle="Output (Markdown)"
           outputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
-{`## Methods
+              {`## Methods
 
 The diffusion equation is given by:
 
@@ -176,9 +176,7 @@ $$ ∂u/∂t = α ∇²u $$`}
             I kept losing structure when ingesting PDFs into LLM pipelines. Most
             tools flatten documents into text.
           </p>
-          <p>
-            docproc rebuilds the document as structured markdown.
-          </p>
+          <p>docproc rebuilds the document as structured markdown.</p>
         </WhyIBuiltThis>
 
         <SectionDivider variant="grid" />
@@ -190,7 +188,10 @@ $$ ∂u/∂t = α ∇²u $$`}
         <LinksSection
           label="Links"
           links={[
-            { label: "GitHub", href: "https://github.com/rithulkamesh/docproc" },
+            {
+              label: "GitHub",
+              href: "https://github.com/rithulkamesh/docproc",
+            },
           ]}
         />
       </main>

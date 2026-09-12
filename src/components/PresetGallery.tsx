@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Preset } from '@/data/presets';
-import { PresetCard } from '@/components/PresetCard';
-import { Search } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import { Preset } from "@/data/presets";
+import { PresetCard } from "@/components/PresetCard";
+import { Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PresetGalleryProps {
   presets: (Preset & { downloads: number })[];
 }
 
 export function PresetGallery({ presets }: PresetGalleryProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredPresets = presets.filter((preset) => {
     const searchLower = searchQuery.toLowerCase();
@@ -19,7 +19,7 @@ export function PresetGallery({ presets }: PresetGalleryProps) {
       preset.title.toLowerCase().includes(searchLower) ||
       preset.description.toLowerCase().includes(searchLower) ||
       preset.plugin.toLowerCase().includes(searchLower) ||
-      preset.tags.some(tag => tag.toLowerCase().includes(searchLower))
+      preset.tags.some((tag) => tag.toLowerCase().includes(searchLower))
     );
   });
 
@@ -53,7 +53,7 @@ export function PresetGallery({ presets }: PresetGalleryProps) {
               </motion.div>
             ))
           ) : (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

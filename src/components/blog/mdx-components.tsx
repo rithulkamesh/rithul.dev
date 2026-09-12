@@ -41,7 +41,7 @@ export const components = {
       <h1
         className={cn(
           "scroll-m-20 text-3xl font-semibold tracking-tight",
-          className
+          className,
         )}
         {...props}
       />
@@ -52,7 +52,7 @@ export const components = {
       <h2
         className={cn(
           "scroll-m-20 text-2xl font-semibold tracking-tight pb-2 border-b border-zinc-100 dark:border-zinc-800",
-          className
+          className,
         )}
         {...props}
       />
@@ -63,7 +63,7 @@ export const components = {
       <h3
         className={cn(
           "scroll-m-20 text-xl font-medium tracking-tight",
-          className
+          className,
         )}
         {...props}
       />
@@ -74,7 +74,7 @@ export const components = {
       <h4
         className={cn(
           "scroll-m-20 text-lg font-medium tracking-tight",
-          className
+          className,
         )}
         {...props}
       />
@@ -114,7 +114,7 @@ export const components = {
       <blockquote
         className={cn(
           "border-l-2 border-zinc-300 dark:border-zinc-700 pl-6 italic text-muted-foreground",
-          className
+          className,
         )}
         {...props}
       />
@@ -127,7 +127,7 @@ export const components = {
         alt={alt}
         className={cn(
           "rounded-md border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900",
-          className
+          className,
         )}
         {...props}
       />
@@ -138,7 +138,7 @@ export const components = {
       href={props.href as string}
       className={cn(
         "font-medium underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700 hover:decoration-foreground transition-colors",
-        className
+        className,
       )}
       {...props}
     />

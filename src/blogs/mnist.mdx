@@ -41,7 +41,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow import keras
 ```
 
-Now conveniently, **scikit-learn** lets us get the dataset without any additional headaches so all we have to do to fetch our data and split it into training and testing sets is as follows: 
+Now conveniently, **scikit-learn** lets us get the dataset without any additional headaches so all we have to do to fetch our data and split it into training and testing sets is as follows:
 
 ```py
 def fetch_data():
@@ -59,10 +59,11 @@ def fetch_data():
 
 X_train, X_test, y_train, y_test = fetch_data()
 ```
+
 We'll put this as a function since we're going to be reusing this soon enough.
 
-
 Now we need to design how the model looks, For the sake of simplicity let's use only 3 layers.
+
 1. One for flattening the 28x28 image into a vector of length 784
 2. One hidden layer for processing
 3. One output layer with 10 neurons to classify digits from 0-9
@@ -94,12 +95,12 @@ model.summary()
 
 The output is going to look something like:
 
-| Layer (type)         | Output Shape | Param #  |
-|----------------------|--------------|----------|
-| dense (Dense)        | (None, 128)  | 100,480  |
-| dropout (Dropout)    | (None, 128)  | 0        |
-| dense_1 (Dense)      | (None, 64)   | 8,256    |
-| dense_2 (Dense)      | (None, 10)   | 650      |
+| Layer (type)      | Output Shape | Param # |
+| ----------------- | ------------ | ------- |
+| dense (Dense)     | (None, 128)  | 100,480 |
+| dropout (Dropout) | (None, 128)  | 0       |
+| dense_1 (Dense)   | (None, 64)   | 8,256   |
+| dense_2 (Dense)   | (None, 10)   | 650     |
 
 Now let's take our data and train the model with it then save it to a file
 
@@ -118,15 +119,17 @@ Ok we have a trained model. Now what? We need to measure it's performance and ma
 ## Measuring Performance
 
 ### Precision
+
 Think of precision as "When our model says YES, how often is it actually right?" It's like your friend who loves spotting dogs - if they point at 10 animals saying "That's a dog!" and 7 of those were actually dogs while 3 were cats, their precision would be 7/10 or 70%. In math terms:
 
 $$ Precision = \frac{True\;Positives}{True\;Positives + False\;Positives} = \frac{TP}{TP + FP} $$
 
 ### Confusion Matrix
+
 Before we jump into F1 score, let's talk about the confusion matrix - it's like a report card for our model showing all the ways it can be right or wrong. Imagine a 2x2 grid:
 
-|                      | Actually Yes | Actually No |
-|---------------------|--------------|-------------|
+|                     | Actually Yes | Actually No |
+| ------------------- | ------------ | ----------- |
 | Model Predicted Yes | TP           | FP          |
 | Model Predicted No  | FN           | TN          |
 
@@ -136,6 +139,7 @@ Before we jump into F1 score, let's talk about the confusion matrix - it's like 
 - True Negatives (TN): Model said no, reality was no (correctly ignored)
 
 ### F1 Score
+
 Now, F1 score is like finding the sweet spot between precision and recall. Recall (also called sensitivity) answers "Out of all actual positive cases, how many did we catch?"
 
 $$ Recall = \frac{True\;Positives}{True\;Positives + False\;Negatives} = \frac{TP}{TP + FN} $$
@@ -153,7 +157,7 @@ A perfect F1 score is 1, meaning your model is spot-on with both precision and r
 Let's use the help of a couple extra packages to make this beautiful
 
 ```sh
-pip install matplotlib 
+pip install matplotlib
 ```
 
 Let's open a `test_model.py` file where we handle all the forthcoming code. As usual we need imports.
@@ -220,6 +224,7 @@ plt.xticks(digits)
 
 plt.show()
 ```
+
 The output is going to look something like this:
 
 ![digitwise_performance](/blogs/mnist/digitwise_perf.png)
@@ -253,6 +258,7 @@ The above snippet should give us a neat confusion matrix like we see below. Agai
 ![Confusion Matrix](/blogs/mnist/confusion_matrix.png)
 
 Let's go one step further, and see the average Precision and F1 Scores of all the classes:
+
 ```py
 print("\nOverall Model Performance:")
 print(
@@ -269,30 +275,34 @@ Remember how we started with just simple numbers and turned them into something 
 
 Sure, this is just the beginning - there's way more to explore in machine learning. But now you've got the foundations: you understand what training really means, how models learn, and most importantly, how to tell if your model is actually doing a good job (thanks, confusion matrix!).
 
-<div style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '2rem',
-    paddingTop: '1rem',
-}}>
-        <a
-        href="/blog/machine-learning"
-        style={{
-        textDecoration: 'none'
-        }}
-    >
-        ← Previous<br/>
-        <span style={{fontWeight: 500, textDecoration: 'underline'
-}}>Machine Learning</span>
-    </a>
-    <a
-        style={{
-            textAlign: 'right',
-            textDecoration: 'none',
-            color: "#999",
-        }}
-    >
-        Next →<br/>
-        <span style={{fontWeight: 500, textDecoration: "underline"}}>(WIP)</span>
-    </a>
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "2rem",
+    paddingTop: "1rem",
+  }}
+>
+  <a
+    href="/blog/machine-learning"
+    style={{
+      textDecoration: "none",
+    }}
+  >
+    ← Previous
+    <br />
+    <span style={{ fontWeight: 500, textDecoration: "underline" }}>
+      Machine Learning
+    </span>
+  </a>
+  <a
+    style={{
+      textAlign: "right",
+      textDecoration: "none",
+      color: "#999",
+    }}
+  >
+    Next →<br />
+    <span style={{ fontWeight: 500, textDecoration: "underline" }}>(WIP)</span>
+  </a>
 </div>

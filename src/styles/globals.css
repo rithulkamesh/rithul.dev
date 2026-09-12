@@ -182,7 +182,9 @@ code,
 pre,
 .code-block {
   font-family: var(--font-code), "Fira Code", monospace;
-  font-feature-settings: "liga" 1, "calt" 1;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1;
 }
 
 pre {

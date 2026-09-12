@@ -1,8 +1,15 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useRef, useEffect, ReactNode } from 'react';
-import { Play, Pause, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  ReactNode,
+} from "react";
+import { Play, Pause, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TrackInfo {
   src: string;
@@ -26,15 +33,16 @@ const AudioContext = createContext<AudioContextType | null>(null);
 
 export function useAudio() {
   const context = useContext(AudioContext);
-  if (!context) throw new Error('useAudio must be used within an AudioProvider');
+  if (!context)
+    throw new Error("useAudio must be used within an AudioProvider");
   return context;
 }
 
 const formatTime = (time: number) => {
-  if (isNaN(time)) return '0:00';
+  if (isNaN(time)) return "0:00";
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
 export function AudioProvider({ children }: { children: ReactNode }) {
@@ -44,7 +52,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [analyserReady, setAnalyserReady] = useState(false);
-  
+
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -53,19 +61,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const setupAudio = () => {
     if (!audioRef.current) return;
     if (!audioCtxRef.current) {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
       audioCtxRef.current = new AudioCtx();
       analyserRef.current = audioCtxRef.current.createAnalyser();
       analyserRef.current.fftSize = 128; // 64 bins
-      
-      sourceRef.current = audioCtxRef.current.createMediaElementSource(audioRef.current);
+
+      sourceRef.current = audioCtxRef.current.createMediaElementSource(
+        audioRef.current,
+      );
       sourceRef.current.connect(analyserRef.current);
       analyserRef.current.connect(audioCtxRef.current.destination);
       setAnalyserReady(true);
     }
-    
-    if (audioCtxRef.current.state === 'suspended') {
+
+    if (audioCtxRef.current.state === "suspended") {
       audioCtxRef.current.resume();
     }
   };
@@ -75,18 +86,20 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       togglePlayPause();
       return;
     }
-    
+
     setActiveTrack(track);
     setIsPlaying(true);
     setProgress(0);
     setCurrentTime(0);
     setDuration(0);
-    
+
     // Slight delay to allow React to update the <audio src> before calling play
     setTimeout(() => {
       setupAudio();
       if (audioRef.current) {
-        audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        audioRef.current
+          .play()
+          .catch((e) => console.error("Audio playback failed:", e));
       }
     }, 50);
   };
@@ -94,14 +107,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const togglePlayPause = () => {
     if (!audioRef.current || !activeTrack) return;
     setupAudio();
-    
+
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play()
+      audioRef.current
+        .play()
         .then(() => setIsPlaying(true))
-        .catch(e => console.error("Audio playback failed:", e));
+        .catch((e) => console.error("Audio playback failed:", e));
     }
   };
 
@@ -147,13 +161,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AudioContext.Provider value={{
-      activeTrack, isPlaying, currentTime, duration, progress, 
-      analyser: analyserReady ? analyserRef.current : null,
-      playTrack, togglePlayPause, seek, closePlayer
-    }}>
+    <AudioContext.Provider
+      value={{
+        activeTrack,
+        isPlaying,
+        currentTime,
+        duration,
+        progress,
+        analyser: analyserReady ? analyserRef.current : null,
+        playTrack,
+        togglePlayPause,
+        seek,
+        closePlayer,
+      }}
+    >
       {children}
-      
+
       <audio
         ref={audioRef}
         src={activeTrack?.src}
@@ -171,7 +194,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed bottom-6 right-6 z-[100] flex items-center gap-4 rounded-full border border-zinc-800 bg-zinc-950/90 px-4 py-2.5 shadow-2xl backdrop-blur-md"
           >
             <button
@@ -184,7 +207,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 <Play className="h-4 w-4 fill-current ml-0.5" />
               )}
             </button>
-            
+
             <div className="flex flex-col pr-2">
               <span className="max-w-[150px] truncate text-xs font-bold text-zinc-100 sm:max-w-[200px]">
                 {activeTrack.title}
@@ -193,7 +216,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
             </div>
-            
+
             <button
               onClick={closePlayer}
               className="flex h-6 w-6 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300 transition-colors"

@@ -30,15 +30,22 @@ export function TerminalSnippet({ label, code }: TerminalSnippetProps) {
           {label}
         </h2>
       </motion.div>
-      <motion.div variants={SAFE_VARIANTS} className="rounded-lg overflow-hidden border border-border bg-[#1e1e2e] shadow-lg">
+      <motion.div
+        variants={SAFE_VARIANTS}
+        className="rounded-lg overflow-hidden border border-border bg-[#1e1e2e] shadow-lg"
+      >
         <div className="flex items-center gap-2 px-3 py-2 bg-muted/50 border-b border-border">
           <span className="w-2.5 h-2.5 rounded-full bg-zinc-500/80" />
           <span className="w-2.5 h-2.5 rounded-full bg-zinc-500/80" />
           <span className="w-2.5 h-2.5 rounded-full bg-zinc-500/80" />
-          <span className="text-xs font-mono text-muted-foreground ml-2">terminal</span>
+          <span className="text-xs font-mono text-muted-foreground ml-2">
+            terminal
+          </span>
         </div>
         <pre className="p-4 overflow-x-auto">
-          <code className="code-block text-sm text-foreground">{code.trim()}</code>
+          <code className="code-block text-sm text-foreground">
+            {code.trim()}
+          </code>
         </pre>
       </motion.div>
     </motion.section>

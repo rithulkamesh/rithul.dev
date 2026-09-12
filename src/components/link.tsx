@@ -16,7 +16,10 @@ const Link: React.FC<Props> = ({
   target,
   title,
 }) => {
-  const isExternal = href.startsWith("http") || href.startsWith("://") || href.startsWith("/resume.pdf");
+  const isExternal =
+    href.startsWith("http") ||
+    href.startsWith("://") ||
+    href.startsWith("/resume.pdf");
 
   if (isExternal) {
     return (

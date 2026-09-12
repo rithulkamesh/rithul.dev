@@ -5,52 +5,59 @@ author: "Rithul Kamesh"
 tags: ["ai-ml"]
 ---
 
-
 #### Index
+
 1. [Neural Networks](/blog/neural-nets)
 2. [Backpropagation](/blog/backpropagation)
 3. Machine Learning (You are here)
 4. [MNIST Number Classification](/blog/mnist)
-
 
 > The art of programming computers to learn from data is called **machine learning**
 
 Let's finally get to the exciting stuff, start on ML. This blog is theory again but by the end of it, you'll be able to differentiate between the types of ML systems as well as identify the challenges in machine learning.
 
 ML systems are classified using the following criteria:
+
 - Training Supervision
 - Whether they can learn on the go.
 - Type of pattern detection
 
 ### Classification based on Training Supervision
+
 #### Supervised Learning
+
 In supervised learning, the algorithm learns from labeled data - like having a teacher who provides both the questions and correct answers. The system learns to recognize patterns between input features and their corresponding outputs, allowing it to make predictions on new, unseen data.
 
 Example: Teaching a model to identify spam emails by showing it thousands of emails already marked as "spam" or "not spam".
 
 #### Unsupervised Learning
+
 In unsupervised learning, the algorithm works with unlabeled data, trying to discover hidden patterns and structures on its own. There are no correct answers to learn from - the system must find meaningful groupings or relationships within the data.
 
 Example: A shopping platform analyzing customer purchase histories to automatically group similar customers together.
 
 #### Semi-Supervised Learning
+
 Semi-supervised learning combines both labeled and unlabeled data during training. It uses a small amount of labeled data along with a large amount of unlabeled data, making it particularly useful when labeling data is expensive or time-consuming.
 
 Example: A medical imaging system trained on a small set of diagnosed X-rays and a large set of undiagnosed ones to detect abnormalities.
 
 #### Self-Supervised Learning
+
 In self-supervised learning, the system creates its own training labels from the input data. It learns by solving "proxy tasks" - clever ways to extract supervisory signals from the data itself without human annotation.
 
 Example: A language model predicting the next word in a sentence, using the natural structure of text to learn without explicit labels.
 
 #### Reinforcement Learning
+
 Reinforcement learning involves an agent learning to make decisions by interacting with an environment. The agent performs actions and receives rewards or penalties, gradually learning the best strategy to maximize its cumulative reward.
 
-
 Example: Training an AI to play chess by having it play thousands of games, learning from wins (rewards) and losses (penalties) to improve its strategy.
+
 ### Types of Machine Learning Approaches
 
 #### Batch Learning (Learning All at Once)
+
 Think of this as a student who crams for an exam - taking in all the information at once before putting it to use. The machine gorges itself on data, digests it thoroughly, and only then starts making decisions.
 
 Example: Netflix does this when it analyzes an entire year of viewing habits to update its recommendations. It's like a yearly feast of data, after which the system won't learn anything new until the next big update.
@@ -58,6 +65,7 @@ Example: Netflix does this when it analyzes an entire year of viewing habits to 
 The beauty of this approach lies in its simplicity - it's like following a well-structured study plan. The system has time to process everything methodically and produces reliable results. However, it's rather inflexible, like a student who only studies once per semester. It needs to keep all its study materials (data) around and requires significant effort to incorporate new knowledge.
 
 #### Online Learning (Learning on the Go)
+
 This is the continuous learner - like someone who picks up new skills every day on the job. The system is constantly alert, absorbing new information and updating its understanding of the world in real-time.
 
 Example: Picture a credit card fraud detection system that's always on its toes, learning from each new transaction to spot the latest scam patterns. It's like a street-smart detective who adapts to criminals' evolving tactics.
@@ -65,6 +73,7 @@ Example: Picture a credit card fraud detection system that's always on its toes,
 This approach shines in its adaptability - it can handle an endless stream of new information and quickly pick up on new trends. Yet, like any quick learner, it might sometimes pick up bad habits or forget important old lessons if not carefully monitored.
 
 #### Instance-Based Learning (Learning by Example)
+
 Imagine a wise doctor who has treated thousands of patients and remembers each case. When a new patient arrives, they draw upon these memories to make a diagnosis. That's how instance-based learning works - it's all about collecting experiences and drawing parallels.
 
 Example: The system acts like a meticulous librarian, carefully cataloging every example it sees and then comparing new cases to its vast collection of memories.
@@ -74,7 +83,6 @@ This method excels in its precision and ability to handle nuanced situations. Ho
 Alright that's a lot to take in, but it's crucial to understand how these work to build a working ML system.
 
 In the next part, we'll be writing a simple model to classify numbers using the MNIST dataset, a.k.a the "hello, world!" to machine learning.
-
 
 <div style={{
     display: 'flex',

@@ -1,14 +1,21 @@
-import Link from 'next/link';
-import { presetsData } from '@/data/presets';
-import { PresetCard } from '@/components/PresetCard';
-import { redis } from '@/lib/redis';
-import { DECORATIVE_VARIANTS, SAFE_VARIANTS, SECTION_VARIANTS } from '@/lib/animation';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import { presetsData } from "@/data/presets";
+import { PresetCard } from "@/components/PresetCard";
+import { redis } from "@/lib/redis";
+import {
+  DECORATIVE_VARIANTS,
+  SAFE_VARIANTS,
+  SECTION_VARIANTS,
+} from "@/lib/animation";
+import { motion } from "framer-motion";
 
 export async function HomeMusicSection() {
   let downloadData: string[] = [];
   try {
-    downloadData = await redis.zrange('preset-downloads', 0, 2, { rev: true, withScores: true });
+    downloadData = await redis.zrange("preset-downloads", 0, 2, {
+      rev: true,
+      withScores: true,
+    });
   } catch (error) {
     // silently fail for mock
   }
@@ -20,12 +27,13 @@ export async function HomeMusicSection() {
     downloadCounts.set(id, score);
   }
 
-  const featuredPresets = [...presetsData].map(preset => ({
-    ...preset,
-    downloads: downloadCounts.get(preset.id) || 0
-  }))
-  .sort((a, b) => b.downloads - a.downloads)
-  .slice(0, 2);
+  const featuredPresets = [...presetsData]
+    .map((preset) => ({
+      ...preset,
+      downloads: downloadCounts.get(preset.id) || 0,
+    }))
+    .sort((a, b) => b.downloads - a.downloads)
+    .slice(0, 2);
 
   if (featuredPresets.length === 0) return null;
 
@@ -46,11 +54,15 @@ export async function HomeMusicSection() {
       </div>
 
       <div className="flex flex-col">
-        {featuredPresets.map(preset => (
-          <PresetCard key={preset.id} preset={preset} downloadCount={preset.downloads} />
+        {featuredPresets.map((preset) => (
+          <PresetCard
+            key={preset.id}
+            preset={preset}
+            downloadCount={preset.downloads}
+          />
         ))}
       </div>
-      
+
       <Link
         href="/music"
         className="inline-flex text-sm font-bold text-foreground hover:text-foreground/80 transition-colors mt-4"

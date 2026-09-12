@@ -20,7 +20,9 @@ function pickTwo<T>(arr: T[]): T[] {
 
 export const SelectedWork = () => {
   const [teaser, setTeaser] = useState<typeof works>([]);
-  useEffect(() => { setTeaser(pickTwo(works)); }, []);
+  useEffect(() => {
+    setTeaser(pickTwo(works));
+  }, []);
 
   return (
     <motion.section
@@ -43,7 +45,11 @@ export const SelectedWork = () => {
 
       <div className="grid gap-10 md:gap-12">
         {teaser.map((work) => (
-          <motion.div key={work.name} variants={SAFE_VARIANTS} className="group">
+          <motion.div
+            key={work.name}
+            variants={SAFE_VARIANTS}
+            className="group"
+          >
             <div className="flex items-baseline justify-between mb-3">
               {work.internal ? (
                 <Link
@@ -51,7 +57,9 @@ export const SelectedWork = () => {
                   className="text-xl font-bold text-foreground hover:text-foreground/80 transition-colors"
                 >
                   {work.name}
-                  <span className="text-muted-foreground font-normal ml-2 text-sm">→</span>
+                  <span className="text-muted-foreground font-normal ml-2 text-sm">
+                    →
+                  </span>
                 </Link>
               ) : (
                 <a
@@ -59,7 +67,9 @@ export const SelectedWork = () => {
                   className="text-xl font-bold text-foreground hover:text-foreground/80 transition-colors"
                 >
                   {work.name}
-                  <span className="text-muted-foreground font-normal ml-2 text-sm">↗</span>
+                  <span className="text-muted-foreground font-normal ml-2 text-sm">
+                    ↗
+                  </span>
                 </a>
               )}
             </div>
@@ -67,21 +77,29 @@ export const SelectedWork = () => {
             <div className="grid md:grid-cols-2 gap-5 text-sm leading-relaxed">
               <div className="space-y-3">
                 <div>
-                  <span className="text-muted-foreground block font-mono text-xs mb-1">Context</span>
+                  <span className="text-muted-foreground block font-mono text-xs mb-1">
+                    Context
+                  </span>
                   <p className="text-muted-foreground">{work.context}</p>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block font-mono text-xs mb-1">Tension</span>
+                  <span className="text-muted-foreground block font-mono text-xs mb-1">
+                    Tension
+                  </span>
                   <p className="text-muted-foreground">{work.tension}</p>
                 </div>
               </div>
               <div className="space-y-3">
                 <div>
-                  <span className="text-muted-foreground block font-mono text-xs mb-1">Decision</span>
+                  <span className="text-muted-foreground block font-mono text-xs mb-1">
+                    Decision
+                  </span>
                   <p className="text-muted-foreground">{work.decision}</p>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block font-mono text-xs mb-1">Outcome</span>
+                  <span className="text-muted-foreground block font-mono text-xs mb-1">
+                    Outcome
+                  </span>
                   <p className="text-muted-foreground">{work.outcome}</p>
                 </div>
               </div>

@@ -17,7 +17,7 @@ export const metadata = new Metadata(
   "https://rithul.dev",
   meta,
   images,
-  "/logo.svg"
+  "/logo.svg",
 );
 
 export default function RootLayout({

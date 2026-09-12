@@ -16,7 +16,7 @@ export const works: Work[] = [
     context:
       "Document extraction is often brittle, lossy with images, or prohibitively expensive at scale.",
     tension:
-      "Generic OCR ignores structure; most \"AI study tools\" quietly fail on diagrams, equations, and screenshot-heavy slides.",
+      'Generic OCR ignores structure; most "AI study tools" quietly fail on diagrams, equations, and screenshot-heavy slides.',
     decision:
       "Built an opinionated document intelligence CLI that uses vision LLMs and config-driven RAG to turn arbitrary slides, papers, and textbooks into clean, full-context markdown.",
     outcome:

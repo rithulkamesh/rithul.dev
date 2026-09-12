@@ -20,14 +20,20 @@ export const metadata: Metadata = {
 };
 
 const DEVSPER_TERMINAL_LINES = [
-  { type: "prompt" as const, text: 'devsper run "review all open PRs and comment"' },
+  {
+    type: "prompt" as const,
+    text: 'devsper run "review all open PRs and comment"',
+  },
   { type: "output" as const, text: "provisioning agents..." },
   { type: "output" as const, text: "" },
   { type: "output" as const, text: "reading repository" },
   { type: "output" as const, text: "analyzing 14 files across 3 commits" },
   { type: "output" as const, text: "generating summary" },
   { type: "output" as const, text: "" },
-  { type: "output" as const, text: "$ gh pr comment 410 --body \"LGTM. Coverage improved.\"" },
+  {
+    type: "output" as const,
+    text: '$ gh pr comment 410 --body "LGTM. Coverage improved."',
+  },
   { type: "output" as const, text: "$ jira transition DEV-92 --to Done" },
   { type: "output" as const, text: "" },
   { type: "success" as const, text: "workflow running continuously" },
@@ -36,22 +42,26 @@ const DEVSPER_TERMINAL_LINES = [
 const DEVSPER_FEATURES = [
   {
     title: "Engineering",
-    description: "PR reviews, diff summaries, approval routing — automated end-to-end.",
+    description:
+      "PR reviews, diff summaries, approval routing — automated end-to-end.",
     iconName: "FileCode",
   },
   {
     title: "Finance",
-    description: "Report generation, anomaly detection, warehouse sync on schedule.",
+    description:
+      "Report generation, anomaly detection, warehouse sync on schedule.",
     iconName: "Calculator",
   },
   {
     title: "Legal",
-    description: "Contract scanning, risk flagging, clause routing — without the manual read.",
+    description:
+      "Contract scanning, risk flagging, clause routing — without the manual read.",
     iconName: "FileCode",
   },
   {
     title: "Integrations",
-    description: "GitHub, Slack, Postgres, Stripe, Notion, Vercel, Jira — natively.",
+    description:
+      "GitHub, Slack, Postgres, Stripe, Notion, Vercel, Jira — natively.",
     iconName: "LayoutGrid",
   },
   {
@@ -61,7 +71,8 @@ const DEVSPER_FEATURES = [
   },
   {
     title: "Plain English",
-    description: "Describe the task in plain English. Devsper handles provisioning.",
+    description:
+      "Describe the task in plain English. Devsper handles provisioning.",
     iconName: "Terminal",
   },
 ];
@@ -109,9 +120,10 @@ export default function DevsperPage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            Every team has work that repeats. PR reviews. Report pulls. Contract scans.
-            Each one is low-complexity but high-frequency — and together they consume
-            hours that should go toward things that actually require thought.
+            Every team has work that repeats. PR reviews. Report pulls. Contract
+            scans. Each one is low-complexity but high-frequency — and together
+            they consume hours that should go toward things that actually
+            require thought.
           </p>
         </ProjectSection>
 
@@ -119,8 +131,8 @@ export default function DevsperPage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Devsper is a distributed multi-agent runtime. You describe the task once in plain English.
-            Devsper:
+            Devsper is a distributed multi-agent runtime. You describe the task
+            once in plain English. Devsper:
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-2 text-sm">
             <li>provisions the agents</li>
@@ -136,7 +148,10 @@ export default function DevsperPage() {
 
         <SectionDivider variant="glow" />
 
-        <ArchitectureDiagram label="Execution lifecycle" steps={DEVSPER_ARCHITECTURE} />
+        <ArchitectureDiagram
+          label="Execution lifecycle"
+          steps={DEVSPER_ARCHITECTURE}
+        />
 
         <SectionDivider variant="grid" />
 
@@ -162,12 +177,13 @@ export default function DevsperPage() {
 
         <WhyIBuiltThis>
           <p className="mb-4">
-            I kept watching engineers spend an hour a day on work a machine could do in seconds.
-            Not because they lacked tools — but because every tool required a human in the loop.
+            I kept watching engineers spend an hour a day on work a machine
+            could do in seconds. Not because they lacked tools — but because
+            every tool required a human in the loop.
           </p>
           <p>
-            Devsper removes the loop. You describe what needs to happen. The runtime orchestrates
-            agents across your entire stack, continuously.
+            Devsper removes the loop. You describe what needs to happen. The
+            runtime orchestrates agents across your entire stack, continuously.
           </p>
         </WhyIBuiltThis>
 

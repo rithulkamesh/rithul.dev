@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Preset } from '@/data/presets';
-import { AudioPlayer } from './AudioPlayer';
-import { Download } from 'lucide-react';
-import Link from 'next/link';
+import { Preset } from "@/data/presets";
+import { AudioPlayer } from "./AudioPlayer";
+import { Download } from "lucide-react";
+import Link from "next/link";
 
 interface PresetCardProps {
   preset: Preset;
@@ -16,16 +16,14 @@ export function PresetCard({ preset, downloadCount = 0 }: PresetCardProps) {
       {/* Left side: Info */}
       <div className="flex flex-col gap-3 md:w-1/2">
         <div className="flex items-center gap-3">
-          <h3 className="text-xl font-bold text-foreground">
-            {preset.title}
-          </h3>
+          <h3 className="text-xl font-bold text-foreground">{preset.title}</h3>
           {downloadCount > 0 && (
             <span className="text-xs font-mono text-muted-foreground">
               {downloadCount.toLocaleString()} DLs
             </span>
           )}
         </div>
-        
+
         <p className="text-sm text-muted-foreground leading-relaxed">
           {preset.description}
         </p>
@@ -50,7 +48,9 @@ export function PresetCard({ preset, downloadCount = 0 }: PresetCardProps) {
         {preset.audioPreviewUrl ? (
           <AudioPlayer src={preset.audioPreviewUrl} title={preset.title} />
         ) : (
-          <div className="h-[40px] flex items-center text-xs font-mono text-zinc-600">No preview available</div>
+          <div className="h-[40px] flex items-center text-xs font-mono text-zinc-600">
+            No preview available
+          </div>
         )}
 
         <Link

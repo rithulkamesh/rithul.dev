@@ -13,7 +13,11 @@ interface CodeSnippetProps {
   language?: string;
 }
 
-export function CodeSnippet({ label, code, language = "bash" }: CodeSnippetProps) {
+export function CodeSnippet({
+  label,
+  code,
+  language = "bash",
+}: CodeSnippetProps) {
   return (
     <motion.section
       variants={SECTION_VARIANTS}

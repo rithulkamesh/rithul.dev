@@ -69,7 +69,10 @@ export function TerminalDemo({
       className="space-y-4"
     >
       {showLabel && (
-        <motion.div variants={SAFE_VARIANTS} className="flex items-center gap-2">
+        <motion.div
+          variants={SAFE_VARIANTS}
+          className="flex items-center gap-2"
+        >
           <motion.div
             variants={DECORATIVE_VARIANTS}
             className="w-1 h-3 rounded-full bg-zinc-700/80 dark:bg-zinc-700/80 bg-zinc-400/80"
@@ -104,7 +107,9 @@ export function TerminalDemo({
               }}
               className={`text-sm ${lineColor(line.type)} flex items-baseline gap-1 font-[var(--font-code)]`}
             >
-              <span className="select-none shrink-0">{linePrefix(line.type)}</span>
+              <span className="select-none shrink-0">
+                {linePrefix(line.type)}
+              </span>
               <span>{line.text}</span>
             </motion.div>
           ))}

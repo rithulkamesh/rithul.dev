@@ -55,7 +55,7 @@ export function FeatureGrid({ label, features }: FeatureGridProps) {
   const tiles = features.map((f) =>
     isFeatureTile(f)
       ? { ...f, icon: ICON_MAP[f.iconName] ?? Box }
-      : { title: f, description: undefined, icon: Box }
+      : { title: f, description: undefined, icon: Box },
   );
 
   return (

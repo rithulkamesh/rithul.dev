@@ -83,9 +83,10 @@ export default function VeclitePage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            Adding semantic search to a small project means spinning up Pinecone,
-            Weaviate, or a Postgres extension. That&apos;s a server, a connection pool,
-            and infra for something that should be as simple as opening a file.
+            Adding semantic search to a small project means spinning up
+            Pinecone, Weaviate, or a Postgres extension. That&apos;s a server, a
+            connection pool, and infra for something that should be as simple as
+            opening a file.
           </p>
         </ProjectSection>
 
@@ -93,9 +94,9 @@ export default function VeclitePage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            Veclite is an embedded vector database written in Rust. It lives inside
-            your process and persists to a single file — same mental model as SQLite,
-            but for vector search.
+            Veclite is an embedded vector database written in Rust. It lives
+            inside your process and persists to a single file — same mental
+            model as SQLite, but for vector search.
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
             <li>insert text or raw embeddings</li>
@@ -120,13 +121,14 @@ export default function VeclitePage() {
           inputTitle="Input"
           inputContent={
             <p className="text-muted-foreground font-mono text-sm">
-              veclite search --query &quot;machine learning optimizer&quot; --k 3
+              veclite search --query &quot;machine learning optimizer&quot; --k
+              3
             </p>
           }
           outputTitle="Output"
           outputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
-{`id=12  score=0.94  "Adam optimizer and learning rate scheduling"
+              {`id=12  score=0.94  "Adam optimizer and learning rate scheduling"
 id=7   score=0.91  "SGD momentum and weight decay"
 id=23  score=0.88  "gradient clipping strategies"`}
             </pre>
@@ -145,8 +147,9 @@ id=23  score=0.88  "gradient clipping strategies"`}
 
         <WhyIBuiltThis>
           <p className="mb-4">
-            I wanted semantic search in a local tool without standing up a vector
-            database. Every option was either too heavy or too opinionated.
+            I wanted semantic search in a local tool without standing up a
+            vector database. Every option was either too heavy or too
+            opinionated.
           </p>
           <p>
             Veclite is the SQLite of vector stores — embed it, forget the infra.
@@ -162,7 +165,10 @@ id=23  score=0.88  "gradient clipping strategies"`}
         <LinksSection
           label="Links"
           links={[
-            { label: "GitHub", href: "https://github.com/rithulkamesh/veclite" },
+            {
+              label: "GitHub",
+              href: "https://github.com/rithulkamesh/veclite",
+            },
           ]}
         />
       </main>

@@ -8,13 +8,14 @@ tags: ["ai-ml"]
 > Experience is the name everyone gives to their mistakes. – Oscar Wilde
 
 #### Index
+
 1. [Neural Networks](/blog/neural-nets)
 2. Backpropagation (You are here)
 3. [Machine Learning](/blog/machine-learning)
 4. [MNIST Number Classification](/blog/mnist)
 
-
 In the last part we saw what a neural network is and how it learns. Now, we need to fix its mistakes since it's common to mess up while learning. If we recall what alters the activation, It's mainly the change in 3 things:
+
 1. Bias
 2. Weights
 3. Activation of the previous layer
@@ -26,6 +27,7 @@ That's a long sentence, but to understand that, we need to understand the calcul
 For the sake of convention we shall we shall superscript the layer. For example, the activation of the L$^{th}$ layer will be represented as $a^{(L)}$.
 
 Take a look at this flowchart:
+
 $$
 w^{(L)}, a^{(L-1)}, b^{(L)} \\
                 ↓ \\
@@ -55,11 +57,13 @@ $$
 $$
 
 Now this is just for one case, and we have $k$ neurons. Let us assume the below structure for the network
+
 <img src="/blogs/backprop/network.svg" />
 
 Let the first layer have _k_ neurons and the last one have _j_. For readability and convention, we shall subscript the neuron number and superscript the layer.
 
 Our new cost function is now defined as:
+
 $$
 C_0 = \sum_{j=0}^{n_L-1} (a_j^{(L)} - y_j)^2
 $$
@@ -70,6 +74,7 @@ $$
 \frac{\delta C_0}{\delta a_k^{(l-1)}} =  \sum_{j=0}^{n_L-1} \frac{\delta z_j^{(L)}}{\delta a_k^{(L)}}
                                     \frac{\delta a_j^{(L)}}{\delta z_j^{(L)}}
                                     \frac{\delta C_0^{(L)}}{\delta a_j^{(L)}}
+
 
 $$
 
@@ -104,4 +109,5 @@ In the next part of the series we shall look at what are machine learning models
 
         <span style={{fontWeight: 500, textDecoration: "underline"}}>Machine Learning</span>
     </a>
+
 </div>

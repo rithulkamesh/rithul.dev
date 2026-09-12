@@ -22,7 +22,10 @@ export const metadata: Metadata = {
 };
 
 const TERMINAL_LINES = [
-  { type: "prompt" as const, text: 'wiki add "Transformers use self-attention"' },
+  {
+    type: "prompt" as const,
+    text: 'wiki add "Transformers use self-attention"',
+  },
   { type: "output" as const, text: "embedding...  done" },
   { type: "output" as const, text: "stored in knowledge base" },
   { type: "output" as const, text: "" },
@@ -35,12 +38,14 @@ const TERMINAL_LINES = [
 const FEATURES = [
   {
     title: "CLI + TUI",
-    description: "Fast terminal interface for adding, searching, and browsing notes.",
+    description:
+      "Fast terminal interface for adding, searching, and browsing notes.",
     iconName: "Terminal",
   },
   {
     title: "LLM Synthesis",
-    description: "Ask questions; the model synthesises answers from your own notes.",
+    description:
+      "Ask questions; the model synthesises answers from your own notes.",
     iconName: "Sparkles",
   },
   {
@@ -84,9 +89,9 @@ export default function LlmwikiPage() {
 
         <ProjectSection label="Problem">
           <p className="text-muted-foreground leading-relaxed">
-            Note-taking tools optimise for writing, not retrieval. Months later, the
-            note you need is buried — and keyword search returns 40 results for a term
-            that appears everywhere.
+            Note-taking tools optimise for writing, not retrieval. Months later,
+            the note you need is buried — and keyword search returns 40 results
+            for a term that appears everywhere.
           </p>
         </ProjectSection>
 
@@ -94,9 +99,10 @@ export default function LlmwikiPage() {
 
         <ProjectSection label="What it is">
           <p className="text-muted-foreground leading-relaxed mb-4">
-            llmwiki is a Rust CLI and TUI that turns your plain-text notes into a
-            queryable knowledge base. You write notes in natural language; the LLM
-            synthesises answers by retrieving and combining the relevant ones.
+            llmwiki is a Rust CLI and TUI that turns your plain-text notes into
+            a queryable knowledge base. You write notes in natural language; the
+            LLM synthesises answers by retrieving and combining the relevant
+            ones.
           </p>
           <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
             <li>add notes from the CLI or TUI</li>
@@ -127,7 +133,7 @@ export default function LlmwikiPage() {
           outputTitle="Answer"
           outputContent={
             <pre className="whitespace-pre-wrap font-mono text-xs">
-{`Based on your notes:
+              {`Based on your notes:
 
 Transformers use self-attention to weight the relevance of each
 token in a sequence relative to every other token. The attention
@@ -152,11 +158,13 @@ wiki ask "your question"`}
 
         <WhyIBuiltThis>
           <p className="mb-4">
-            I write notes constantly but rarely find them when I need them. Keyword
-            search breaks down the moment you forget the exact phrase you used.
+            I write notes constantly but rarely find them when I need them.
+            Keyword search breaks down the moment you forget the exact phrase
+            you used.
           </p>
           <p>
-            llmwiki lets me ask questions in the way I think, not in the way I typed.
+            llmwiki lets me ask questions in the way I think, not in the way I
+            typed.
           </p>
         </WhyIBuiltThis>
 
@@ -169,7 +177,10 @@ wiki ask "your question"`}
         <LinksSection
           label="Links"
           links={[
-            { label: "GitHub", href: "https://github.com/rithulkamesh/llmwiki" },
+            {
+              label: "GitHub",
+              href: "https://github.com/rithulkamesh/llmwiki",
+            },
           ]}
         />
       </main>

@@ -110,7 +110,7 @@ const Post = async ({ params }: Props) => {
 const getPost = ({ slug }: { slug: string }) => {
   const markdownFile = fs.readFileSync(
     path.join("src/blogs", slug + ".mdx"),
-    "utf-8"
+    "utf-8",
   );
 
   const { data: frontMatter, content } = matter(markdownFile);

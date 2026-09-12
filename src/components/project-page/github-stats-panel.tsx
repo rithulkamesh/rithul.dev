@@ -30,7 +30,11 @@ function formatDate(iso: string) {
   if (diffDays === 1) return "yesterday";
   if (diffDays < 7) return `${diffDays}d ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 export function GitHubStatsPanel({ repo }: GitHubStatsPanelProps) {
@@ -38,7 +42,9 @@ export function GitHubStatsPanel({ repo }: GitHubStatsPanelProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const slug = repo.replace(/^https?:\/\/github\.com\/?/, "").replace(/\/$/, "");
+    const slug = repo
+      .replace(/^https?:\/\/github\.com\/?/, "")
+      .replace(/\/$/, "");
     fetch(`https://api.github.com/repos/${slug}`, {
       headers: { Accept: "application/vnd.github.v3+json" },
     })
@@ -59,7 +65,10 @@ export function GitHubStatsPanel({ repo }: GitHubStatsPanelProps) {
         viewport={{ once: true }}
         className="space-y-4"
       >
-        <motion.div variants={SAFE_VARIANTS} className="flex items-center gap-2">
+        <motion.div
+          variants={SAFE_VARIANTS}
+          className="flex items-center gap-2"
+        >
           <motion.div
             variants={DECORATIVE_VARIANTS}
             className="w-1 h-3 rounded-full bg-zinc-700/80"
