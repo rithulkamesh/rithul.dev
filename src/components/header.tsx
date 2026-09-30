@@ -67,6 +67,13 @@ const Header: React.FC = () => {
             >
               music
             </Link>
+            <Link
+              href="/light"
+              className="dark:text-zinc-300 text-zinc-800"
+              title="light"
+            >
+              light
+            </Link>
           </div>
         </div>
       </span>

@@ -1,0 +1,52 @@
+---
+title: "Your LLM Agents Recompute Everything. Here's the Fix."
+date: "18th May 2026"
+author: "Rithul Kamesh"
+tags: ["llm", "ai-infrastructure", "cpp", "agents", "performance"]
+description: "Agent workflows re-tokenize the same prompts and lose hours of work to one crash. How runtime-level caching and checkpoints in Continuum fix both."
+---
+
+Watch an LLM agent run and count what it repeats.
+
+The same system prompt goes out on every step. A subtask I answered ten minutes ago gets answered again, because nothing remembers it. And when step 19 of 20 crashes, I start over at step 1 and pay for steps 1 to 18 a second time.
+
+The model isn't the problem. It's fast. The problem is the code around it, and most of us patch that code one dictionary cache at a time.
+
+## Fix it in one place
+
+I built [Continuum](/projects/continuum) on a simple idea: an LLM call and a tensor op are both operators in a graph. If one runtime owns the graph, it can see the waste and remove it, so I don't have to.
+
+A request passes through four layers, and the first one that can answer does:
+
+- **Memo.** An exact repeat never reaches the backend.
+- **Semantic cache.** A paraphrase of an earlier question counts as a repeat.
+- **Prefix trie.** If only the start is shared, only the new part gets sent.
+- **Layer KV.** When the backend is called, its warm decode state is reused.
+
+On a mixed 20-step agent workload against live Azure OpenAI, this cut token use by 92.5 percent. That's one workload. Yours will differ, but I'd bet it's more repetitive than you think.
+
+## Don't lose your place
+
+Caching saves money. Checkpointing saves the afternoon.
+
+Because the workflow is a graph with explicit values, Continuum can write a running workflow to bytes: the graph, every intermediate result, the cache state. Kill the process, hand the bytes to another one, and it carries on where the first stopped. You can also fork from any earlier step to try a different path without redoing what came before, and replay a run deterministically to see why it failed.
+
+```python
+from continuum import DurableAgent
+
+agent = DurableAgent()
+agent.begin(["research the topic", "draft the report", "publish it"])
+ckpt = agent.run_until_step(1)   # bytes: graph + every value + KV cache state
+```
+
+## Why C++
+
+Every process boundary in an LLM pipeline hides latency: an HTTP hop, a subprocess call, a serialization round trip. Benchmarks measure the model. Users feel the hops.
+
+So tokens and tensors live in one graph, and one scheduler sees all of it. Azure, OpenAI, Anthropic, vLLM, libtorch and MLX sit behind a single IR, and no interpreter sits between the graph and the work.
+
+## Try this first
+
+You don't need Continuum to use the idea. Measure how many tokens in a run are identical to a previous run. If it's a third or more, you have a caching problem, not a model problem. Make every step's inputs and outputs serializable, because what you can't checkpoint you can't resume. And keep caching in one layer, below your application code.
+
+If you want the runtime, `pip install continuum-ai`. The docs are at [ct.rithul.dev](https://ct.rithul.dev/python/) and the source is on [GitHub](https://github.com/rithulkamesh/continuum).

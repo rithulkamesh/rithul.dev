@@ -8,20 +8,18 @@ import {
   SAFE_VARIANTS,
   DECORATIVE_VARIANTS,
 } from "@/lib/animation";
+import { ContinuumActivity } from "./continuum-activity";
 
-function pickTwo<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a.slice(0, 2);
+function pickOne<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 export const SelectedWork = () => {
   const [teaser, setTeaser] = useState<typeof works>([]);
   useEffect(() => {
-    setTeaser(pickTwo(works));
+    const continuum = works.find((w) => w.name === "continuum");
+    const rest = works.filter((w) => w.name !== "continuum");
+    setTeaser(continuum ? [continuum, pickOne(rest)] : [pickOne(rest)]);
   }, []);
 
   return (
@@ -104,6 +102,7 @@ export const SelectedWork = () => {
                 </div>
               </div>
             </div>
+            {work.name === "continuum" && <ContinuumActivity />}
           </motion.div>
         ))}
       </div>

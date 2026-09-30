@@ -22,6 +22,12 @@ const calculateReadTime = (content: string) => {
   return readTimeMinutes;
 };
 
+export const SITE_URL = "https://rithul.dev";
+
+// "20th April 2026" -> Date
+export const parseBlogDate = (dateStr: string) =>
+  new Date(dateStr.replace(/(\d)(st|nd|rd|th)/, "$1"));
+
 export async function getBlogList(): Promise<Blog[]> {
   const blogDir = path.join(process.cwd(), "src/blogs");
   const files = fs.readdirSync(blogDir);
@@ -38,14 +44,13 @@ export async function getBlogList(): Promise<Blog[]> {
     } as Blog;
   });
 
-  const parseDate = (dateStr: string) => {
-    const cleanDate = dateStr.replace(/(st|nd|rd|th)/, "");
-    return new Date(cleanDate);
-  };
-
-  return blogs.sort((a, b) => {
-    const dateA = parseDate(a.meta.date);
-    const dateB = parseDate(b.meta.date);
-    return dateB.getTime() - dateA.getTime();
-  });
+  // future-dated posts are scheduled: hidden until their date (pages revalidate daily)
+  const now = Date.now();
+  return blogs
+    .filter((b) => parseBlogDate(b.meta.date).getTime() <= now)
+    .sort(
+      (a, b) =>
+        parseBlogDate(b.meta.date).getTime() -
+        parseBlogDate(a.meta.date).getTime(),
+    );
 }

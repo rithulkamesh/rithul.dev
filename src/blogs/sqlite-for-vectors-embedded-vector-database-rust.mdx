@@ -1,0 +1,55 @@
+---
+title: "SQLite for Vectors: Building an Embedded Vector DB in Rust"
+date: "29th June 2026"
+author: "Rithul Kamesh"
+tags: ["rust", "vector-search", "databases", "hnsw", "ai-infrastructure"]
+description: "Why semantic search shouldn't need a server. How veclite, an embedded Rust vector database with HNSW and single-file storage, works."
+---
+
+Adding semantic search to a small project should take an afternoon. Instead I'd pick a hosted vector database, provision it, manage a connection pool, and pay every month for something that would fit in a few megabytes.
+
+SQLite showed us the alternative decades ago. The database is a library and the data is a file. There's no daemon and no port. You open a path, and you're done. Backup is `cp`.
+
+Plenty of vector workloads have that shape: a personal knowledge base, a desktop app, an agent's memory. A separate server adds cost and failure modes and gives them nothing back. So I built [veclite](/projects/veclite), which runs in your process and keeps everything in one file.
+
+```rust
+use veclite_db::VecLite;
+
+let mut db = VecLite::open("memory.vec").unwrap();
+db.insert("doc_1", vec![0.1, 0.2, 0.3], None).unwrap();
+
+let results = db.search(vec![0.1, 0.2, 0.3]).top_k(5).execute().unwrap();
+```
+
+## What's inside
+
+**HNSW** handles approximate search. It's a layered graph you walk greedily toward the query, trading a little recall for far fewer comparisons. For small collections, veclite also does exact search, when brute force is affordable and correctness matters more.
+
+**SIMD** speeds up the distance metrics: cosine, L2, dot product and Manhattan. Distance is the inner loop of everything, so that's where vector instructions pay.
+
+**Metadata filters** matter because similarity alone is rarely the question. I want the nearest notes tagged `work`, not the nearest notes.
+
+**A small SQL dialect** covers the rest, because people already think in SQL:
+
+```sql
+CREATE TABLE memory;
+INSERT INTO memory VALUES ('doc_1', '[0.1, 0.2, 0.3]', '{"tag":"note"}');
+SELECT * FROM memory WHERE metadata.tag = 'note' ORDER BY vector <-> '[0.1, 0.2, 0.3]' LIMIT 5;
+```
+
+## Why Rust
+
+An embedded database lives inside someone else's process, so it can't surprise them. No garbage-collector pause mid-query, no undefined behaviour corrupting the host, memory that behaves predictably. Rust gives me that at full speed.
+
+It also makes the library easy to carry elsewhere. The core exposes a C ABI, and bindings sit on top: Rust, Python through PyO3, Go through CGO, C and C++, and an experimental Zig one. The Python binding releases the GIL during search, so a query doesn't freeze your other threads.
+
+## When not to use it
+
+An embedded single-file database is the wrong tool when many machines write to one index, when the data outgrows a single node, or when you want the operations a managed service provides. For everything smaller, which is most projects, opening a file is enough.
+
+```bash
+cargo add veclite-db      # Rust
+pip install veclite-db    # Python
+```
+
+The source and CLI are on [GitHub](https://github.com/rithulkamesh/veclite).

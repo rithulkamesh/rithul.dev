@@ -19,6 +19,14 @@ const Footer: React.FC = () => {
             title="source"
           >
             source
+          </Link>{" "}
+          |{" "}
+          <Link
+            href="/feed.xml"
+            className="text-muted-foreground hover:text-foreground"
+            title="rss"
+          >
+            rss
           </Link>
         </span>
         <div className="flex gap-4">

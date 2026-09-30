@@ -13,12 +13,15 @@ const firaCode = Fira_Code({
   variable: "--font-code",
 });
 
-export const metadata = new Metadata(
-  "https://rithul.dev",
-  meta,
-  images,
-  "/logo.svg",
-);
+export const metadata = {
+  ...new Metadata("https://rithul.dev", meta, images, "/logo.svg"),
+  title: { default: meta.title, template: "%s" },
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
+  robots: { index: true, follow: true },
+};
 
 export default function RootLayout({
   children,

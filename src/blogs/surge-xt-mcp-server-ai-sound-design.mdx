@@ -1,0 +1,42 @@
+---
+title: "Giving an AI Real Synth Docs: Building a Surge XT MCP Server"
+date: "20th July 2026"
+author: "Rithul Kamesh"
+tags: ["mcp", "llm", "sound-design", "synthesizers", "typescript"]
+description: "Ask an LLM about a synth and it guesses. I built an MCP server that lets it search the actual Surge XT docs. Here's the design and the tools."
+---
+
+Ask a language model how to recreate a sound and you'll get a confident answer. Ask what one particular knob on Surge XT does and you'll get a confident answer of another kind: assembled from training data, and often wrong in the details that matter.
+
+Surge XT has hundreds of parameters across oscillators, filters, effects and modulation. Nobody keeps that in their head, and no model does either. A smarter model won't fix it. The manual will.
+
+## The idea
+
+The [Model Context Protocol](https://modelcontextprotocol.io) lets an AI client call tools you define. [surgext-mcp](/projects/surgext-mcp) turns the official Surge XT docs into something a model can look up instead of remember. It downloads the docs from the Surge repository, splits them along their headings into `data/chunks.json`, and serves the pieces over MCP.
+
+## Four small tools
+
+A common mistake is one giant "ask anything" tool. Small tools give the model something to reason with:
+
+- `search_docs(query, top_k?)` finds sections by keyword or concept. This is where a model starts when it doesn't know the exact name.
+- `list_sections()` shows the doc hierarchy, so it can see what exists instead of guessing.
+- `get_section(section)` fetches a whole heading path, like `Oscillators > Wavetable`.
+- `get_parameter_info(parameter_name)` returns the documentation for a single knob.
+
+Search, orient, read, verify. It's the order a person uses a manual, and it turns out to be the order a model does too.
+
+## Split on headings
+
+I chunked by the document's own headings, not by character count. A fixed-size split will cut a parameter description in half or glue the end of one section to the start of another. Heading-aligned chunks stay whole, so what a search returns is a coherent answer to a coherent question.
+
+## Recreating a patch
+
+I built this to recreate sounds by ear. The repo includes a sample system prompt for it: describe the target sound, have the model look up the relevant oscillator, filter and modulation sections, then propose settings backed by what the docs say. Every suggestion traces to a section instead of a hunch.
+
+It works with Claude Desktop, Cursor and OpenCode. Register the server in each one's MCP config, pointing at `dist/index.js`. Setup is `bun install`, `bun run build`, `bun run ingest`.
+
+## What I took from it
+
+This is retrieval-augmented generation with the ceremony stripped out. No embeddings, no vector store. A well-chunked, authoritative document and plain full-text search were enough, because the corpus is small and structured. If your domain has a manual, wiring it in as tools may be the cheapest accuracy gain you'll find.
+
+The code is on [GitHub](https://github.com/rithulkamesh/surgext-mcp).

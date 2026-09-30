@@ -1,0 +1,48 @@
+---
+title: "Stop Hand-Writing Rust to Python Bindings"
+date: "8th June 2026"
+author: "Rithul Kamesh"
+tags: ["rust", "python", "ffi", "compilers", "developer-tools"]
+description: "Hand-written Rust to Python bindings drift out of sync with your code. How ferryx generates them from a semantic IR, and how it differs from PyO3."
+---
+
+The first Python binding for a Rust library is a pleasure. The tenth is a chore. By the thirtieth, the binding layer is a commit behind the Rust it wraps, and someone is chasing a type mismatch that only shows up when a user calls the function.
+
+The trouble is that I wrote the same type three times: in Rust, in the glue, and in the Python stubs. Change a field and I owe three edits. Miss one and nothing fails to compile.
+
+Compilers solved this long ago. Pick one source of truth and generate the rest.
+
+## Rust is the source
+
+[ferryx](/projects/ferryx) reads your Rust and produces the Python. You mark what to expose:
+
+```rust
+use ferryx_macros::ferryx;
+
+#[ferryx]
+pub struct Tensor {
+    pub data: Vec<f32>,
+}
+```
+
+ferryx parses that into a Rust AST, lowers it to a semantic IR, and emits the Python module and the `.pyi` stubs your editor reads. Change the Rust, rebuild, and the bindings follow.
+
+## Why an IR
+
+One rule I won't bend: going straight from AST to emitted code is forbidden. Everything passes through the IR.
+
+That looks like ceremony until you want a second target. If the Python emitter reads the Rust AST directly, a TypeScript emitter has to rediscover every decision the first one made. With an IR in the middle, each emitter answers one question: what does this concept look like in my language? Python works today. TypeScript is on the roadmap.
+
+A rewrite pass also turns Rust idioms into Python ones before emission, so the result reads like something a Python programmer wrote.
+
+## Why not PyO3?
+
+They solve different problems. PyO3 is how you write bindings, and it's excellent. ferryx is how you generate an SDK from metadata. They work together: ferryx handles the projection and packaging and leans on PyO3 where a real extension module is needed.
+
+If you have one function to expose, use PyO3 directly. If your type surface keeps growing and you're tired of keeping it in sync, that's what ferryx is for.
+
+## What changes
+
+The sync problem becomes a build problem. Wrong types fail the build. The stubs can't go stale, because nobody edits them. Adding a field is one edit, in the language you care about.
+
+ferryx is on [GitHub](https://github.com/rithulkamesh/ferryx) and PyPI, and the IR crate is published as `ferryx-ir`.

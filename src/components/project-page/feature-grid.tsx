@@ -18,6 +18,10 @@ import {
   GitBranch,
   Wrench,
   Terminal,
+  Mic,
+  Eye,
+  Heart,
+  Circle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -33,6 +37,10 @@ const ICON_MAP: Record<string, LucideIcon> = {
   GitBranch,
   Wrench,
   Terminal,
+  Mic,
+  Eye,
+  Heart,
+  Circle,
 };
 
 export interface FeatureTile {

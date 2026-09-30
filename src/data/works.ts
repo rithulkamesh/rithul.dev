@@ -23,32 +23,6 @@ export const works: Work[] = [
       "Static PDFs become queryable, refinable knowledge—ready for RAG, notes, flashcards, and assessment pipelines.",
   },
   {
-    name: "devsper",
-    href: "/projects/devsper",
-    internal: true,
-    context:
-      "Running multi-agent AI systems is chaotic without clear orchestration and shared state.",
-    tension:
-      "Agents need task scheduling, shared memory, and a single control plane—otherwise you're gluing scripts and hoping they don't collide.",
-    decision:
-      "Built a distributed AI worker runtime with an orchestrator, shared memory, and DAG-based scheduling so multi-agent runs stay predictable at scale.",
-    outcome:
-      "Autonomous workflows: research summaries, parallel analysis, and agent collaboration across engineering, finance, and legal operations.",
-  },
-  {
-    name: "Eigenwave",
-    href: "#",
-    internal: false,
-    context:
-      "Working on a proprietary photonics platform that bridges simulation and design workflows.",
-    tension:
-      "Most photonics tools are either opaque GUIs or low-level solvers that are hard to integrate into modern research and product stacks.",
-    decision:
-      "Designing Eigenwave as a focused, proprietary environment that pairs high-fidelity simulation with opinionated, ergonomic workflows.",
-    outcome:
-      "In active development—aimed at making advanced photonics exploration feel closer to modern software engineering.",
-  },
-  {
     name: "continuum",
     href: "/projects/continuum",
     internal: true,
@@ -112,5 +86,44 @@ export const works: Work[] = [
       "Built an MCP server that ingests and chunks the official Surge XT docs, exposing search, section fetch, and parameter lookup as tools AI models can call directly.",
     outcome:
       "AI assistants can now look up exact knob behaviour and guide patch recreation with authoritative documentation.",
+  },
+  {
+    name: "bruno",
+    href: "/projects/bruno",
+    internal: true,
+    context:
+      "ADHD attention doesn't follow timers—it fluctuates. Productivity tools that ping on a schedule create alarm fatigue and break focus.",
+    tension:
+      "Most assistants are either voice-only chatbots or rigid schedulers. Neither understands what's on your screen or whether you're actually focused.",
+    decision:
+      "Built a macOS desktop companion that uses on-device vision to detect when you drift, then nudges you with shame-free, adaptive voice — all local-first.",
+    outcome:
+      "A floating orb that watches your screen, talks to you, and remembers things — with neurodivergence-aware nudging that respects hyperfocus and quiet hours.",
+  },
+  {
+    name: "chorale",
+    href: "https://github.com/rithulkamesh/chorale",
+    internal: false,
+    context:
+      "Stacking vocal harmonies means recording take after take, or renting a harmonizer that turns the singer into a chipmunk.",
+    tension:
+      "Pitch shifting that ignores the voice's formants destroys the character of the singer.",
+    decision:
+      "Built an open-source C++ vocal harmonizer plugin that uses time-domain PSOLA to turn one mono line into eight harmonies.",
+    outcome:
+      "VST3, AU, and standalone on macOS, Windows, and Linux, with diatonic stacks, pedal drones, MIDI chords, and doubling.",
+  },
+  {
+    name: "polylogue",
+    href: "https://github.com/rithulkamesh/polylogue",
+    internal: false,
+    context:
+      "The Korg monologue has a great voice architecture, but it is monophonic and lives in hardware.",
+    tension:
+      "Playing chords on that sound means buying more hardware or settling for an approximation.",
+    decision:
+      "Built a polyphonic software synth on the monologue's architecture: two oscillators with sync and ring mod, a drive filter, two envelopes, and an LFO, with original branding and sounds.",
+    outcome:
+      "A JUCE 8 / C++20 plugin (VST3, AU, standalone) with PLAY macros, a full EDIT panel, and MIDI learn on every control.",
   },
 ];

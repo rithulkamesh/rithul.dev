@@ -52,6 +52,37 @@ export default async function MusicPage() {
           </p>
         </div>
 
+        <section className="flex flex-col gap-4">
+          <h2 className="text-sm font-mono uppercase tracking-wider text-muted-foreground">
+            Plugins I&apos;ve built
+          </h2>
+          {[
+            {
+              name: "Chorale",
+              href: "https://github.com/rithulkamesh/chorale",
+              text: "Open-source vocal harmonizer. Sing one line, get eight harmonies. VST3, AU, standalone.",
+            },
+            {
+              name: "Polylogue",
+              href: "https://github.com/rithulkamesh/polylogue",
+              text: "Polyphonic synth built on the Korg monologue's architecture. VST3, AU, standalone.",
+            },
+          ].map((p) => (
+            <a
+              key={p.name}
+              href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col gap-1"
+            >
+              <span className="font-medium text-foreground group-hover:underline">
+                {p.name}
+              </span>
+              <span className="text-sm text-muted-foreground">{p.text}</span>
+            </a>
+          ))}
+        </section>
+
         <PresetGallery presets={sortedPresets} />
       </div>
 

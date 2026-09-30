@@ -14,4 +14,3 @@ export { RealOutputSection } from "./real-output-section";
 export { WhyIBuiltThis } from "./why-i-built-this";
 export { GitHubStatsPanel } from "./github-stats-panel";
 export { DocprocDrift } from "./docproc-drift";
-export { HivemindPulses } from "./hivemind-pulses";

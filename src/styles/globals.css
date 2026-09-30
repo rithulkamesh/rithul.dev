@@ -339,6 +339,27 @@ td {
   text-align: left;
 }
 
+/* Slow drifting glow blobs behind the CTA heading (text-over-image effect) */
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+}
+
+.animate-blob-drift {
+  animation: blob-drift 16s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob-drift {
+    animation: none;
+  }
+}
+
 th {
   font-weight: 600;
 }

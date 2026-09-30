@@ -1,0 +1,53 @@
+---
+title: "PDF to Markdown for LLMs: Why Vision Models Beat OCR"
+date: "10th August 2026"
+author: "Rithul Kamesh"
+tags: ["llm", "rag", "python", "document-processing", "ocr"]
+description: "Plain OCR flattens diagrams, equations and tables. How docproc combines native text extraction with vision models to produce LLM-ready markdown."
+---
+
+Nearly every LLM workflow that touches documents starts by getting the text out of the PDF. And nearly every one quietly loses the parts that mattered.
+
+A PDF is a print format. It knows where to draw glyphs, not what a heading, a table or an equation is. Run it through a generic extractor and tables collapse into run-on lines, equations turn to noise, and every diagram vanishes.
+
+## What OCR gets wrong
+
+Structure comes first. Reading order and heading levels are guessed badly or not at all. Equations are layout, not text, so the symbols come out as fragments in the wrong order. Figures are often the whole point of a slide, and OCR either skips them or reads their labels with no sense of how they connect. On a screenshot-heavy slide, the content is inside an image and there's nothing to extract.
+
+Retrieval on top of that is retrieval over a damaged copy. No chunking strategy recovers what was destroyed before it began.
+
+## Use each tool where it's strong
+
+[docproc](/projects/docproc) doesn't choose between text extraction and vision. It uses both:
+
+- Native extraction for text that is really text. It's fast, cheap and exact.
+- A vision model for embedded images and diagrams, which get described in prose instead of dropped.
+- Equation preservation that keeps LaTeX intact, with optional LLM refinement for the messy cases.
+
+The output is one markdown file: headings restored, math in LaTeX, and every figure explained in words.
+
+```bash
+docproc --file paper.pdf -o paper.md
+```
+
+It reads PDF, DOCX, PPTX and XLSX, so slides and spreadsheets take the same path as papers.
+
+## Why markdown
+
+LLMs read it fluently, and it has enough structure to chunk sensibly: split on headings and each piece stands alone. It's also readable by people, which matters more than it sounds. When retrieval gives a strange answer, I can open the intermediate file and see exactly what the model saw.
+
+## Watch the cost
+
+A vision model on every page would be slow and expensive. So text pages stay on the cheap path and only images go to the vision model. docproc is driven by configuration, so you choose the provider and how much refinement to pay for.
+
+## Why I built it
+
+I was tired of learning from PDFs that AI tools couldn't read. Once slides, papers and textbooks become clean markdown, the rest gets easier: RAG over lecture material, notes, flashcards, practice questions. I wrote about the original motivation in [From Static PDFs to Interactive Understanding](/blog/docproc-static-to-interactive).
+
+```bash
+uv tool install git+https://github.com/rithulkamesh/docproc.git
+docproc init-config --env .env
+docproc --file input.pdf -o output.md
+```
+
+The source is on [GitHub](https://github.com/rithulkamesh/docproc).
