@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
+import { getCalApi } from "@calcom/embed-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "./link";
 import { LuMoon } from "react-icons/lu";
@@ -24,6 +25,12 @@ export const ThemeSwitcher: React.FC = () => {
 };
 
 const Header: React.FC = () => {
+  useEffect(() => {
+    getCalApi({ namespace: "15min" }).then((cal) =>
+      cal("ui", { layout: "month_view" }),
+    );
+  }, []);
+
   return (
     <div className="flex justify-between items-center">
       <span className="flex items-center space-x-2">
@@ -67,17 +74,20 @@ const Header: React.FC = () => {
             >
               music
             </Link>
-            <Link
-              href="/light"
-              className="dark:text-zinc-300 text-zinc-800"
-              title="light"
-            >
-              light
-            </Link>
           </div>
         </div>
       </span>
-      <ThemeSwitcher />
+      <div className="flex items-center gap-2">
+        <button
+          data-cal-namespace="15min"
+          data-cal-link="rithulkamesh/15min"
+          data-cal-config='{"layout":"month_view"}'
+          className="rounded-full border border-border px-3 py-1 text-xs hover:bg-accent transition-colors"
+        >
+          book a call
+        </button>
+        <ThemeSwitcher />
+      </div>
     </div>
   );
 };

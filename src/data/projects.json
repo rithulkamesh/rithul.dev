@@ -1,5 +1,11 @@
 [
   {
+    "name": "sunday",
+    "href": "/projects/sunday",
+    "description": "Can any model go AGI with the right harness? A local-first voice and screen agent harness (plan, act, verify, remember, learn), built as an open, eval-driven experiment.",
+    "technologies": ["rs", "ts"]
+  },
+  {
     "name": "docproc",
     "href": "https://github.com/rithulkamesh/docproc",
     "description": "Document intelligence CLI that turns static PDFs, slides, and textbooks into full-context markdown using vision LLMs and config-driven RAG.",
@@ -20,19 +26,7 @@
   {
     "name": "veclite",
     "href": "/projects/veclite",
-    "description": "SQLite for vectors — embedded AI memory engine in Rust.",
-    "technologies": ["rs"]
-  },
-  {
-    "name": "ferryx",
-    "href": "/projects/ferryx",
-    "description": "Compiles Rust systems into native Python ecosystems via FFI codegen.",
-    "technologies": ["rs", "py", "ts"]
-  },
-  {
-    "name": "llmwiki",
-    "href": "/projects/llmwiki",
-    "description": "A blazing fast CLI and TUI for maintaining an LLM-managed personal knowledge base.",
+    "description": "SQLite for vectors \u2014 embedded AI memory engine in Rust.",
     "technologies": ["rs"]
   },
   {
@@ -40,12 +34,6 @@
     "href": "/projects/surgext-mcp",
     "description": "MCP server that indexes Surge XT synthesizer docs so AI models can search parameters and assist with sound design.",
     "technologies": ["ts"]
-  },
-  {
-    "name": "bruno",
-    "href": "/projects/bruno",
-    "description": "A calm, minimal macOS desktop companion — a floating orb with local voice, multi-provider LLM, and screen-aware nudging.",
-    "technologies": ["rs"]
   },
   {
     "name": "chorale",

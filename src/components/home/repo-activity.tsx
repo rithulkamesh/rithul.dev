@@ -9,13 +9,16 @@ interface Commit {
   date: string;
 }
 
-export const ContinuumActivity = () => {
+export const RepoActivity = ({ repo }: { repo: string }) => {
   const [commits, setCommits] = useState<Commit[] | null>(null);
 
   useEffect(() => {
-    fetch("https://api.github.com/repos/rithulkamesh/continuum/commits?per_page=3", {
-      headers: { Accept: "application/vnd.github.v3+json" },
-    })
+    fetch(
+      `https://api.github.com/repos/rithulkamesh/${repo}/commits?per_page=3`,
+      {
+        headers: { Accept: "application/vnd.github.v3+json" },
+      },
+    )
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((data) =>
         setCommits(
@@ -28,7 +31,7 @@ export const ContinuumActivity = () => {
         ),
       )
       .catch(() => setCommits([]));
-  }, []);
+  }, [repo]);
 
   if (!commits || commits.length === 0) return null;
 

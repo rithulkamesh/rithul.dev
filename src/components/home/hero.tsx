@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { SAFE_VARIANTS, SECTION_VARIANTS } from "@/lib/animation";
 
 export const Hero = () => {
@@ -22,14 +21,8 @@ export const Hero = () => {
           variants={SAFE_VARIANTS}
           className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl"
         >
-          Exploring the intersection of systems, tooling, and{" "}
-          <Link
-            href="/light"
-            className="text-foreground border-b border-muted-foreground hover:border-foreground transition-colors"
-          >
-            photonics
-          </Link>
-          .
+          Building at the intersection of AI, systems, and tooling: the
+          runtimes, agents, and infrastructure underneath LLM workloads.
           <br />
           <motion.span
             variants={SAFE_VARIANTS}

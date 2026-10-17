@@ -36,9 +36,22 @@ export const Contact = () => {
             email me.
           </a>
         </motion.p>
-        <motion.p variants={SAFE_VARIANTS} className="mt-3 text-white/60 text-sm">
+        <motion.p
+          variants={SAFE_VARIANTS}
+          className="mt-3 text-white/60 text-sm"
+        >
           hi@rithul.dev
         </motion.p>
+        <motion.div variants={SAFE_VARIANTS} className="mt-8">
+          <button
+            data-cal-namespace="15min"
+            data-cal-link="rithulkamesh/15min"
+            data-cal-config='{"layout":"month_view"}'
+            className="rounded-full border border-white/30 px-5 py-2 text-sm text-white hover:bg-white hover:text-black transition-colors"
+          >
+            or book a call
+          </button>
+        </motion.div>
       </motion.div>
     </section>
   );

@@ -1,6 +1,7 @@
 export interface Work {
   name: string;
   href: string;
+  summary: string;
   internal: boolean;
   context: string;
   tension: string;
@@ -10,8 +11,25 @@ export interface Work {
 
 export const works: Work[] = [
   {
+    name: "sunday",
+    href: "/projects/sunday",
+    summary:
+      "Local-first voice and screen agent harness. Can any model go AGI with the right loop?",
+    internal: true,
+    context:
+      "Most of what looks like intelligence in an agent comes from the loop around the model, but nobody can say how much, because the loop is rarely measured.",
+    tension:
+      "Benchmarks score models, not harnesses. Swap the weights and you learn about the weights; you never learn what planning, verifying, and remembering are worth.",
+    decision:
+      "Built a local-first voice and screen agent harness around a swappable 4B model, and set a measurable bar: 70% on a fixed 50-task eval suite, with the pass rate rising while the model stays constant.",
+    outcome:
+      "An open experiment with a number instead of a vibe. If the number moves, the harness is doing real work; if it doesn't, that is a result too.",
+  },
+  {
     name: "docproc",
     href: "/projects/docproc",
+    summary:
+      "Vision-LLM CLI that turns PDFs and slides into full-context markdown.",
     internal: true,
     context:
       "Document extraction is often brittle, lossy with images, or prohibitively expensive at scale.",
@@ -25,6 +43,7 @@ export const works: Work[] = [
   {
     name: "continuum",
     href: "/projects/continuum",
+    summary: "C++ runtime that compiles LLM pipelines into static graphs.",
     internal: true,
     context:
       "LLM pipelines stitch together inference servers, vector stores, and orchestration layers across multiple process boundaries.",
@@ -38,6 +57,7 @@ export const works: Work[] = [
   {
     name: "veclite",
     href: "/projects/veclite",
+    summary: "SQLite for vectors: an embedded Rust vector store.",
     internal: true,
     context:
       "Adding semantic search to a small project means standing up Pinecone, Weaviate, or a Postgres extension—infra for something that should be trivial.",
@@ -49,34 +69,9 @@ export const works: Work[] = [
       "Drop-in semantic search with no server, no daemon, no connection pool.",
   },
   {
-    name: "ferryx",
-    href: "/projects/ferryx",
-    internal: true,
-    context:
-      "Writing Rust extensions for Python means maintaining a C FFI layer, a Python wrapper, and keeping both in sync with the Rust API.",
-    tension:
-      "Every type change requires updates in three places. The binding layer is always a commit behind the implementation.",
-    decision:
-      "Built a compiler that reads Rust source, reflects the public type surface, and emits the FFI layer, native extension, and .pyi stubs automatically.",
-    outcome:
-      "Bindings become a compiler output. Change the Rust signature, run ferryx, done.",
-  },
-  {
-    name: "llmwiki",
-    href: "/projects/llmwiki",
-    internal: true,
-    context:
-      "Note-taking tools optimise for writing, not retrieval. Months later, the note you need is buried and keyword search returns 40 results.",
-    tension:
-      "Semantic search requires a vector store and embedding pipeline; RAG synthesis requires an LLM—both are heavy to wire up just for personal notes.",
-    decision:
-      "Built a Rust CLI and TUI that embeds notes locally, retrieves by meaning, and synthesises answers from your own knowledge base—nothing leaves your machine.",
-    outcome:
-      "Ask questions in plain English. Get answers drawn from your own notes.",
-  },
-  {
     name: "surgext-mcp",
     href: "/projects/surgext-mcp",
+    summary: "MCP server that lets AI look up real Surge XT docs.",
     internal: true,
     context:
       "Surge XT has hundreds of parameters across oscillators, filters, FX, and modulation—impossible to keep in working memory during a session.",
@@ -88,21 +83,10 @@ export const works: Work[] = [
       "AI assistants can now look up exact knob behaviour and guide patch recreation with authoritative documentation.",
   },
   {
-    name: "bruno",
-    href: "/projects/bruno",
-    internal: true,
-    context:
-      "ADHD attention doesn't follow timers—it fluctuates. Productivity tools that ping on a schedule create alarm fatigue and break focus.",
-    tension:
-      "Most assistants are either voice-only chatbots or rigid schedulers. Neither understands what's on your screen or whether you're actually focused.",
-    decision:
-      "Built a macOS desktop companion that uses on-device vision to detect when you drift, then nudges you with shame-free, adaptive voice — all local-first.",
-    outcome:
-      "A floating orb that watches your screen, talks to you, and remembers things — with neurodivergence-aware nudging that respects hyperfocus and quiet hours.",
-  },
-  {
     name: "chorale",
     href: "https://github.com/rithulkamesh/chorale",
+    summary:
+      "Open-source vocal harmonizer plugin: one line in, eight harmonies out.",
     internal: false,
     context:
       "Stacking vocal harmonies means recording take after take, or renting a harmonizer that turns the singer into a chipmunk.",
@@ -116,6 +100,7 @@ export const works: Work[] = [
   {
     name: "polylogue",
     href: "https://github.com/rithulkamesh/polylogue",
+    summary: "Polyphonic synth built on the Korg monologue architecture.",
     internal: false,
     context:
       "The Korg monologue has a great voice architecture, but it is monophonic and lives in hardware.",

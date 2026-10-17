@@ -1,0 +1,84 @@
+---
+title: "I started asking what AGI really means, so I built Sunday to find out"
+date: "17th October 2026"
+author: "Rithul Kamesh"
+tags: ["agi", "agents", "evals", "local-first", "rust", "experiments"]
+description: "Everyone argues about AGI. I wanted a number instead. Sunday is an open experiment: how far can the harness around a small local model take it?"
+---
+
+I keep hearing the word AGI and I keep noticing that nobody means the same thing by it.
+
+For some people it is a model that passes every benchmark. For others it is a machine that can do any job a human can. For a few it is a vibe: you will know it when it talks back and you are unsettled. I had been using the word for months without being able to say what would make me stop using it, and that bothered me.
+
+So I started asking a smaller question.
+
+## Where does the intelligence live?
+
+Watch a good agent work for an afternoon and you notice something. The model is rarely the interesting part. The interesting part is everything around it: it makes a plan, takes a step, looks at what happened, notices it was wrong, tries again, and writes down what it learned so it doesn't repeat the mistake.
+
+Take that loop away and the same weights look a lot dumber. Add it back and they look a lot smarter. That is not a new observation. But I had never seen anyone try to measure it, in the open, on a fixed scoreboard, with the model held constant.
+
+Which turns "what is AGI" into something I can actually test:
+
+> **Can any model go AGI, given the right harness?**
+
+I don't know. That is the point. Sunday is how I'm trying to find out.
+
+## What Sunday is
+
+[Sunday](/projects/sunday) is a local-first agent harness. A voice and screen front end, a memory, a skill library and an action layer, all wrapped around a swappable model. It runs on your Mac, on a 4B model through Ollama by default. Nothing leaves the machine unless you flip a switch.
+
+The name is a backronym, and it doubles as the spec:
+
+**S**ees · **U**nderstands · **N**otices · **D**ecides · **A**cts · **Y**ours
+
+- It **sees** your screen: a screenshot, local OCR with exact boxes, a vision model for diagrams, and a click-through overlay that circles the thing it is talking about.
+- It **understands**: ask it to teach you linear algebra and it drafts a plan, teaches a concept, quizzes you, and schedules the review.
+- It **notices**: a wake word, your voiceprint so it ignores everyone else, and long-term memory where every fact remembers where it came from.
+- It **decides**: every utterance becomes one typed `Action` before anything runs.
+- It **acts**: opens apps, types, clicks. All behind approvals and an audit log.
+- It is **yours**: SQLite on disk, local models, web access off by default.
+
+## The part I care about most: the bar
+
+I did not want another demo video. Demos are easy to love and impossible to falsify. So the repo has a target written down before the thing is built:
+
+> Sunday completes open-ended, multi-day goals on your own machine with no hand-holding, scoring **at least 70% on a fixed 50-task eval suite**, with the pass rate rising week over week while the model stays constant.
+
+That last clause is the whole experiment. If the model is constant and the score climbs, the gain came from the harness: better planning, better verification, memory that compounds, skills that were earned and not hand-written. If the score doesn't climb, the harness wasn't doing what I thought, and I get to learn that instead.
+
+Either outcome is a result. Neither is a vibe.
+
+## Honest status
+
+It is early. I would rather say so here than let you find out.
+
+- macOS only for now.
+- The 50-task suite is the first thing on the roadmap, and nothing else counts until it exists. Today there is routing data, not a scoreboard.
+- A 4B model will fail at things a frontier model shrugs off. That is useful. A weak model is a sensitive instrument: if the harness helps _it_, you can see the help.
+
+What does exist is a surprising amount: teaching and spaced review, notes import, screen explanation with pointing, provenance-tracked memory, versioned skills that need a passing test before approval, and a permission layer built on one rule: **anything read from the web, the screen or memory is data, never a command.**
+
+## Why local, why small
+
+Two reasons. First, trust. A thing that watches your screen and listens for its name should earn its place on your machine, and the cleanest way to earn it is to never phone home.
+
+Second, honesty. If the harness only looks good with a huge hosted model, I can't tell whether the harness is working or the model is. A small local model with the harness off is the baseline. The same model with the harness on is the signal.
+
+Bigger models come later, behind one provider trait: Bedrock and Nova, Anthropic, OpenAI-compatible endpoints, Gemini, llama.cpp. If the harness is real, it should lift all of them.
+
+## What I expect to be wrong about
+
+Probably a lot. The router is deterministic rules today, with a seam where a smarter one will go. Memory that compounds sounds great until it compounds _mistakes_, which is why new skills are gated by evals and why the agent is not allowed to edit its own permission layer.
+
+I would like to be wrong in public, in a way that produces a number.
+
+## Come break it
+
+Sunday is GPL-3.0 and everything is a labelled issue. The [v1 tracker](https://github.com/rithulkamesh/sunday/issues/31) lists the road: the eval harness, the agent loop, memory that compounds, new providers, an extension SDK, Windows and Linux. If you point your own coding agent at it, good. Start with `claude-friendly` or `good first issue`.
+
+The most useful contribution is a task for the eval suite that you believe a real assistant should be able to do, and that today's Sunday can't.
+
+Repo: [github.com/rithulkamesh/sunday](https://github.com/rithulkamesh/sunday).
+
+I still don't know what AGI really means. But I now know what I'd count as evidence, and I'd rather be measuring than arguing.
