@@ -13,6 +13,7 @@ import {
   GitHubStatsPanel,
 } from "@/components/project-page";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "sunday — Rithul Kamesh",
@@ -125,8 +126,9 @@ export default function SundayPage() {
             while the model stays constant.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            If the number moves, the harness is doing real work. If it doesn't,
-            that is a result too. Either way it is a number, not a vibe.
+            If the number moves, the harness is doing real work. If it
+            doesn&apos;t, that is a result too. Either way it is a number, not a
+            vibe.
           </p>
         </ProjectSection>
 
@@ -181,12 +183,12 @@ bun install && bun run tauri dev`}
           </p>
           <p>
             So Sunday is an experiment with a scoreboard. Read{" "}
-            <a
+            <Link
               href="/blog/what-does-agi-really-mean"
               className="underline underline-offset-4"
             >
               the story behind it
-            </a>
+            </Link>
             , or pick up an issue and help.
           </p>
         </WhyIBuiltThis>

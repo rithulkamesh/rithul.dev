@@ -51,11 +51,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [analyserReady, setAnalyserReady] = useState(false);
+  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   const setupAudio = () => {
@@ -65,15 +64,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
       audioCtxRef.current = new AudioCtx();
-      analyserRef.current = audioCtxRef.current.createAnalyser();
-      analyserRef.current.fftSize = 128; // 64 bins
+      const node = audioCtxRef.current.createAnalyser();
+      node.fftSize = 128; // 64 bins
 
       sourceRef.current = audioCtxRef.current.createMediaElementSource(
         audioRef.current,
       );
-      sourceRef.current.connect(analyserRef.current);
-      analyserRef.current.connect(audioCtxRef.current.destination);
-      setAnalyserReady(true);
+      sourceRef.current.connect(node);
+      node.connect(audioCtxRef.current.destination);
+      setAnalyser(node);
     }
 
     if (audioCtxRef.current.state === "suspended") {
@@ -168,7 +167,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         currentTime,
         duration,
         progress,
-        analyser: analyserReady ? analyserRef.current : null,
+        analyser,
         playTrack,
         togglePlayPause,
         seek,
