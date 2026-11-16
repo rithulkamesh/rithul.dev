@@ -1,44 +1,48 @@
-"use client";
-import { motion } from "framer-motion";
-import {
-  SECTION_VARIANTS,
-  SAFE_VARIANTS,
-  DECORATIVE_VARIANTS,
-} from "@/lib/animation";
+'use client';
+import { motion } from 'framer-motion';
+import { SECTION_VARIANTS, SAFE_VARIANTS, DECORATIVE_VARIANTS } from '@/lib/animation';
 
 const contexts = [
   {
-    entity: "H2LooP // Hydron",
-    role: "AI Developer Advocate Intern",
-    description:
-      "Building technical demos and developer content for Hydron's AI-powered embedded development platform.",
-    href: "https://hydron.sh",
-    status: "Building",
+    entity: 'Spetia SI',
+    role: 'Chief Scientist',
+    description: 'Brewing new research and Products for ML and AI experiments.',
+    href: 'https://si.spetia.com',
+    status: 'Researching',
+  },
+
+  {
+    entity: 'Photonics & Quantum Lab',
+    role: 'Research Assistant',
+    description: 'Investigating neural networks for quantum experimentation.',
+    href: 'https://pes.edu',
+    status: 'Researching',
   },
   {
-    entity: "Photonics & Quantum Lab",
-    role: "Research Assistant",
-    description: "Investigating neural networks for quantum experimentation.",
-    href: "https://pes.edu",
-    status: "Researching",
-  },
-  {
-    entity: "PES University",
-    role: "Student",
-    description:
-      "Deepening roots in electronics & communication via a Bachelor's degree.",
-    href: "https://pes.edu",
-    status: "Learning",
+    entity: 'PES University',
+    role: 'Student',
+    description: "Deepening roots in electronics & communication via a Bachelor's degree.",
+    href: 'https://pes.edu',
+    status: 'Learning',
   },
 ];
 
 const pastContexts = [
   {
-    entity: "PES University",
-    role: "Teaching Assistant",
+    entity: 'H2LooP // Hydron',
+    role: 'AI Developer Advocate Intern',
     description:
-      "Non-Linear Optics and Quantum Technology, co-delivering lectures and building study guides and question banks for 100+ students.",
-    period: "Jan 2026 – May 2026",
+      "Building technical demos and developer content for Hydron's AI-powered embedded development platform.",
+    href: 'https://hydron.sh',
+    status: 'Building',
+  },
+
+  {
+    entity: 'PES University',
+    role: 'Teaching Assistant',
+    description:
+      'Non-Linear Optics and Quantum Technology, co-delivering lectures and building study guides and question banks for 100+ students.',
+    period: 'Jan 2026 – May 2026',
   },
 ];
 
@@ -48,7 +52,7 @@ export const ActiveContext = () => {
       variants={SECTION_VARIANTS}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: '-100px' }}
       className="space-y-6"
     >
       <motion.div variants={SAFE_VARIANTS} className="flex items-center gap-2">
@@ -111,21 +115,16 @@ export const ActiveContext = () => {
               key={`${item.entity}-${item.role}`}
               className="grid grid-cols-1 md:grid-cols-[13rem_1.5rem_9rem_1.5rem_1fr] items-baseline md:gap-0 gap-1 opacity-50"
             >
-              <h4 className="text-foreground font-medium text-sm">
-                {item.entity}
-              </h4>
+              <h4 className="text-foreground font-medium text-sm">{item.entity}</h4>
               <span className="hidden md:flex justify-center text-muted-foreground/30 font-light select-none">
                 /
               </span>
-              <span className="text-muted-foreground text-xs md:text-sm">
-                {item.role}
-              </span>
+              <span className="text-muted-foreground text-xs md:text-sm">{item.role}</span>
               <span className="hidden md:flex justify-center text-muted-foreground/30 font-light select-none">
                 /
               </span>
               <span className="text-muted-foreground/80 text-xs md:text-sm">
-                {item.description}{" "}
-                <span className="whitespace-nowrap">({item.period})</span>
+                {item.description} <span className="whitespace-nowrap">({item.period})</span>
               </span>
             </div>
           ))}
@@ -134,8 +133,7 @@ export const ActiveContext = () => {
 
       <motion.div variants={SAFE_VARIANTS} className="flex flex-col gap-6 mt-6">
         <p className="text-muted-foreground text-sm italic border-l-2 border-border pl-3 py-1">
-          Most of what lives here is evolving, experimental, or being refined in
-          public.
+          Most of what lives here is evolving, experimental, or being refined in public.
         </p>
 
         {/* Philosophical Signal: Parkinson's Law */}
